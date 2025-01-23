@@ -2,12 +2,14 @@
 import 'package:go_router/go_router.dart';
 import 'package:seth/pregentaition/screens/log_in/log_in_screen.dart';
 import '../../pregentaition/screens/forgot_password/forgot_password_screen.dart';
+import '../../pregentaition/screens/manager_sign_up_screen/manager_sign_up_screen.dart';
 import '../../pregentaition/screens/onboarding/onboarding_screen.dart';
 import '../../pregentaition/screens/otp_screen/otp_screen.dart';
 import '../../pregentaition/screens/role_screen/role_screen.dart';
 import '../../pregentaition/screens/set_password/set_password_screen.dart';
 import '../../pregentaition/screens/sign_up/sign_up_screen.dart';
 import '../../pregentaition/screens/splash/splash_screen.dart';
+import '../../pregentaition/screens/user/user_home/user_home_screen.dart';
 
 
 class AppRoutes {
@@ -22,6 +24,8 @@ class AppRoutes {
   static const String setPasswordScreen = "/SetPasswordScreen";
   static const String forgotPasswordScreen = "/ForgotPasswordScreen";
   static const String otpScreen = "/OtpScreen";
+  static const String managerSignUpScreen = "/ManagerSignUpScreen";
+  static const String userHomeScreen = "/UserHomeScreen";
 
 
   static final GoRouter goRouter = GoRouter(
@@ -102,6 +106,24 @@ class AppRoutes {
           builder: (context, state) =>  OtpScreen(),
         ),
 
+
+        ///=========Manager Sign up Screen========>>
+
+        GoRoute(
+          path: managerSignUpScreen,
+          name: managerSignUpScreen,
+          builder: (context, state) =>  ManagerSignUpScreen(),
+        ),
+
+
+
+        ///=========User Home Screen========>>
+
+        GoRoute(
+          path: userHomeScreen,
+          name: userHomeScreen,
+          builder: (context, state) =>  UserHomeScreen(),
+        ),
 
       ]
   );

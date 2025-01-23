@@ -115,7 +115,7 @@ class _RoleScreenState extends State<RoleScreen> {
                         context.pushNamed(AppRoutes.loginScreen);
                         break;
                       case "Manager":
-                        context.pushNamed(AppRoutes.loginScreen);
+                        context.pushNamed(AppRoutes.managerSignUpScreen);
                         break;
                       case "Guest":
                         context.pushNamed(AppRoutes.loginScreen);

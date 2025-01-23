@@ -16,21 +16,58 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/atracFile.svg
+  SvgGenImage get atracFile => const SvgGenImage('assets/icons/atracFile.svg');
+
   /// File path: assets/icons/button.svg
   SvgGenImage get button => const SvgGenImage('assets/icons/button.svg');
 
+  /// File path: assets/icons/call.svg
+  SvgGenImage get call => const SvgGenImage('assets/icons/call.svg');
+
+  /// File path: assets/icons/check_ring.svg
+  SvgGenImage get checkRing => const SvgGenImage('assets/icons/check_ring.svg');
+
+  /// File path: assets/icons/email.svg
+  SvgGenImage get email => const SvgGenImage('assets/icons/email.svg');
+
   /// File path: assets/icons/guestIcon.svg
   SvgGenImage get guestIcon => const SvgGenImage('assets/icons/guestIcon.svg');
+
+  /// File path: assets/icons/location.svg
+  SvgGenImage get location => const SvgGenImage('assets/icons/location.svg');
 
   /// File path: assets/icons/managerIcon.svg
   SvgGenImage get managerIcon =>
       const SvgGenImage('assets/icons/managerIcon.svg');
 
+  /// File path: assets/icons/password.svg
+  SvgGenImage get password => const SvgGenImage('assets/icons/password.svg');
+
+  /// File path: assets/icons/person.svg
+  SvgGenImage get person => const SvgGenImage('assets/icons/person.svg');
+
+  /// File path: assets/icons/url.svg
+  SvgGenImage get url => const SvgGenImage('assets/icons/url.svg');
+
   /// File path: assets/icons/userIcon.svg
   SvgGenImage get userIcon => const SvgGenImage('assets/icons/userIcon.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [button, guestIcon, managerIcon, userIcon];
+  List<SvgGenImage> get values => [
+        atracFile,
+        button,
+        call,
+        checkRing,
+        email,
+        guestIcon,
+        location,
+        managerIcon,
+        password,
+        person,
+        url,
+        userIcon
+      ];
 }
 
 class $AssetsImagesGen {
@@ -54,8 +91,12 @@ class $AssetsLottieGen {
   LottieGenImage get buttonLoading =>
       const LottieGenImage('assets/lottie/buttonLoading.json');
 
+  /// File path: assets/lottie/success.json
+  LottieGenImage get success =>
+      const LottieGenImage('assets/lottie/success.json');
+
   /// List of all assets
-  List<LottieGenImage> get values => [buttonLoading];
+  List<LottieGenImage> get values => [buttonLoading, success];
 }
 
 class Assets {

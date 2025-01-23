@@ -154,13 +154,14 @@ class CustomTextFieldWithLavel extends StatelessWidget {
   final bool isPassword;
   final FormFieldValidator? validator;
   final TextInputType? keyboardType;
+  final Widget? leadingIcon;
   const CustomTextFieldWithLavel({super.key,
     required this.controller,
     this.hinText,
     this.laval,
     this.validator,
     this.isEmail = false,
-    this.isPassword = false, this.keyboardType = TextInputType.text,
+    this.isPassword = false, this.keyboardType = TextInputType.text, this.leadingIcon,
   });
 
   @override
@@ -178,6 +179,10 @@ class CustomTextFieldWithLavel extends StatelessWidget {
 
 
         CustomTextField(
+            prefixIcon: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 12.w),
+              child: leadingIcon ?? null,
+            ),
             controller: controller,
             hintText: "$hinText",
             validator: validator ?? null,
