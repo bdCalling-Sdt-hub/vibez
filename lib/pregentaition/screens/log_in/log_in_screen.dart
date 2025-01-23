@@ -102,9 +102,9 @@ class LogInScreen extends StatelessWidget {
 
                 CustomButton(
                     width: double.infinity,
-                    title: "Sign Up", onpress: (){
+                    title: "Login", onpress: (){
                       // if(_logKey.currentState!.validate()){
-                        context.pushNamed(AppRoutes.signUpScreen);
+                        context.go(AppRoutes.userHomeScreen);
                       // }
                 }),
 

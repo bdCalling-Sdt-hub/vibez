@@ -28,8 +28,18 @@ class $AssetsIconsGen {
   /// File path: assets/icons/check_ring.svg
   SvgGenImage get checkRing => const SvgGenImage('assets/icons/check_ring.svg');
 
+  /// File path: assets/icons/drink_light.svg
+  SvgGenImage get drinkLight =>
+      const SvgGenImage('assets/icons/drink_light.svg');
+
   /// File path: assets/icons/email.svg
   SvgGenImage get email => const SvgGenImage('assets/icons/email.svg');
+
+  /// File path: assets/icons/filter.svg
+  SvgGenImage get filter => const SvgGenImage('assets/icons/filter.svg');
+
+  /// File path: assets/icons/grid.svg
+  SvgGenImage get grid => const SvgGenImage('assets/icons/grid.svg');
 
   /// File path: assets/icons/guestIcon.svg
   SvgGenImage get guestIcon => const SvgGenImage('assets/icons/guestIcon.svg');
@@ -41,11 +51,26 @@ class $AssetsIconsGen {
   SvgGenImage get managerIcon =>
       const SvgGenImage('assets/icons/managerIcon.svg');
 
+  /// File path: assets/icons/menu.svg
+  SvgGenImage get menu => const SvgGenImage('assets/icons/menu.svg');
+
+  /// File path: assets/icons/notification.svg
+  SvgGenImage get notification =>
+      const SvgGenImage('assets/icons/notification.svg');
+
   /// File path: assets/icons/password.svg
   SvgGenImage get password => const SvgGenImage('assets/icons/password.svg');
 
   /// File path: assets/icons/person.svg
   SvgGenImage get person => const SvgGenImage('assets/icons/person.svg');
+
+  /// File path: assets/icons/restaurant icon.svg
+  SvgGenImage get restaurantIcon =>
+      const SvgGenImage('assets/icons/restaurant icon.svg');
+
+  /// File path: assets/icons/search_light.svg
+  SvgGenImage get searchLight =>
+      const SvgGenImage('assets/icons/search_light.svg');
 
   /// File path: assets/icons/url.svg
   SvgGenImage get url => const SvgGenImage('assets/icons/url.svg');
@@ -59,12 +84,19 @@ class $AssetsIconsGen {
         button,
         call,
         checkRing,
+        drinkLight,
         email,
+        filter,
+        grid,
         guestIcon,
         location,
         managerIcon,
+        menu,
+        notification,
         password,
         person,
+        restaurantIcon,
+        searchLight,
         url,
         userIcon
       ];
