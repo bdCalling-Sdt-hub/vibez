@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_category_category_card.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
+
+import '../../../../core/widgets/custom_event_card.dart';
 
 class UserHomeScreen extends StatelessWidget {
   UserHomeScreen({super.key});
@@ -26,7 +30,51 @@ class UserHomeScreen extends StatelessWidget {
         actions: [
           Assets.icons.notification.svg(),
           SizedBox(width: 12.w),
-          Assets.icons.menu.svg(),
+          GestureDetector(
+            onTap: () async {
+             showMenu<String>(
+                context: context,
+                color: Colors.white,
+                position: const RelativeRect.fromLTRB(70.0, 70.0, 0.0, 0.0),
+                items:  [
+                  PopupMenuItem(
+                    onTap: () {
+                      context.pushNamed(AppRoutes.settingScreen);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Assets.icons.person.svg(color: AppColors.primaryColor, width: 55.w),
+                        CustomText(text: "My Profile", color: AppColors.primaryColor, left: 12.w)
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    onTap: (){ context.pushNamed(AppRoutes.settingScreen);},
+                    child: Row(
+                      children: [
+                        Assets.icons.setting.svg(),
+                        CustomText(text: "Settings", color: Colors.black, left: 20.w)
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      context.pushNamed(AppRoutes.settingScreen);
+                    },
+                    child: Row(
+                      children: [
+                        Assets.icons.signOutCircle.svg(),
+                        CustomText(text: "Log Out", color: Colors.red, left: 20.w)
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+            child: Assets.icons.menu.svg(),
+          ),
+
           SizedBox(width: 16.w)
         ],
       ),
@@ -44,7 +92,7 @@ class UserHomeScreen extends StatelessWidget {
               CustomTextField(
                   borderRadio: 25.r,
                   hintText: "Search",
-                  validator: (value) {},
+                  validator: (value) => "",
                   prefixIcon: Padding(
                     padding:  EdgeInsets.symmetric(horizontal: 16.w),
                     child: Assets.icons.searchLight.svg(height: 20.h),
@@ -118,6 +166,23 @@ class UserHomeScreen extends StatelessWidget {
 
 
 
+              CustomText(
+                  top: 24.h,
+                  bottom: 20.h,
+                  text: "Featured Events",  fontsize: 20.h, fontWeight: FontWeight.w600),
+
+
+              ListView.builder(
+                itemCount: 7,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding:  EdgeInsets.symmetric(vertical: 8.h),
+                    child: const CustomEventCard(),
+                  );
+                }),
+
               SizedBox(height: 80.h)
 
 
@@ -128,5 +193,6 @@ class UserHomeScreen extends StatelessWidget {
     );
   }
 }
+
 
 

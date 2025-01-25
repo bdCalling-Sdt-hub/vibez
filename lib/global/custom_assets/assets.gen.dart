@@ -16,17 +16,34 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/about.svg
+  SvgGenImage get about => const SvgGenImage('assets/icons/about.svg');
+
+  /// File path: assets/icons/arrow_right.svg
+  SvgGenImage get arrowRight =>
+      const SvgGenImage('assets/icons/arrow_right.svg');
+
   /// File path: assets/icons/atracFile.svg
   SvgGenImage get atracFile => const SvgGenImage('assets/icons/atracFile.svg');
 
   /// File path: assets/icons/button.svg
   SvgGenImage get button => const SvgGenImage('assets/icons/button.svg');
 
+  /// File path: assets/icons/calander1.svg
+  SvgGenImage get calander1 => const SvgGenImage('assets/icons/calander1.svg');
+
   /// File path: assets/icons/call.svg
   SvgGenImage get call => const SvgGenImage('assets/icons/call.svg');
 
+  /// File path: assets/icons/changePass.svg
+  SvgGenImage get changePass =>
+      const SvgGenImage('assets/icons/changePass.svg');
+
   /// File path: assets/icons/check_ring.svg
   SvgGenImage get checkRing => const SvgGenImage('assets/icons/check_ring.svg');
+
+  /// File path: assets/icons/docFile.svg
+  SvgGenImage get docFile => const SvgGenImage('assets/icons/docFile.svg');
 
   /// File path: assets/icons/drink_light.svg
   SvgGenImage get drinkLight =>
@@ -58,11 +75,21 @@ class $AssetsIconsGen {
   SvgGenImage get notification =>
       const SvgGenImage('assets/icons/notification.svg');
 
+  /// File path: assets/icons/notification2.svg
+  SvgGenImage get notification2 =>
+      const SvgGenImage('assets/icons/notification2.svg');
+
   /// File path: assets/icons/password.svg
   SvgGenImage get password => const SvgGenImage('assets/icons/password.svg');
 
+  /// File path: assets/icons/payment.svg
+  SvgGenImage get payment => const SvgGenImage('assets/icons/payment.svg');
+
   /// File path: assets/icons/person.svg
   SvgGenImage get person => const SvgGenImage('assets/icons/person.svg');
+
+  /// File path: assets/icons/person2.svg
+  SvgGenImage get person2 => const SvgGenImage('assets/icons/person2.svg');
 
   /// File path: assets/icons/restaurant icon.svg
   SvgGenImage get restaurantIcon =>
@@ -72,6 +99,13 @@ class $AssetsIconsGen {
   SvgGenImage get searchLight =>
       const SvgGenImage('assets/icons/search_light.svg');
 
+  /// File path: assets/icons/setting.svg
+  SvgGenImage get setting => const SvgGenImage('assets/icons/setting.svg');
+
+  /// File path: assets/icons/sign_out_circle.svg
+  SvgGenImage get signOutCircle =>
+      const SvgGenImage('assets/icons/sign_out_circle.svg');
+
   /// File path: assets/icons/url.svg
   SvgGenImage get url => const SvgGenImage('assets/icons/url.svg');
 
@@ -80,10 +114,15 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+        about,
+        arrowRight,
         atracFile,
         button,
+        calander1,
         call,
+        changePass,
         checkRing,
+        docFile,
         drinkLight,
         email,
         filter,
@@ -93,10 +132,15 @@ class $AssetsIconsGen {
         managerIcon,
         menu,
         notification,
+        notification2,
         password,
+        payment,
         person,
+        person2,
         restaurantIcon,
         searchLight,
+        setting,
+        signOutCircle,
         url,
         userIcon
       ];

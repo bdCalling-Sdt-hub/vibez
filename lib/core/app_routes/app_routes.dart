@@ -7,6 +7,7 @@ import '../../pregentaition/screens/onboarding/onboarding_screen.dart';
 import '../../pregentaition/screens/otp_screen/otp_screen.dart';
 import '../../pregentaition/screens/role_screen/role_screen.dart';
 import '../../pregentaition/screens/set_password/set_password_screen.dart';
+import '../../pregentaition/screens/setting/setting_screen.dart';
 import '../../pregentaition/screens/sign_up/sign_up_screen.dart';
 import '../../pregentaition/screens/splash/splash_screen.dart';
 import '../../pregentaition/screens/user/user_home/user_home_screen.dart';
@@ -26,6 +27,7 @@ class AppRoutes {
   static const String otpScreen = "/OtpScreen";
   static const String managerSignUpScreen = "/ManagerSignUpScreen";
   static const String userHomeScreen = "/UserHomeScreen";
+  static const String settingScreen = "/SettingScreen";
 
 
   static final GoRouter goRouter = GoRouter(
@@ -123,6 +125,15 @@ class AppRoutes {
           path: userHomeScreen,
           name: userHomeScreen,
           builder: (context, state) =>  UserHomeScreen(),
+        ),
+
+
+        ///=========Setting Screen========>>
+
+        GoRoute(
+          path: settingScreen,
+          name: settingScreen,
+          builder: (context, state) =>  SettingScreen(),
         ),
 
       ]
