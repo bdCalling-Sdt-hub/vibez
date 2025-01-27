@@ -5,6 +5,7 @@ import 'package:seth/pregentaition/screens/profile/profile_screen.dart';
 import '../../pregentaition/screens/book_mard_favarite_screen/book_mark_favarite_screen.dart';
 import '../../pregentaition/screens/book_mard_favarite_screen/book_mark_screen.dart';
 import '../../pregentaition/screens/change_password/change_password_screen.dart';
+import '../../pregentaition/screens/filter/filter_screen.dart';
 import '../../pregentaition/screens/forgot_password/forgot_password_screen.dart';
 import '../../pregentaition/screens/manager_sign_up_screen/manager_sign_up_screen.dart';
 import '../../pregentaition/screens/onboarding/onboarding_screen.dart';
@@ -38,6 +39,7 @@ class AppRoutes {
   static const String privacyAllScreen = "/PrivacyAllScreen";
   static const String bookMarkFavariteScreen = "/BookMarkFavariteScreen";
   static const String bookMarkScreen = "/BookMarkScreen";
+  static const String filterScreen = "/FilterScreen";
 
 
   static final GoRouter goRouter = GoRouter(
@@ -189,7 +191,7 @@ class AppRoutes {
         ),
 
 
-        ///=========Privacy All Screen========>>
+        ///========= book mark Screen========>>
 
         GoRoute(
           path: bookMarkScreen,
@@ -199,6 +201,19 @@ class AppRoutes {
             return BookMarkScreen(category : category);
           },
         ),
+
+
+        ///=========filter Screen========>>
+
+        GoRoute(
+          path: filterScreen,
+          name: filterScreen,
+          builder: (context, state) {
+             String categoryType = state.extra as String;
+             return FilterScreen(categoryType: categoryType);
+          },
+        ),
+
 
       ]
   );
