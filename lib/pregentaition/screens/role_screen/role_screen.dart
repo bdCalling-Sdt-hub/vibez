@@ -20,14 +20,14 @@ class _RoleScreenState extends State<RoleScreen> {
   List roles =[
     {
       "title" : "User",
-      "subTitle" : "Can view events, explore details, and \npurchase tickets.",
+      "subTitle" : "Can view events, explore details, and purchase tickets.",
       "image" : Assets.icons.userIcon.svg(height: 64.h, width: 64.w, fit: BoxFit.cover),
       "isChecked": false,
     },
 
     {
       "title" : "Manager",
-      "subTitle" : "Can create events, manage ticket \nsales also view events.",
+      "subTitle" : "Can create events, manage ticket sales also view events.",
       "image" : Assets.icons.managerIcon.svg(height: 64.h, width: 64.w, fit: BoxFit.cover),
       "isChecked": false,
     },
@@ -180,28 +180,31 @@ class ManagerCard extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0), // Add consistent spacing
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                  child: SizedBox(
+                    width: 200.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
 
-                      ///=================Title==================>>>
+                        ///=================Title==================>>>
 
-                      CustomText(
-                        fontsize: 20.h,
-                        fontWeight: FontWeight.w700,
-                        text: title ?? '',
-                      ),
+                        CustomText(
+                          fontsize: 20.h,
+                          fontWeight: FontWeight.w700,
+                          text: title ?? '',
+                        ),
 
 
-                      ///=================Sub Title ==============>>>>
+                        ///=================Sub Title ==============>>>>
 
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        maxline: 2,
-                        top: 4.h,
-                        text: subTitle ?? '',
-                      ),
-                    ],
+                        CustomText(
+                          textAlign: TextAlign.start,
+                          maxline: 2,
+                          top: 4.h,
+                          text: subTitle ?? '',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

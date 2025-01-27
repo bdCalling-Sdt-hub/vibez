@@ -150,6 +150,7 @@ class CustomTextFieldWithLavel extends StatelessWidget {
   final TextEditingController controller;
   final String? hinText;
   final String? laval;
+  final Color? lavalColor;
   final bool? isEmail;
   final bool isPassword;
   final FormFieldValidator? validator;
@@ -161,7 +162,7 @@ class CustomTextFieldWithLavel extends StatelessWidget {
     this.laval,
     this.validator,
     this.isEmail = false,
-    this.isPassword = false, this.keyboardType = TextInputType.text, this.leadingIcon,
+    this.isPassword = false, this.keyboardType = TextInputType.text, this.leadingIcon, this.lavalColor,
   });
 
   @override
@@ -174,7 +175,7 @@ class CustomTextFieldWithLavel extends StatelessWidget {
           bottom: 4.h,
           top: 24.h,
           text: "$laval",
-          color: AppColors.textColor808080,
+          color: lavalColor ?? AppColors.textColor808080,
         ),
 
 

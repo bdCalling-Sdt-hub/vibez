@@ -106,6 +106,9 @@ class $AssetsIconsGen {
   SvgGenImage get signOutCircle =>
       const SvgGenImage('assets/icons/sign_out_circle.svg');
 
+  /// File path: assets/icons/tune.svg
+  SvgGenImage get tune => const SvgGenImage('assets/icons/tune.svg');
+
   /// File path: assets/icons/url.svg
   SvgGenImage get url => const SvgGenImage('assets/icons/url.svg');
 
@@ -141,6 +144,7 @@ class $AssetsIconsGen {
         searchLight,
         setting,
         signOutCircle,
+        tune,
         url,
         userIcon
       ];

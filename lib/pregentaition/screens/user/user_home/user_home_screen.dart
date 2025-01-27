@@ -15,6 +15,8 @@ class UserHomeScreen extends StatelessWidget {
 
   final TextEditingController searchCtrl = TextEditingController();
 
+  List category = ["Ticketed Parties", "Concerts", 'Nightclubs', "Bars", 'Party Restaurants', 'Restaurants', "Comedy Clubs"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,17 +92,14 @@ class UserHomeScreen extends StatelessWidget {
 
               ///========================Search Box====================>>>
               CustomTextField(
-                  borderRadio: 25.r,
+                  borderRadio: 25,
                   hintText: "Search",
                   validator: (value) => "",
                   prefixIcon: Padding(
                     padding:  EdgeInsets.symmetric(horizontal: 16.w),
                     child: Assets.icons.searchLight.svg(height: 20.h),
                   ),
-                  suffixIcon: Padding(
-                    padding:  EdgeInsets.all(35.r),
-                    child: Assets.icons.filter.svg(),
-                  ),
+                  suffixIcon: const Icon(Icons.filter_alt_outlined),
                   controller: searchCtrl),
 
 
@@ -113,7 +112,7 @@ class UserHomeScreen extends StatelessWidget {
 
 
               GridView.builder(
-                itemCount: 7,
+                itemCount: category.length,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -122,46 +121,14 @@ class UserHomeScreen extends StatelessWidget {
                        mainAxisSpacing: 16,
                   ),
                   itemBuilder: (context, index) {
-                    return const CustomCategoryCategoryCard();
+                    return GestureDetector(
+                        onTap: (){
+                          context.pushNamed(AppRoutes.bookMarkScreen, extra: "${category[index]}");
+                        },
+                        child:  CustomCategoryCategoryCard(
+                          category: category[index],
+                        ));
                   },
-              ),
-
-
-
-
-
-              SizedBox(
-                height: 44.h,
-                child: ListView.builder(
-                   shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 7,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12.w),
-                        margin: EdgeInsets.only(right: 12.w),
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child:  Row(
-                          children: [
-                            Card(
-                                shape: const CircleBorder(),
-                                color: Colors.white,
-                                child: Padding(
-                                  padding:  EdgeInsets.all(8.r),
-                                  child: Assets.icons.grid.svg(height: 12.h, fit: BoxFit.cover),
-                                )),
-
-                              CustomText(text: "All Events",)
-
-                          ],
-                        ),
-                      );
-                    },
-                ),
               ),
 
 
@@ -173,7 +140,7 @@ class UserHomeScreen extends StatelessWidget {
 
 
               ListView.builder(
-                itemCount: 7,
+                itemCount: 3,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {

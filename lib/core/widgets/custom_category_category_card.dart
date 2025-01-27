@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'custom_text.dart';
 
 class CustomCategoryCategoryCard extends StatelessWidget {
-  const CustomCategoryCategoryCard({super.key});
+  final String? category;
+  const CustomCategoryCategoryCard({super.key, this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class CustomCategoryCategoryCard extends StatelessWidget {
               ),
 
 
-              child: Center(child: CustomText(text: "Ticketed Parties", fontWeight: FontWeight.w600)),
+              child: Center(child: CustomText(text: category.toString(), fontWeight: FontWeight.w600)),
 
             ),
           ),

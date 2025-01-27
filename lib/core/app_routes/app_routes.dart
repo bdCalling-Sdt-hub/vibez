@@ -1,10 +1,15 @@
 
 import 'package:go_router/go_router.dart';
 import 'package:seth/pregentaition/screens/log_in/log_in_screen.dart';
+import 'package:seth/pregentaition/screens/profile/profile_screen.dart';
+import '../../pregentaition/screens/book_mard_favarite_screen/book_mark_favarite_screen.dart';
+import '../../pregentaition/screens/book_mard_favarite_screen/book_mark_screen.dart';
+import '../../pregentaition/screens/change_password/change_password_screen.dart';
 import '../../pregentaition/screens/forgot_password/forgot_password_screen.dart';
 import '../../pregentaition/screens/manager_sign_up_screen/manager_sign_up_screen.dart';
 import '../../pregentaition/screens/onboarding/onboarding_screen.dart';
 import '../../pregentaition/screens/otp_screen/otp_screen.dart';
+import '../../pregentaition/screens/privacy_all/privacy_all_screen.dart';
 import '../../pregentaition/screens/role_screen/role_screen.dart';
 import '../../pregentaition/screens/set_password/set_password_screen.dart';
 import '../../pregentaition/screens/setting/setting_screen.dart';
@@ -28,6 +33,11 @@ class AppRoutes {
   static const String managerSignUpScreen = "/ManagerSignUpScreen";
   static const String userHomeScreen = "/UserHomeScreen";
   static const String settingScreen = "/SettingScreen";
+  static const String profileScreen = "/ProfileScreen";
+  static const String changePasswordScreen = "/ChangePasswordScreen";
+  static const String privacyAllScreen = "/PrivacyAllScreen";
+  static const String bookMarkFavariteScreen = "/BookMarkFavariteScreen";
+  static const String bookMarkScreen = "/BookMarkScreen";
 
 
   static final GoRouter goRouter = GoRouter(
@@ -134,6 +144,60 @@ class AppRoutes {
           path: settingScreen,
           name: settingScreen,
           builder: (context, state) =>  SettingScreen(),
+        ),
+
+
+        ///=========Profile Screen========>>
+
+        GoRoute(
+          path: profileScreen,
+          name: profileScreen,
+          builder: (context, state) =>  ProfileScreen(),
+        ),
+
+
+
+        ///=========change password Screen========>>
+
+        GoRoute(
+          path: changePasswordScreen,
+          name: changePasswordScreen,
+          builder: (context, state) =>  ChangePasswordScreen(),
+        ),
+
+
+        ///=========Privacy All Screen========>>
+
+        GoRoute(
+          path: privacyAllScreen,
+          name: privacyAllScreen,
+          builder: (context, state) {
+           String title = state.extra as String;
+            return PrivacyAllScreen(title : title);
+          },
+        ),
+
+
+        ///=========Privacy All Screen========>>
+
+        GoRoute(
+          path: bookMarkFavariteScreen,
+          name: bookMarkFavariteScreen,
+          builder: (context, state) {
+            return BookMarkFavariteScreen();
+          },
+        ),
+
+
+        ///=========Privacy All Screen========>>
+
+        GoRoute(
+          path: bookMarkScreen,
+          name: bookMarkScreen,
+          builder: (context, state) {
+            String category = state.extra as String;
+            return BookMarkScreen(category : category);
+          },
         ),
 
       ]

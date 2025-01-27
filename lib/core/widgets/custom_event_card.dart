@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'custom_text.dart';
 
 class CustomEventCard extends StatelessWidget {
-  const CustomEventCard({super.key});
+  final bool isFavouriteVisible;
+  const CustomEventCard({super.key, this.isFavouriteVisible = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,22 @@ class CustomEventCard extends StatelessWidget {
               fit: BoxFit.cover)),
       child: Column(
         children: [
+
+          SizedBox(height: 16.h),
+          isFavouriteVisible == false ? SizedBox() :  Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding:  EdgeInsets.all(8.r),
+                child: const Icon(Icons.favorite, color: Colors.red),
+              ),
+            ),
+          ),
+
           const Spacer(),
           Padding(
             padding: EdgeInsets.all(7.r),
@@ -38,7 +55,7 @@ class CustomEventCard extends StatelessWidget {
                 ],
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.r),
                 child: Center(
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,11 +69,14 @@ class CustomEventCard extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               color: Colors.black),
                           CustomText(
-                              text: "123 Lincolin Ave - 10:00 PM",
+                              text: "123 Lincoln Ave - 10:00 PM",
                               color: Colors.black),
                         ],
                       ),
                     ),
+
+
+
                     Card(
                         color: Colors.green,
                         child: Padding(
