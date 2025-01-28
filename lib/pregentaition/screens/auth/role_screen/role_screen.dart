@@ -7,7 +7,6 @@ import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 import 'package:seth/helpers/toast_message_helper.dart';
-import 'package:seth/pregentaition/screens/onboarding/onboarding_screen.dart';
 
 class RoleScreen extends StatefulWidget {
    RoleScreen({super.key});
@@ -181,7 +180,7 @@ class ManagerCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0), // Add consistent spacing
                   child: SizedBox(
-                    width: 200.w,
+                    width: 160.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -201,6 +200,7 @@ class ManagerCard extends StatelessWidget {
                           textAlign: TextAlign.start,
                           maxline: 2,
                           top: 4.h,
+                          fontsize: 12.h,
                           text: subTitle ?? '',
                         ),
                       ],

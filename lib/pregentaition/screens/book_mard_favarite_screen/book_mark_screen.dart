@@ -55,7 +55,12 @@ class BookMarkScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return  Padding(
                     padding:  EdgeInsets.only(top: 20.h),
-                    child: CustomEventCard(
+                    child: GestureDetector(
+                      onTap: (){
+                        context.pushNamed(AppRoutes.eventDetails);
+                      },
+                      child: const CustomEventCard(
+                      ),
                     ),
                   );
                 },

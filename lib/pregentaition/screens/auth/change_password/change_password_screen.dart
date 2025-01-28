@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
-import 'package:seth/pregentaition/screens/log_in/log_in_screen.dart';
-
-import '../../../core/widgets/custom_text.dart';
+import '../../../../core/widgets/custom_text.dart';
+import '../log_in/log_in_screen.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
    ChangePasswordScreen({super.key});

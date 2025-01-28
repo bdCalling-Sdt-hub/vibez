@@ -1,20 +1,23 @@
 
 import 'package:go_router/go_router.dart';
-import 'package:seth/pregentaition/screens/log_in/log_in_screen.dart';
 import 'package:seth/pregentaition/screens/profile/profile_screen.dart';
+import 'package:seth/pregentaition/screens/rating_screen/rating_screen.dart';
+import '../../pregentaition/screens/auth/change_password/change_password_screen.dart';
+import '../../pregentaition/screens/auth/forgot_password/forgot_password_screen.dart';
+import '../../pregentaition/screens/auth/log_in/log_in_screen.dart';
+import '../../pregentaition/screens/auth/manager_sign_up_screen/manager_sign_up_screen.dart';
+import '../../pregentaition/screens/auth/onboarding/onboarding_screen.dart';
+import '../../pregentaition/screens/auth/otp_screen/otp_screen.dart';
+import '../../pregentaition/screens/auth/role_screen/role_screen.dart';
+import '../../pregentaition/screens/auth/set_password/set_password_screen.dart';
+import '../../pregentaition/screens/auth/sign_up/sign_up_screen.dart';
 import '../../pregentaition/screens/book_mard_favarite_screen/book_mark_favarite_screen.dart';
 import '../../pregentaition/screens/book_mard_favarite_screen/book_mark_screen.dart';
-import '../../pregentaition/screens/change_password/change_password_screen.dart';
+import '../../pregentaition/screens/event_details/event_details.dart';
 import '../../pregentaition/screens/filter/filter_screen.dart';
-import '../../pregentaition/screens/forgot_password/forgot_password_screen.dart';
-import '../../pregentaition/screens/manager_sign_up_screen/manager_sign_up_screen.dart';
-import '../../pregentaition/screens/onboarding/onboarding_screen.dart';
-import '../../pregentaition/screens/otp_screen/otp_screen.dart';
 import '../../pregentaition/screens/privacy_all/privacy_all_screen.dart';
-import '../../pregentaition/screens/role_screen/role_screen.dart';
-import '../../pregentaition/screens/set_password/set_password_screen.dart';
+import '../../pregentaition/screens/profile/edit_profile_screen.dart';
 import '../../pregentaition/screens/setting/setting_screen.dart';
-import '../../pregentaition/screens/sign_up/sign_up_screen.dart';
 import '../../pregentaition/screens/splash/splash_screen.dart';
 import '../../pregentaition/screens/user/user_home/user_home_screen.dart';
 
@@ -40,6 +43,9 @@ class AppRoutes {
   static const String bookMarkFavariteScreen = "/BookMarkFavariteScreen";
   static const String bookMarkScreen = "/BookMarkScreen";
   static const String filterScreen = "/FilterScreen";
+  static const String editProfileScreen = "/EditProfileScreen";
+  static const String eventDetails = "/EventDetails";
+  static const String ratingScreen = "/RatingScreen";
 
 
   static final GoRouter goRouter = GoRouter(
@@ -213,6 +219,42 @@ class AppRoutes {
              return FilterScreen(categoryType: categoryType);
           },
         ),
+
+
+
+        ///=========Edit Profile Screen========>>
+
+        GoRoute(
+          path: editProfileScreen,
+          name: editProfileScreen,
+          builder: (context, state) {
+            return EditProfileScreen();
+          },
+        ),
+
+
+        ///=========Event Screen========>>
+
+        GoRoute(
+          path: eventDetails,
+          name: eventDetails,
+          builder: (context, state) {
+            return EventDetails();
+          },
+        ),
+
+
+
+        ///=========rating Screen========>>
+
+        GoRoute(
+          path: ratingScreen,
+          name: ratingScreen,
+          builder: (context, state) {
+            return RatingScreen();
+          },
+        ),
+
 
 
       ]

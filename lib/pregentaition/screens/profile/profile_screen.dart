@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:seth/core/app_routes/app_routes.dart';
+import 'package:seth/core/utils/app_colors.dart';
+import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
@@ -92,6 +96,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 readOnly: true,
                 controller: phoneNoCtrl),
+
+
+
+            SizedBox(height: 50.h),
+
+            CustomButton(
+                color: Colors.transparent,
+                titlecolor: AppColors.primaryColor,
+                title: "Edit Profile", onpress: (){
+                  context.pushNamed(AppRoutes.editProfileScreen);
+            })
 
 
           ],
