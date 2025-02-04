@@ -2,6 +2,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:seth/pregentaition/screens/profile/profile_screen.dart';
 import 'package:seth/pregentaition/screens/rating_screen/rating_screen.dart';
+import '../../pregentaition/screens/Manager/create_event/create_event_screen.dart';
+import '../../pregentaition/screens/Manager/events/manager_events_screen.dart';
 import '../../pregentaition/screens/Manager/manager_home/manager_home_screen.dart';
 import '../../pregentaition/screens/auth/change_password/change_password_screen.dart';
 import '../../pregentaition/screens/auth/forgot_password/forgot_password_screen.dart';
@@ -50,6 +52,8 @@ class AppRoutes {
   static const String ratingScreen = "/RatingScreen";
   static const String eventsInYourAreScreen = "/EventsInYourAreScreen";
   static const String managerHomeScreen = "/ManagerHomeScreen";
+  static const String managerEventsScreen = "/ManagerEventsScreen";
+  static const String createEventScreen = "/CreateEventScreen";
 
 
   static final GoRouter goRouter = GoRouter(
@@ -283,6 +287,33 @@ class AppRoutes {
             return ManagerHomeScreen();
           },
         ),
+
+
+
+        ///=========Manager Events Screen========>>
+
+        GoRoute(
+          path: managerEventsScreen,
+          name: managerEventsScreen,
+          builder: (context, state) {
+            String title = state.extra as String;
+            return ManagerEventsScreen(title: title);
+          },
+        ),
+
+        ///=========Manager Events Screen========>>
+
+        GoRoute(
+          path: createEventScreen,
+          name: createEventScreen,
+          builder: (context, state) {
+            String title = state.extra as String;
+            return CreateEventScreen(title: title);
+          },
+        ),
+
+
+
 
 
       ]

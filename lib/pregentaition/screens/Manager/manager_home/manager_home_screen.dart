@@ -59,18 +59,23 @@ class ManagerHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    color: const Color(0xff272727)
-                  ),
-                  child: Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.w),
-                    child: Row(
-                      children: [
-                        Assets.icons.dress.svg(),
-                        CustomText(text: "My Events", fontWeight: FontWeight.w600, fontsize: 16.h, left: 8.w)
-                      ],
+                GestureDetector(
+                  onTap: (){
+                    context.pushNamed(AppRoutes.managerEventsScreen, extra: "My Events");
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      color: const Color(0xff272727)
+                    ),
+                    child: Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.w),
+                      child: Row(
+                        children: [
+                          Assets.icons.dress.svg(),
+                          CustomText(text: "My Events", fontWeight: FontWeight.w600, fontsize: 16.h, left: 8.w)
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -78,18 +83,23 @@ class ManagerHomeScreen extends StatelessWidget {
 
                 SizedBox(width: 16.w),
 
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.r),
-                      color: const Color(0xff272727)
-                  ),
-                  child: Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 12.h, horizontal: 28.w),
-                    child: Row(
-                      children: [
-                        Assets.icons.dress.svg(),
-                        CustomText(text: "All Events", fontWeight: FontWeight.w600, fontsize: 16.h, left: 8.w)
-                      ],
+                GestureDetector(
+                  onTap: (){
+                    context.pushNamed(AppRoutes.managerEventsScreen, extra: "All Events");
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        color: const Color(0xff272727)
+                    ),
+                    child: Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 12.h, horizontal: 28.w),
+                      child: Row(
+                        children: [
+                          Assets.icons.dress.svg(),
+                          CustomText(text: "All Events", fontWeight: FontWeight.w600, fontsize: 16.h, left: 8.w)
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -105,7 +115,11 @@ class ManagerHomeScreen extends StatelessWidget {
             CustomButton(
                 color: Colors.transparent,
                 titlecolor: AppColors.primaryColor,
-                title: "Edit Profile", onpress: (){}),
+                title: "Edit Profile", onpress: (){
+
+                  context.pushNamed(AppRoutes.createEventScreen, extra: "Create Event");
+
+            }),
 
 
 
