@@ -45,89 +45,91 @@ class _RoleScreenState extends State<RoleScreen> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Center(
-          child: Column(
-            children: [
-
-
-              SizedBox(height: 130.h),
-
-              ///====================Join Us ===================>>>
-
-              CustomText(text: "Join Us", fontsize: 48.h, fontWeight: FontWeight.w900, bottom: 12.h),
-
-
-              ///=====================Select Your Role to Signup=============>>>
-
-              CustomText(text: "Select Your Role to Signup", fontsize: 20.h, bottom: 12.h),
-
-
-
-              ///====================All Role Lists===============>>>
-
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: roles.length,
-                itemBuilder: (context, index) {
-                  var role = roles[index];
-                  return   Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 12.h),
-                    child: ManagerCard(
-                      title: role["title"],
-                      subTitle: role["subTitle"],
-                      image: role["image"],
-                      isChecked: role["isChecked"],
-                      onChanged: (value) {
-
-                        for (int i = 0; i < roles.length; i++) {
-                          roles[i]["isChecked"] = i == index;
-                        }
-                        setState(() {});
-                      },
-                    ),
-                  );
-                },
-              ),
-
-              SizedBox(height: 100.h),
-
-
-              ///=================Next Btn=================>>>>
-
-              CustomButton(
-                width: double.infinity,
-                title: "Next",
-                onpress: () {
-                  ///==============Find out the Selected Role=============>>>
-                  final selectedRole = roles.firstWhere(
-                        (role) => role["isChecked"] == true,
-                    orElse: () => "null"
-                  );
-
-                  ///============Navigate or Show Toast Message============>>>
-                  if (selectedRole == "null") {
-                    // Show toast message if no role is selected
-                    ToastMessageHelper.showToastMessage("Please select your role!");
-                  } else {
-                    // Navigate based on the selected role
-                    switch (selectedRole["title"]) {
-                      case "User":
-                        context.pushNamed(AppRoutes.loginScreen);
-                        break;
-                      case "Manager":
-                        context.pushNamed(AppRoutes.managerSignUpScreen);
-                        break;
-                      case "Guest":
-                        context.pushNamed(AppRoutes.loginScreen);
-                        break;
-                      default:
-                        print("Unknown role selected");
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+            
+            
+                SizedBox(height: 120.h),
+            
+                ///====================Join Us ===================>>>
+            
+                CustomText(text: "Join Us", fontsize: 48.h, fontWeight: FontWeight.w900, bottom: 12.h),
+            
+            
+                ///=====================Select Your Role to Signup=============>>>
+            
+                CustomText(text: "Select Your Role to Signup", fontsize: 20.h, bottom: 12.h),
+            
+            
+            
+                ///====================All Role Lists===============>>>
+            
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: roles.length,
+                  itemBuilder: (context, index) {
+                    var role = roles[index];
+                    return   Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 12.h),
+                      child: ManagerCard(
+                        title: role["title"],
+                        subTitle: role["subTitle"],
+                        image: role["image"],
+                        isChecked: role["isChecked"],
+                        onChanged: (value) {
+            
+                          for (int i = 0; i < roles.length; i++) {
+                            roles[i]["isChecked"] = i == index;
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    );
+                  },
+                ),
+            
+                SizedBox(height: 80.h),
+            
+            
+                ///=================Next Btn=================>>>>
+            
+                CustomButton(
+                  width: double.infinity,
+                  title: "Next",
+                  onpress: () {
+                    ///==============Find out the Selected Role=============>>>
+                    final selectedRole = roles.firstWhere(
+                          (role) => role["isChecked"] == true,
+                      orElse: () => "null"
+                    );
+            
+                    ///============Navigate or Show Toast Message============>>>
+                    if (selectedRole == "null") {
+                      // Show toast message if no role is selected
+                      ToastMessageHelper.showToastMessage("Please select your role!");
+                    } else {
+                      // Navigate based on the selected role
+                      switch (selectedRole["title"]) {
+                        case "User":
+                          context.pushNamed(AppRoutes.loginScreen);
+                          break;
+                        case "Manager":
+                          context.pushNamed(AppRoutes.managerSignUpScreen);
+                          break;
+                        case "Guest":
+                          context.pushNamed(AppRoutes.loginScreen);
+                          break;
+                        default:
+                          print("Unknown role selected");
+                      }
                     }
-                  }
-                },
-              )
-
-
-            ],
+                  },
+                )
+            
+            
+              ],
+            ),
           ),
         ),
       ),

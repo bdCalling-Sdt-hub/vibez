@@ -45,6 +45,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/docFile.svg
   SvgGenImage get docFile => const SvgGenImage('assets/icons/docFile.svg');
 
+  /// File path: assets/icons/dress.svg
+  SvgGenImage get dress => const SvgGenImage('assets/icons/dress.svg');
+
   /// File path: assets/icons/drink_light.svg
   SvgGenImage get drinkLight =>
       const SvgGenImage('assets/icons/drink_light.svg');
@@ -126,6 +129,7 @@ class $AssetsIconsGen {
         changePass,
         checkRing,
         docFile,
+        dress,
         drinkLight,
         email,
         filter,

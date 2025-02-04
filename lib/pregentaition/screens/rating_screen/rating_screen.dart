@@ -13,12 +13,16 @@ class RatingScreen extends StatefulWidget {
 }
 
 class _RatingScreenState extends State<RatingScreen> {
+
+
+  double age = 20;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: CustomText(text: "Filter Your Vibe", fontsize: 20.h),
+        title: CustomText(text: "Rate the Vibe", fontsize: 20.h),
 
         actions: [
 
@@ -36,129 +40,112 @@ class _RatingScreenState extends State<RatingScreen> {
       body: Column(
         children: [
 
-          CustomCard(),
+
+
+
+          CustomText(text: "Rate Music",  fontsize: 16.h, fontWeight: FontWeight.w600),
+
+
+          _buildAgeRangeSection(),
+
+
 
         ],
       ),
     );
   }
-}
 
-
-
-
-
-class CustomCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  /// ======================================> Age Range Section ================================================>
+  Widget _buildAgeRangeSection() {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+          ),
+        ],
       ),
-      width: 350,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            'Age Range',
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 8.h),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage('https://via.placeholder.com/50'),
-              ),
-              SizedBox(width: 10),
-              Text(
-                'Kristin Watson',
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Spacer(),
-              Text(
-                'Avg. Ratings',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-              SizedBox(width: 6),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(12),
+              Expanded(
+                child: Slider(
+                  value: age,
+                  max: 100,
+                  min: 1,
+                  activeColor: AppColors.textColor808080,
+                  inactiveColor: Colors.grey[300],
+                  onChanged: (value) {
+                    if (value >= 18) {
+                      setState(() {
+                        age = value;
+                      });
+                    } else {
+                      // // Optional: Show a snack bar or error message to inform the user
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     content: Text('Age must be 18 or older'),
+                      //     duration: Duration(seconds: 2),
+                      //   ),
+                      // );
+                    }
+                  },
                 ),
-                child: Text(
-                  '4.6',
-                  style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                ' Age',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(3, (index) =>
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    'https://via.placeholder.com/100',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
+            children: [
+              Expanded(
+                child: Text(
+                  'Show people slightly out of my preferred range if I run out of profiles to see',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
                   ),
                 ),
-            ),
-          ),
-          SizedBox(height: 12),
-          Text(
-            'Feb 09, 2025',
-            style: TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+              Switch(
+                value: true,
+                activeColor: Colors.purple,
+                onChanged: (value) {},
+              ),
+            ],
           ),
         ],
       ),
     );
   }
+
 }
 
-class RatingSlider extends StatefulWidget {
-  @override
-  _RatingSliderState createState() => _RatingSliderState();
-}
 
-class _RatingSliderState extends State<RatingSlider> {
-  double _currentValue = 3.2;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Rate Food',
-          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 10),
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            activeTrackColor: Colors.blue,
-            inactiveTrackColor: Colors.grey,
-            thumbColor: Colors.white,
-            overlayColor: Colors.blue.withOpacity(0.2),
-            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0),
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
-            valueIndicatorColor: Colors.blue,
-            valueIndicatorTextStyle: TextStyle(color: Colors.white),
-          ),
-          child: Slider(
-            value: _currentValue,
-            min: 0,
-            max: 5,
-            divisions: 10,
-            label: _currentValue.toStringAsFixed(1),
-            onChanged: (double value) {
-              setState(() {
-                _currentValue = value;
-              });
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
+

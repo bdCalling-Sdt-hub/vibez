@@ -16,52 +16,55 @@ class OnboardingScreen extends StatelessWidget {
         ///===================Back Ground Image=================>>>
 
         child: Container(
+          height: MediaQuery.of(context).size.height,
           width: double.infinity,
           decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage('assets/images/onboardingImage.png'),
-                  fit: BoxFit.cover)),
-          child: Column(
-            children: [
-              SizedBox(height: 150.h),
-
-
-              ///===========Welcome to app ===========>>>
-
-              CustomText(text: "Welcome to", fontsize: 28.h, bottom: 8.h),
-
-
-              ///=================App Logo Icon===========>>>
-
-              Assets.images.applogo.image(),
-              SizedBox(height: 180.h),
-
-
-              ///===============Lets Vibe================>>>
-
-              CustomText(text: "Let’s Vibe", fontsize: 32.h, bottom: 12.h),
-
-
-              ///================Discover about app==========>>>
-
-              CustomText(
-                maxline: 2,
-                  text: "Discover the real vibe of events, from live videos to \n crowd reviews, before stepping out.",
-                  fontsize: 14.h,
-                  bottom: 12.h),
-        
-        
-              SizedBox(height: 180.h),
-
-
-              ///===================Next Button==============>>>
-
-              GestureDetector(
-                  onTap: (){
-                    context.pushNamed(AppRoutes.roleScreen);
-                  },
-                  child: Assets.icons.button.svg())
-            ],
+                  fit: BoxFit.fill)),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 140.h),
+            
+            
+                ///===========Welcome to app ===========>>>
+            
+                CustomText(text: "Welcome to", fontsize: 28.h, bottom: 8.h),
+            
+            
+                ///=================App Logo Icon===========>>>
+            
+                Assets.images.applogo.image(),
+                SizedBox(height: 180.h),
+            
+            
+                ///===============Lets Vibe================>>>
+            
+                CustomText(text: "Let’s Vibe", fontsize: 32.h, bottom: 12.h),
+            
+            
+                ///================Discover about app==========>>>
+            
+                CustomText(
+                  maxline: 2,
+                    text: "Discover the real vibe of events, from live videos to \n crowd reviews, before stepping out.",
+                    fontsize: 14.h,
+                    bottom: 12.h),
+            
+            
+                SizedBox(height: 130.h),
+            
+            
+                ///===================Next Button==============>>>
+            
+                GestureDetector(
+                    onTap: (){
+                      context.pushNamed(AppRoutes.roleScreen);
+                    },
+                    child: Assets.icons.button.svg())
+              ],
+            ),
           ),
         ),
       ),

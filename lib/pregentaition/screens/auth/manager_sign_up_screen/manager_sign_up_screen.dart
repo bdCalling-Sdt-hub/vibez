@@ -319,7 +319,7 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
 
                   Align(
                       alignment: Alignment.center,
-                      child: Assets.lottie.success.lottie(height: 80.h, width: 200.w, fit: BoxFit.cover)),
+                      child: Assets.lottie.success.lottie(height: 80.h, width: 80.w, fit: BoxFit.cover)),
 
                   CustomText(
                     text: "SUCCESS",
@@ -344,7 +344,9 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
                     bottom: 24.h,
                   ),
 
-                  CustomButton(title: "Go to App", onpress: (){})
+                  CustomButton(title: "Go to App", onpress: (){
+                    context.go(AppRoutes.managerHomeScreen);
+                  })
                 ],
               ),
               elevation: 12.0,
