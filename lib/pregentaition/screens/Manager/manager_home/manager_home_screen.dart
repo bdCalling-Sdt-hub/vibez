@@ -115,8 +115,7 @@ class ManagerHomeScreen extends StatelessWidget {
             CustomButton(
                 color: Colors.transparent,
                 titlecolor: AppColors.primaryColor,
-                title: "Edit Profile", onpress: (){
-
+                title: "Create Event", onpress: (){
                   context.pushNamed(AppRoutes.createEventScreen, extra: "Create Event");
 
             }),

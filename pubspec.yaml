@@ -36,6 +36,9 @@ dependencies:
   geolocator:
   permission_handler: ^11.3.1
   geocoding:
+  dotted_border:
+
+  multiselect: ^0.1.1
 
 dev_dependencies:
   build_runner: ^2.4.10
