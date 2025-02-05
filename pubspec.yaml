@@ -37,6 +37,7 @@ dependencies:
   permission_handler: ^11.3.1
   geocoding:
   dotted_border:
+  another_xlider: ^3.0.2
 
   multiselect: ^0.1.1
 

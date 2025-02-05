@@ -12,8 +12,8 @@ import 'package:seth/global/custom_assets/assets.gen.dart';
 
 import '../../../../core/widgets/custom_event_card.dart';
 
-class UserHomeScreen extends StatelessWidget {
-  UserHomeScreen({super.key});
+class AllEventScreen extends StatelessWidget {
+  AllEventScreen({super.key});
 
   final TextEditingController searchCtrl = TextEditingController();
 
@@ -33,31 +33,9 @@ class UserHomeScreen extends StatelessWidget {
       ///=====================App Bar ==================>>>>
       appBar: AppBar(
         scrolledUnderElevation: 0,
+        centerTitle: true,
         title: CustomText(
-            textAlign: TextAlign.start,
-            text: "V I B E Z",
-            fontWeight: FontWeight.w900,
-            fontsize: 17.h),
-        actions: [
-          GestureDetector(
-              onTap: () {
-                context.pushNamed(AppRoutes.notificationScreen);
-              },
-              child: Assets.icons.notification.svg()),
-          SizedBox(width: 12.w),
-          GestureDetector(
-            onTap: (){
-              context.pushNamed(AppRoutes.settingScreen);
-            },
-            child: CustomNetworkImage(
-              boxShape: BoxShape.circle,
-                imageUrl:
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2_gZLg3wkjFxo7S_sF_rpbkbGv00qG9Y7A&s",
-                height: 26.h,
-                width: 26.w),
-          ),
-          SizedBox(width: 16.w)
-        ],
+            text: "All Events", fontWeight: FontWeight.w600, fontsize: 20.h),
       ),
 
       body: Padding(
@@ -68,17 +46,17 @@ class UserHomeScreen extends StatelessWidget {
             children: [
               ///========================Search Box====================>>>
               CustomTextField(
-                  borderRadio: 25,
-                  hintText: "Search",
-                  validator: (value) {},
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Assets.icons.searchLight.svg(height: 20.h),
-                  ),
-                  suffixIcon: const Icon(Icons.filter_alt_outlined),
-                  controller: searchCtrl,
+                borderRadio: 25,
+                hintText: "Search",
+                validator: (value) {},
+                prefixIcon: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Assets.icons.searchLight.svg(height: 20.h),
+                ),
+                suffixIcon: const Icon(Icons.filter_alt_outlined),
+                controller: searchCtrl,
 
-               ),
+              ),
 
               CustomText(
                   top: 24.h,
@@ -123,11 +101,7 @@ class UserHomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: GestureDetector(
-                          onTap: () {
-                            context.pushNamed(AppRoutes.eventDetails);
-                          },
-                          child: const CustomEventCard()),
+                      child: const CustomEventCard(),
                     );
                   }),
 
@@ -152,8 +126,8 @@ class UserHomeScreen extends StatelessWidget {
                     },
                     child: Container(
                       decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white
+                          shape: BoxShape.circle,
+                          color: Colors.white
                       ),
                       child: Padding(
                         padding:  EdgeInsets.all(6.r),
@@ -169,12 +143,12 @@ class UserHomeScreen extends StatelessWidget {
                   ///==============View All button===================>>>
 
                   CustomButton(
-                    height: 32.h,
+                      height: 32.h,
                       width: 100.w,
                       titlecolor: AppColors.primaryColor,
                       color: Colors.transparent,
                       title: "View All", onpress: (){
-                      // context.pushNamed(AppRoutes.eventsInYourAreScreen);
+                    // context.pushNamed(AppRoutes.eventsInYourAreScreen);
                   })
                 ],
               ),
@@ -191,11 +165,7 @@ class UserHomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: GestureDetector(
-                          onTap: () {
-                            context.pushNamed(AppRoutes.eventDetails);
-                          },
-                          child: const CustomEventCard()),
+                      child: const CustomEventCard(),
                     );
                   }),
 

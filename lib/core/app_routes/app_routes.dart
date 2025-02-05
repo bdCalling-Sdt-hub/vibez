@@ -2,6 +2,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:seth/pregentaition/screens/profile/profile_screen.dart';
 import 'package:seth/pregentaition/screens/rating_screen/rating_screen.dart';
+import '../../pregentaition/screens/Manager/all_events/all_event_screen.dart';
 import '../../pregentaition/screens/Manager/create_event/create_event_screen.dart';
 import '../../pregentaition/screens/Manager/events/manager_events_screen.dart';
 import '../../pregentaition/screens/Manager/manager_home/manager_home_screen.dart';
@@ -18,6 +19,7 @@ import '../../pregentaition/screens/book_mard_favarite_screen/book_mark_favarite
 import '../../pregentaition/screens/book_mard_favarite_screen/book_mark_screen.dart';
 import '../../pregentaition/screens/event_details/event_details.dart';
 import '../../pregentaition/screens/filter/filter_screen.dart';
+import '../../pregentaition/screens/notification/notification_screen.dart';
 import '../../pregentaition/screens/privacy_all/privacy_all_screen.dart';
 import '../../pregentaition/screens/profile/edit_profile_screen.dart';
 import '../../pregentaition/screens/setting/setting_screen.dart';
@@ -54,6 +56,8 @@ class AppRoutes {
   static const String managerHomeScreen = "/ManagerHomeScreen";
   static const String managerEventsScreen = "/ManagerEventsScreen";
   static const String createEventScreen = "/CreateEventScreen";
+  static const String allEventScreen = "/AllEventScreen";
+  static const String notificationScreen = "/NotificationScreen";
 
 
   static final GoRouter goRouter = GoRouter(
@@ -311,6 +315,31 @@ class AppRoutes {
             return CreateEventScreen(title: title);
           },
         ),
+
+
+
+        ///=========Manager Events Screen========>>
+
+        GoRoute(
+          path: allEventScreen,
+          name: allEventScreen,
+          builder: (context, state) {
+            return AllEventScreen();
+          },
+        ),
+
+
+
+        ///=========Manager Events Screen========>>
+
+        GoRoute(
+          path: notificationScreen,
+          name: notificationScreen,
+          builder: (context, state) {
+            return NotificationScreen();
+          },
+        ),
+
 
 
 

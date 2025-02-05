@@ -176,8 +176,12 @@ class $AssetsImagesGen {
   AssetGenImage get onboardingImage =>
       const AssetGenImage('assets/images/onboardingImage.png');
 
+  /// File path: assets/images/ratingImage.png
+  AssetGenImage get ratingImage =>
+      const AssetGenImage('assets/images/ratingImage.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [applogo, onboardingImage];
+  List<AssetGenImage> get values => [applogo, onboardingImage, ratingImage];
 }
 
 class $AssetsLottieGen {
@@ -187,16 +191,12 @@ class $AssetsLottieGen {
   LottieGenImage get buttonLoading =>
       const LottieGenImage('assets/lottie/buttonLoading.json');
 
-  /// File path: assets/lottie/loader_progress.json
-  LottieGenImage get loaderProgress =>
-      const LottieGenImage('assets/lottie/loader_progress.json');
-
   /// File path: assets/lottie/success.json
   LottieGenImage get success =>
       const LottieGenImage('assets/lottie/success.json');
 
   /// List of all assets
-  List<LottieGenImage> get values => [buttonLoading, loaderProgress, success];
+  List<LottieGenImage> get values => [buttonLoading, success];
 }
 
 class Assets {
