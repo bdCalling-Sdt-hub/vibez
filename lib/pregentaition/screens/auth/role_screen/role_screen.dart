@@ -118,7 +118,8 @@ class _RoleScreenState extends State<RoleScreen> {
                           context.pushNamed(AppRoutes.managerSignUpScreen);
                           break;
                         case "Guest":
-                          context.pushNamed(AppRoutes.loginScreen);
+                          print("=================Guest");
+                          context.go(AppRoutes.userHomeScreen);
                           break;
                         default:
                           print("Unknown role selected");

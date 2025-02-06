@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
+import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
@@ -50,6 +51,7 @@ class OnboardingScreen extends StatelessWidget {
                   maxline: 2,
                     text: "Discover the real vibe of events, from live videos to \n crowd reviews, before stepping out.",
                     fontsize: 14.h,
+                    color: AppColors.textColor808080,
                     bottom: 12.h),
             
             

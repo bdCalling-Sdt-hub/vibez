@@ -212,7 +212,7 @@ class SettingScreen extends StatelessWidget {
                                               title: 'Yes',
                                               fontSize: 16.h,
                                               onpress: () async {
-
+                                                context.go(AppRoutes.roleScreen);
                                               })),
                                     ],
                                   ),

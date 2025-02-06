@@ -12,8 +12,8 @@ import 'package:seth/global/custom_assets/assets.gen.dart';
 
 import '../../../../core/widgets/custom_event_card.dart';
 
-class AllEventScreen extends StatelessWidget {
-  AllEventScreen({super.key});
+class ManagerAllEventScreen extends StatelessWidget {
+  ManagerAllEventScreen({super.key});
 
   final TextEditingController searchCtrl = TextEditingController();
 

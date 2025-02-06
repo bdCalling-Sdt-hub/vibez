@@ -20,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
   final TextEditingController emailCtrl = TextEditingController();
+  final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController passWordCtrl = TextEditingController();
   final TextEditingController phoneNumberCtrl = TextEditingController();
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
@@ -59,6 +60,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: "Join the community and find your event vibe!",
                   color: AppColors.textColor808080,
                 ),
+
+
+
+                ///==============name Field============<>>>>
+
+                CustomTextFieldWithLavel(
+                  controller: nameCtrl,
+                  hinText: "Enter your name",
+                  laval: "Name",
+                ),
+
 
 
 
@@ -135,9 +147,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 CustomButton(
                     width: double.infinity,
-                    title: "Login", onpress: (){
+                    title: "Sign Up", onpress: (){
                   if(fromKey.currentState!.validate()){
-                    print("log in");
+                   context.pushNamed(AppRoutes.otpScreen, extra: "Sign Up");
                   }
                 }),
 
@@ -166,7 +178,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
+
+
+                SizedBox(height: 50.h)
 
               ],
             ),

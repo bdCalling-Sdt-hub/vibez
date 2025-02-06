@@ -29,7 +29,7 @@ class BookMarkFavariteScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return  Padding(
                     padding:  EdgeInsets.only(top: 20.h),
-                    child: CustomEventCard(
+                    child: const CustomEventCard(
                       isFavouriteVisible: true,
                     ),
                   );

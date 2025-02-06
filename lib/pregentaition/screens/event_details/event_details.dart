@@ -7,6 +7,7 @@ import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_network_image.dart';
 
 import '../../../core/widgets/custom_text.dart';
+import 'inner_widgets/custom_comment_card.dart';
 
 class EventDetails extends StatelessWidget {
   const EventDetails({super.key});
@@ -100,6 +101,7 @@ class EventDetails extends StatelessWidget {
 
 
 
+            SizedBox(height: 20.h),
 
             Align(
               alignment: Alignment.centerLeft,
@@ -187,8 +189,7 @@ class EventDetails extends StatelessWidget {
                               customVibez(rate: "4.3", vibezName: "Drinks"),
                               customVibez(rate: "4.3", vibezName: "Price"),
                               customVibez(rate: "4.3", vibezName: "Atmosphere"),
-                              customVibez(
-                                  rate: "4.3", vibezName: "Breathability"),
+                              customVibez(rate: "4.3", vibezName: "Breathability"),
                             ],
                           ),
                         ),
@@ -337,89 +338,6 @@ class EventDetails extends StatelessWidget {
             ),
             child: CustomText(text: "$value", color: Colors.white)),
       ],
-    );
-  }
-}
-
-class CustomCommentCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding:  EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      width: 393.w,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-
-              CustomNetworkImage(
-                  imageUrl: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?cs=srgb&dl=pexels-sebastian-ervi-866902-1763075.jpg&fm=jpg",
-                  height: 32.h,
-                  width: 32.w,
-                 boxShape: BoxShape.circle,
-              ),
-
-              SizedBox(width: 10.w),
-
-
-              CustomText(text: "Kristin Watson", fontsize: 12),
-
-             const Spacer(),
-
-              CustomText(text: "Avg. Ratings", fontsize: 10.h, color: AppColors.textColor808080),
-
-              SizedBox(width: 6.w),
-
-
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(4.r),
-                ),
-
-
-                child: CustomText(
-                  text: "5.2",
-                )
-
-              ),
-            ],
-          ),
-          SizedBox(height: 12.h),
-
-          Align(
-            alignment: Alignment.centerRight,
-            child: SizedBox(
-              width: 277.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(3, (index) => ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: CustomNetworkImage(
-                          imageUrl: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?cs=srgb&dl=pexels-sebastian-ervi-866902-1763075.jpg&fm=jpg",
-                          height: 72.h,
-                          width: 72.w)
-                      ),
-                ),
-              ),
-            ),
-          ),
-
-
-          SizedBox(height: 12.h),
-
-          Align(
-              alignment: Alignment.centerRight,
-              child: CustomText(text: "Feb 09, 2025",fontsize: 12.h, color: AppColors.textColor808080))
-
-        ],
-      ),
     );
   }
 }

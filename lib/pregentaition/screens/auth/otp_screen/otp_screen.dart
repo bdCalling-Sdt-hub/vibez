@@ -8,10 +8,11 @@ import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
-import '../log_in/log_in_screen.dart';
 
 class OtpScreen extends StatelessWidget {
-  OtpScreen({super.key});
+
+  final String screenType;
+  OtpScreen({super.key, required this.screenType});
 
   final TextEditingController otpCtrl = TextEditingController();
 
@@ -36,7 +37,7 @@ class OtpScreen extends StatelessWidget {
               ///================Verify Email=============>>>
 
               CustomText(
-                text: "Verify Email",
+                text: screenType == "Sign Up" ? "Verify Email" : "Forgot Password",
                 top: 24.h,
                 fontsize: 28.h,
                 fontWeight: FontWeight.w600,
@@ -46,7 +47,7 @@ class OtpScreen extends StatelessWidget {
               CustomText(
                 top: 4.h,
                 bottom: 24.h,
-                text: "Please check email and enter the pin",
+                text:  screenType == "Sign Up" ? "Please check email and enter the pin" : "Enter OTP",
                 color: AppColors.textColor808080,
               ),
 
@@ -62,8 +63,12 @@ class OtpScreen extends StatelessWidget {
 
               CustomButton(
                   width: double.infinity,
-                  title: "Send Code", onpress: (){
-                  context.pushNamed(AppRoutes.setPasswordScreen);
+                  title: screenType == "Sign Up" ? "Verify" : "Change Password", onpress: (){
+                    if(screenType == "Sign Up"){
+                      context.pushNamed(AppRoutes.loginScreen);
+                    }else{
+                      context.pushNamed(AppRoutes.setPasswordScreen);
+                    }
               }),
 
 

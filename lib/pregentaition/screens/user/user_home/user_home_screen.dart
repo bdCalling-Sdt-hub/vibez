@@ -67,18 +67,28 @@ class UserHomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ///========================Search Box====================>>>
-              CustomTextField(
-                  borderRadio: 25,
-                  hintText: "Search",
-                  validator: (value) {},
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Assets.icons.searchLight.svg(height: 20.h),
-                  ),
-                  suffixIcon: const Icon(Icons.filter_alt_outlined),
-                  controller: searchCtrl,
-
-               ),
+              SizedBox(
+                height: 45.h,
+                child: CustomTextField(
+                    borderRadio: 25,
+                    hintText: "Search",
+                    validator: (value) {},
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Assets.icons.searchLight.svg(height: 20.h),
+                    ),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        context.pushNamed(AppRoutes.allEventScreen, extra: "Search Results");
+                      },
+                      child: Padding(
+                        padding:  EdgeInsets.all(10.r),
+                        child: Assets.icons.filter.svg(),
+                      ),
+                    ),
+                    controller: searchCtrl,
+                 ),
+              ),
 
               CustomText(
                   top: 24.h,
@@ -174,7 +184,7 @@ class UserHomeScreen extends StatelessWidget {
                       titlecolor: AppColors.primaryColor,
                       color: Colors.transparent,
                       title: "View All", onpress: (){
-                      // context.pushNamed(AppRoutes.eventsInYourAreScreen);
+                    context.pushNamed(AppRoutes.allEventScreen, extra: "Events in Your Area");
                   })
                 ],
               ),

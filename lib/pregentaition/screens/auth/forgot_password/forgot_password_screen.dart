@@ -74,7 +74,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     width: double.infinity,
                     title: "Send Code", onpress: (){
                   // if(_logKey.currentState!.validate()){
-                  context.pushNamed(AppRoutes.otpScreen);
+                  context.pushNamed(AppRoutes.otpScreen, extra: "Forgot Password");
                   // }
                 }),
 

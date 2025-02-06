@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
+import '../../../../core/utils/app_constants.dart';
 import '../log_in/log_in_screen.dart';
 
 class SetPasswordScreen extends StatelessWidget {
@@ -52,29 +55,47 @@ class SetPasswordScreen extends StatelessWidget {
                   isPassword: true,
                   hinText: "Enter new password",
                   laval: "New Password",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else if (value.length < 8 ||
+                        !AppConstants.validatePassword(value)) {
+                      return "Password: 8 characters min, letters & digits \nrequired";
+                    }
+                    return null;
+                  },
                 ),
 
 
 
-                ///==============Enter your new password againr===========<>>>>
+                ///==============Enter your new password again===========<>>>>
 
                 CustomTextFieldWithLavel(
                   controller: confirmCtrl,
+                  isPassword: true,
                   hinText: "Enter your new password again",
                   laval: "Confirm New Password",
-                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else if (value != passWordCtrl.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
                 ),
 
 
 
+                SizedBox(height: 160.h),
 
                 ///=====================Log in Button================>>>
 
                 CustomButton(
                     width: double.infinity,
-                    title: "Login", onpress: (){
+                    title: "Set Password", onpress: (){
                   if(fromKey.currentState!.validate()){
-                    print("log in");
+                    context.pushNamed(AppRoutes.loginScreen);
                   }
                 }),
 

@@ -2,10 +2,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:seth/pregentaition/screens/profile/profile_screen.dart';
 import 'package:seth/pregentaition/screens/rating_screen/rating_screen.dart';
-import '../../pregentaition/screens/Manager/all_events/all_event_screen.dart';
 import '../../pregentaition/screens/Manager/create_event/create_event_screen.dart';
 import '../../pregentaition/screens/Manager/events/manager_events_screen.dart';
+import '../../pregentaition/screens/Manager/manager_all_events/manager_all_event_screen.dart';
 import '../../pregentaition/screens/Manager/manager_home/manager_home_screen.dart';
+import '../../pregentaition/screens/all_event/all_event_screen.dart';
 import '../../pregentaition/screens/auth/change_password/change_password_screen.dart';
 import '../../pregentaition/screens/auth/forgot_password/forgot_password_screen.dart';
 import '../../pregentaition/screens/auth/log_in/log_in_screen.dart';
@@ -56,8 +57,10 @@ class AppRoutes {
   static const String managerHomeScreen = "/ManagerHomeScreen";
   static const String managerEventsScreen = "/ManagerEventsScreen";
   static const String createEventScreen = "/CreateEventScreen";
-  static const String allEventScreen = "/AllEventScreen";
+  static const String managerAllEventScreen = "/ManagerAllEventScreen";
   static const String notificationScreen = "/NotificationScreen";
+  static const String allEventScreen = "/AllEventScreen";
+
 
 
   static final GoRouter goRouter = GoRouter(
@@ -135,7 +138,10 @@ class AppRoutes {
         GoRoute(
           path: otpScreen,
           name: otpScreen,
-          builder: (context, state) =>  OtpScreen(),
+          builder: (context, state) {
+            String screenType = state.extra as String;
+            return OtpScreen(screenType: screenType);
+          }  ,
         ),
 
 
@@ -321,10 +327,10 @@ class AppRoutes {
         ///=========Manager Events Screen========>>
 
         GoRoute(
-          path: allEventScreen,
-          name: allEventScreen,
+          path: managerAllEventScreen,
+          name: managerAllEventScreen,
           builder: (context, state) {
-            return AllEventScreen();
+            return ManagerAllEventScreen();
           },
         ),
 
@@ -337,6 +343,20 @@ class AppRoutes {
           name: notificationScreen,
           builder: (context, state) {
             return NotificationScreen();
+          },
+        ),
+
+
+
+
+        ///=========Manager Events Screen========>>
+
+        GoRoute(
+          path: allEventScreen,
+          name: allEventScreen,
+          builder: (context, state) {
+            String category = state.extra as String;
+            return AllEventScreen(category: category);
           },
         ),
 

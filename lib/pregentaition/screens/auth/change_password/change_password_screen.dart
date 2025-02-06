@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
+import '../../../../core/utils/app_constants.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../log_in/log_in_screen.dart';
 
@@ -48,7 +49,17 @@ class ChangePasswordScreen extends StatelessWidget {
                   hinText: "Enter you new password",
                   isPassword: true,
                   leadingIcon: Assets.icons.password.svg(),
-                  controller: newPassCtrl),
+                  controller: newPassCtrl,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  } else if (value.length < 8 ||
+                      !AppConstants.validatePassword(value)) {
+                    return "Password: 8 characters min, letters & digits \nrequired";
+                  }
+                  return null;
+                },
+              ),
           
           
           
@@ -62,7 +73,17 @@ class ChangePasswordScreen extends StatelessWidget {
                   hinText: "Enter you Confirm password",
                   isPassword: true,
                   leadingIcon: Assets.icons.password.svg(),
-                  controller: confirmPassCtrl),
+                  controller: confirmPassCtrl,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  } else if (value != newPassCtrl.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+
+              ),
           
           
           
