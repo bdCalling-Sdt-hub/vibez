@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:seth/controllers/auth_controller.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
+import 'package:seth/helpers/toast_message_helper.dart';
 
 import '../log_in/log_in_screen.dart';
 
@@ -23,7 +26,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController passWordCtrl = TextEditingController();
   final TextEditingController phoneNumberCtrl = TextEditingController();
+  final TextEditingController confirmPassCtrl = TextEditingController();
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+  AuthController authController = Get.find<AuthController>();
   bool isCheck = false;
 
   @override
@@ -107,6 +112,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
 
+                ///================Confirm password ================>>>
+
+                CustomTextFieldWithLavel(
+                  laval: "Confirm password",
+                  hinText: "Enter you Confirm password",
+                  isPassword: true,
+                  controller: confirmPassCtrl,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else if (value != passWordCtrl.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
+
+                ),
+
+
+
+
 
                 ///================Forget Password============>>>>
 
@@ -149,7 +175,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     title: "Sign Up", onpress: (){
                   if(fromKey.currentState!.validate()){
-                   context.pushNamed(AppRoutes.otpScreen, extra: "Sign Up");
+                    if(isCheck){
+                      authController.handleSignUp(
+                          context: context,
+                          name: nameCtrl.text,
+                          email: emailCtrl.text,
+                          phone: phoneNumberCtrl.text,
+                          password: passWordCtrl.text.trim()
+                      );
+                    }else{
+                      ToastMessageHelper.showToastMessage("Please Check term and conditions!");
+                    }
                   }
                 }),
 

@@ -128,7 +128,10 @@ class AppRoutes {
         GoRoute(
           path: forgotPasswordScreen,
           name: forgotPasswordScreen,
-          builder: (context, state) =>  ForgotPasswordScreen(),
+          builder: (context, state) {
+            String email = state.extra as String;
+            return ForgotPasswordScreen(email: email);
+          },
         ),
 
 

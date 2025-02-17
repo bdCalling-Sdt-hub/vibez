@@ -3,9 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
+import 'package:seth/core/utils/app_constants.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
+import 'package:seth/helpers/prefs_helper.dart';
 import 'package:seth/helpers/toast_message_helper.dart';
 
 class RoleScreen extends StatefulWidget {
@@ -113,13 +115,16 @@ class _RoleScreenState extends State<RoleScreen> {
                       switch (selectedRole["title"]) {
                         case "User":
                           context.pushNamed(AppRoutes.loginScreen);
+                          PrefsHelper.setString(AppConstants.role, "user");
                           break;
                         case "Manager":
                           context.pushNamed(AppRoutes.managerSignUpScreen);
+                          PrefsHelper.setString(AppConstants.role, "manager");
                           break;
                         case "Guest":
                           print("=================Guest");
                           context.go(AppRoutes.userHomeScreen);
+                          PrefsHelper.setString(AppConstants.role, "guest");
                           break;
                         default:
                           print("Unknown role selected");

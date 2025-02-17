@@ -163,6 +163,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
 
               CustomTextFieldWithLavel(
+                maxLine: 5,
                 controller: describeYourEventCtrl,
                 hinText: "Describe your event",
                 laval: "Enter Event Details",
@@ -207,15 +208,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               ),
 
 
-
-
-              CustomTextFieldWithLavel(
-                controller: musicTypeCtrl,
-                hinText: "Inpsdgtsdg link",
-                laval: "Ticketsdgsdg Lsdggfsdink",
-                leadingIcon: Assets.icons.link.svg(color: AppColors.textColor808080),
-
-              ),
 
 
               CustomText(text: "Filters", fontsize: 16.h, fontWeight: FontWeight.w600, top: 20.h),
@@ -387,7 +379,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               SizedBox(height: 24.h),
 
 
-              CustomButton(title: "Edit Profile", onpress: (){}),
+              CustomButton(title: "Create Event", onpress: (){
+                ToastMessageHelper.showToastMessage("Event Created Successful");
+              }),
 
 
               SizedBox(height: 100.h)

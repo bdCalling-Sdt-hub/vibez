@@ -9,11 +9,26 @@ import 'package:seth/global/custom_assets/assets.gen.dart';
 
 import '../log_in/log_in_screen.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  ForgotPasswordScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  final String email;
+  ForgotPasswordScreen({super.key, required this.email});
 
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController emailCtrl = TextEditingController();
+
   final GlobalKey<FormState> _logKey = GlobalKey<FormState>();
+
+
+  @override
+  void initState() {
+    emailCtrl.text == widget.email;
+    setState(() {});
+    super.initState();
+  }
 
 
   @override
@@ -73,9 +88,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                 CustomButton(
                     width: double.infinity,
                     title: "Send Code", onpress: (){
-                  // if(_logKey.currentState!.validate()){
+                  if(_logKey.currentState!.validate()){
                   context.pushNamed(AppRoutes.otpScreen, extra: "Forgot Password");
-                  // }
+                  }
                 }),
 
 
