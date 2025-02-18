@@ -10,4 +10,5 @@ class ApiConstants{
   static const String setPasswordEndPoint = "/auth/register";
   static const String resendOtpEndPoint = "/auth/resend-otp";
   static const String changePassword = "/auth/register";
+  static const String updateProfile = "/auth/profile-update";
 }

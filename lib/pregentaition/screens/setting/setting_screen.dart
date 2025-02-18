@@ -35,7 +35,7 @@ class _SettingScreenState extends State<SettingScreen> {
   name = await PrefsHelper.getString(AppConstants.name);
   email = await PrefsHelper.getString(AppConstants.email);
   image = await PrefsHelper.getString(AppConstants.image);
-  image = await PrefsHelper.getString(AppConstants.phone);
+  phone = await PrefsHelper.getString(AppConstants.phone);
   setState(() {});
   }
 
@@ -98,9 +98,12 @@ class _SettingScreenState extends State<SettingScreen> {
             GestureDetector(
               onTap: (){
                 context.pushNamed(AppRoutes.profileScreen, extra: {
-                  "name" : name,
-                  "email" : email,
-                  "phone" : phone
+                  "name" : name ?? "xyz",
+                  "email" : email ?? "xyz@gmail.com",
+                  "phone" : phone ?? "01XXXXXXXXXXX",
+                  "image" : (image != null && image!.isNotEmpty)
+                      ? "${ApiConstants.imageBaseUrl}/$image"
+                      : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png"
                 });
               },
               child:  _customTile(

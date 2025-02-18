@@ -107,7 +107,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: Colors.transparent,
                 titlecolor: AppColors.primaryColor,
                 title: "Edit Profile", onpress: (){
-                  context.pushNamed(AppRoutes.editProfileScreen);
+                  context.pushNamed(AppRoutes.editProfileScreen, extra: {
+                    "name" : nameCtrl.text,
+                    "email" : emailCtrl.text,
+                    "phone" : phoneNoCtrl.text,
+                    "image" : widget.profileData["image"].toString()
+                  });
             })
 
 

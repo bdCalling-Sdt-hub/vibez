@@ -134,7 +134,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
       await PrefsHelper.setString(AppConstants.email, email);
       await PrefsHelper.setString(AppConstants.name, data['name']);
-      await PrefsHelper.setString(AppConstants.image, data['image']["publicFileURL"]);
+      await PrefsHelper.setString(AppConstants.image, data['image']);
 
       await PrefsHelper.setString(AppConstants.userId, data['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);

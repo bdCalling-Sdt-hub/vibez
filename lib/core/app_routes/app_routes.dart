@@ -252,7 +252,8 @@ class AppRoutes {
           path: editProfileScreen,
           name: editProfileScreen,
           builder: (context, state) {
-            return EditProfileScreen();
+            final Map<String, dynamic> profileData = state.extra as Map<String, dynamic>? ?? {};
+            return EditProfileScreen(profileData: profileData);
           },
         ),
 
