@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
+import '../../../../controllers/auth_controller.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../log_in/log_in_screen.dart';
@@ -12,6 +14,7 @@ class ChangePasswordScreen extends StatelessWidget {
   final TextEditingController oldPassCtrl = TextEditingController();
   final TextEditingController newPassCtrl = TextEditingController();
   final TextEditingController confirmPassCtrl = TextEditingController();
+   AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +94,9 @@ class ChangePasswordScreen extends StatelessWidget {
               ///===================Button====================>>>
           
               SizedBox(height: 70.h),
-              CustomButton(title: "Done", onpress: (){})
+              CustomButton(title: "Done", onpress: (){
+                authController.changePassword(oldPassCtrl.text, newPassCtrl.text);
+              })
           
             ],
           ),

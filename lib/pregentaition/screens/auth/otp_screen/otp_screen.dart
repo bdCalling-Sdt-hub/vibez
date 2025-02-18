@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
-import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
+import '../../../../controllers/auth_controller.dart';
+
 
 class OtpScreen extends StatelessWidget {
-
   final String screenType;
   OtpScreen({super.key, required this.screenType});
 
   final TextEditingController otpCtrl = TextEditingController();
-
-
+  AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+      ),
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 16.w),
         child: SingleChildScrollView(
           child: Column(
             children: [
 
-              SizedBox(height: 131.h),
+              SizedBox(height: 70.h),
 
               ///==================App Logo ===============>>>
 
@@ -37,7 +39,7 @@ class OtpScreen extends StatelessWidget {
               ///================Verify Email=============>>>
 
               CustomText(
-                text: screenType == "Sign Up" ? "Verify Email" : "Forgot Password",
+                text: screenType == "Sign Up" || screenType == "user" || screenType == "manager" ? "Verify Email" : "Forgot Password",
                 top: 24.h,
                 fontsize: 28.h,
                 fontWeight: FontWeight.w600,
@@ -47,9 +49,10 @@ class OtpScreen extends StatelessWidget {
               CustomText(
                 top: 4.h,
                 bottom: 24.h,
-                text:  screenType == "Sign Up" ? "Please check email and enter the pin" : "Enter OTP",
+                text:  screenType == "Sign Up" || screenType == "user" || screenType == "manager" ? "Please check email and enter the pin" : "Enter OTP",
                 color: AppColors.textColor808080,
               ),
+
 
 
 
@@ -57,17 +60,44 @@ class OtpScreen extends StatelessWidget {
 
               CustomPinCodeTextField(textEditingController: otpCtrl),
 
-              SizedBox(height: 250.h),
+              SizedBox(height: 20.h),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Obx(() => GestureDetector(
+                  onTap: authController.isCountingDown.value
+                      ? null
+                      : () {
+                    authController.startCountdown();
+                    authController.reSendOtp();
+                  },
+                  child: CustomText(
+                    text: authController.isCountingDown.value
+                        ? 'Resend in ${authController.countdown.value}s'
+                        : 'Resend code',
+                    color: authController.isCountingDown.value
+                        ? Colors.red
+                        : AppColors.primaryColor,
+                    fontsize: 12.sp,
+                  ),
+                )),
+              ),
+
+
+              SizedBox(height: 200.h),
 
               ///=====================Sign UP Button================>>>
 
               CustomButton(
                   width: double.infinity,
-                  title: screenType == "Sign Up" ? "Verify" : "Change Password", onpress: (){
+                  title: screenType == "Sign Up" || screenType == "user" || screenType == "manager" ? "Verify" : "Change Password", onpress: (){
                     if(screenType == "Sign Up"){
-                      context.pushNamed(AppRoutes.loginScreen);
-                    }else{
-                      context.pushNamed(AppRoutes.setPasswordScreen);
+                      authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
+                    }else if(screenType == "user"){
+                      authController.verfyEmail(otpCtrl.text, screenType: "user", context: context);
+                    }else if(screenType == "manager"){
+                      authController.verfyEmail(otpCtrl.text, screenType: "manager", context: context);
+                    } else{
+                      authController.verfyEmail(otpCtrl.text, screenType: "forgot", context: context);
                     }
               }),
 

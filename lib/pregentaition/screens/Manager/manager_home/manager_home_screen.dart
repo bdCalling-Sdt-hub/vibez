@@ -85,7 +85,7 @@ class ManagerHomeScreen extends StatelessWidget {
 
                 GestureDetector(
                   onTap: (){
-                    context.pushNamed(AppRoutes.allEventScreen);
+                    context.pushNamed(AppRoutes.managerAllEventScreen);
                   },
                   child: Container(
                     decoration: BoxDecoration(

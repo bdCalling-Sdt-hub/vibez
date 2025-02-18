@@ -3,8 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'app_themes/app_themes.dart';
 import 'core/app_routes/app_routes.dart';
+import 'helpers/dependancy_injaction.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  DependencyInjection di = DependencyInjection();
+  di.dependencies();
   runApp(const MyApp());
 }
 

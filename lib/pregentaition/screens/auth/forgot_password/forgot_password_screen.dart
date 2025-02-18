@@ -1,24 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:seth/core/app_routes/app_routes.dart';
+import 'package:get/get.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
+import '../../../../controllers/auth_controller.dart';
 import '../log_in/log_in_screen.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  ForgotPasswordScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  final String email;
+  ForgotPasswordScreen({super.key, required this.email});
 
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController emailCtrl = TextEditingController();
+  AuthController authController = Get.find<AuthController>();
+
   final GlobalKey<FormState> _logKey = GlobalKey<FormState>();
+
+
+  @override
+  void initState() {
+    print("====================${widget.email}");
+    setState(() {
+      emailCtrl.text = widget.email;
+    });
+    super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+      ),
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 16.w),
         child: SingleChildScrollView(
@@ -27,7 +48,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             child: Column(
               children: [
 
-                SizedBox(height: 131.h),
+                SizedBox(height: 70.h),
 
                 ///==================App Logo ===============>>>
 
@@ -64,7 +85,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
 
 
-                SizedBox(height: 300.h),
+                SizedBox(height: 250.h),
 
 
 
@@ -73,9 +94,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                 CustomButton(
                     width: double.infinity,
                     title: "Send Code", onpress: (){
-                  // if(_logKey.currentState!.validate()){
-                  context.pushNamed(AppRoutes.otpScreen, extra: "Forgot Password");
-                  // }
+                  if(_logKey.currentState!.validate()){
+                    authController.handleForgot(emailCtrl.text, "forgot", context: context);
+                  }
                 }),
 
 

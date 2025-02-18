@@ -128,7 +128,10 @@ class AppRoutes {
         GoRoute(
           path: forgotPasswordScreen,
           name: forgotPasswordScreen,
-          builder: (context, state) =>  ForgotPasswordScreen(),
+          builder: (context, state) {
+            String email = state.extra as String;
+            return ForgotPasswordScreen(email: email);
+          },
         ),
 
 
@@ -178,7 +181,10 @@ class AppRoutes {
         GoRoute(
           path: profileScreen,
           name: profileScreen,
-          builder: (context, state) =>  ProfileScreen(),
+          builder: (context, state) {
+            final Map<String, dynamic> profileData = state.extra as Map<String, dynamic>? ?? {};
+            return ProfileScreen(profileData: profileData);
+          },
         ),
 
 

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
+import '../../../../controllers/auth_controller.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../log_in/log_in_screen.dart';
 
@@ -18,6 +20,7 @@ class SetPasswordScreen extends StatelessWidget {
   final TextEditingController passWordCtrl = TextEditingController();
   final TextEditingController confirmCtrl = TextEditingController();
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+  AuthController authController = Get.find<AuthController>();
 
 
   @override
@@ -95,7 +98,8 @@ class SetPasswordScreen extends StatelessWidget {
                     width: double.infinity,
                     title: "Set Password", onpress: (){
                   if(fromKey.currentState!.validate()){
-                    context.pushNamed(AppRoutes.loginScreen);
+                    authController.setPassword(passWordCtrl.text, context: context);
+
                   }
                 }),
 
