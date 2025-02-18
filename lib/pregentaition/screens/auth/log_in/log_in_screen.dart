@@ -8,6 +8,7 @@ import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
+import 'package:seth/helpers/toast_message_helper.dart';
 
 import '../../../../controllers/auth_controller.dart';
 
@@ -76,7 +77,11 @@ class LogInScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: () {
-                      authController.handleForgot(emailCtrl.text, "forgot", context: context);
+                      if(emailCtrl.text.isEmpty){
+                        ToastMessageHelper.showToastMessage("Please enter your email");
+                      }else{
+                        context.pushNamed(AppRoutes.forgotPasswordScreen, extra: emailCtrl.text);
+                      }
                     },
                     child: CustomText(
                       top: 24.h,
@@ -91,6 +96,7 @@ class LogInScreen extends StatelessWidget {
                 ///=====================Sign UP Button================>>>
 
                 CustomButton(
+                  // loading: authController.logInLoading.value,
                     width: double.infinity,
                     title: "Login",
                     onpress: () {

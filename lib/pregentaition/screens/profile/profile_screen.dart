@@ -11,7 +11,8 @@ import 'package:seth/global/custom_assets/assets.gen.dart';
 import '../../../core/widgets/custom_network_image.dart';
 
 class ProfileScreen extends StatefulWidget {
-   ProfileScreen({super.key});
+  final Map<String, dynamic> profileData;
+   ProfileScreen({super.key, required this.profileData});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -25,11 +26,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    nameCtrl.text = "Sagor ahamed";
-    emailCtrl.text = "Sagor@gamail.com";
-    phoneNoCtrl.text = "015456454642";
+    emailCtrl.text = widget.profileData["email"]?.toString() ?? "";
+    nameCtrl.text = widget.profileData["name"]?.toString() ?? "";
+    phoneNoCtrl.text = widget.profileData["phone"]?.toString() ?? "01XXXXXXXXXXX";
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             CustomNetworkImage(
                 boxShape: BoxShape.circle,
-                imageUrl: "https://cdn.shopaccino.com/igmguru/products/flutter-igmguru_1527424732_l.jpg?v=476",
+                imageUrl: widget.profileData["image"],
                 height: 120.h, width: 120.w
             ),
 

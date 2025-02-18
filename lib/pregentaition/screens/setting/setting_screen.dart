@@ -2,15 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
+import 'package:seth/core/utils/app_constants.dart';
 import 'package:seth/core/widgets/custom_network_image.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
+import 'package:seth/helpers/prefs_helper.dart';
+import 'package:seth/services/api_constants.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/custom_button.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
+
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
+
+  String? name;
+  String? email;
+  String? image;
+  String? phone;
+  @override
+  void initState() {
+    getLocalData();
+    super.initState();
+  }
+
+  getLocalData()async{
+  name = await PrefsHelper.getString(AppConstants.name);
+  email = await PrefsHelper.getString(AppConstants.email);
+  image = await PrefsHelper.getString(AppConstants.image);
+  image = await PrefsHelper.getString(AppConstants.phone);
+  setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +56,22 @@ class SettingScreen extends StatelessWidget {
 
             GestureDetector(
               onTap: (){
-                context.pushNamed(AppRoutes.profileScreen);
+                context.pushNamed(AppRoutes.profileScreen, extra: {
+                  "name" : name,
+                  "email" : email,
+                  "phone" : phone ?? "01XXXXXXXXXXX",
+                  "image" : (image != null && image!.isNotEmpty)
+                      ? "${ApiConstants.imageBaseUrl}/$image"
+                      : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png"
+                });
               },
               child: Row(
                 children: [
                   CustomNetworkImage(
                       boxShape: BoxShape.circle,
-                      imageUrl: "https://cdn.shopaccino.com/igmguru/products/flutter-igmguru_1527424732_l.jpg?v=476",
+                      imageUrl: (image != null && image!.isNotEmpty)
+                          ? "${ApiConstants.imageBaseUrl}/${image!}"
+                          : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
                       height: 86.h, width: 86.w
                   ),
 
@@ -43,8 +79,8 @@ class SettingScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Sagor Ahamed",fontsize: 20.h,fontWeight: FontWeight.w600),
-                      CustomText(text: "sagor@gmail.com"),
+                      CustomText(text: name?.toString() ?? "XYZ",fontsize: 20.h,fontWeight: FontWeight.w600),
+                      CustomText(text: email?.toString() ?? "xyz@gmail.com"),
                     ],
                   )
                 ],
@@ -61,7 +97,11 @@ class SettingScreen extends StatelessWidget {
 
             GestureDetector(
               onTap: (){
-                context.pushNamed(AppRoutes.profileScreen);
+                context.pushNamed(AppRoutes.profileScreen, extra: {
+                  "name" : name,
+                  "email" : email,
+                  "phone" : phone
+                });
               },
               child:  _customTile(
                   Assets.icons.person2.svg(),
@@ -212,6 +252,13 @@ class SettingScreen extends StatelessWidget {
                                               title: 'Yes',
                                               fontSize: 16.h,
                                               onpress: () async {
+                                                await PrefsHelper.remove(AppConstants.bearerToken);
+                                                await PrefsHelper.remove(AppConstants.email);
+                                                await PrefsHelper.remove(AppConstants.name);
+                                                await PrefsHelper.remove(AppConstants.image);
+                                                await PrefsHelper.remove(AppConstants.userId);
+                                                await PrefsHelper.remove(AppConstants.role);
+                                                await PrefsHelper.remove(AppConstants.isLogged);
                                                 context.go(AppRoutes.roleScreen);
                                               })),
                                     ],
@@ -242,7 +289,6 @@ class SettingScreen extends StatelessWidget {
       ),
     );
   }
-
 
   _customTile(Widget leading, Widget trailing, String title){
     return Container(

@@ -1,10 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../core/app_routes/app_routes.dart';
+import '../core/utils/app_colors.dart';
 import '../core/utils/app_constants.dart';
+import '../core/widgets/custom_button.dart';
+import '../core/widgets/custom_text.dart';
+import '../global/custom_assets/assets.gen.dart';
 import '../helpers/prefs_helper.dart';
 import '../helpers/toast_message_helper.dart';
 import '../services/api_client.dart';
@@ -17,21 +23,37 @@ class AuthController extends GetxController {
   RxBool signUpLoading = false.obs;
 
   ///===============Sing up ================<>
-  handleSignUp({String? name, email, phone, password, required BuildContext context}) async {
+  handleSignUp({String? name, email, phone, password, required BuildContext context, String? managerType, businessAddress, governmentId, url}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
     signUpLoading(true);
-    var body = {
+    var body = role == "user" ? {
       "name": name,
       "email": email,
       "phone": phone,
       "password": password,
-      "role": role == "user" ? "user" : "manager"
-    };
+      "role": "user",
+    } : {
+      "name": name,
+      "email": email,
+      "phone": phone,
+      "password": password,
+      "role": "manager",
+      "websiteLInk": url,
+      "businessAddress": businessAddress,
+      "type": managerType,
+      "gov": governmentId,
+    } ;
 
     var response = await ApiClient.postData(ApiConstants.signUpEndPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.otpScreen, extra: "Sign Up");
+      await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["token"]);
+      if(role == "user"){
+        context.pushNamed(AppRoutes.otpScreen, extra: "user");
+      }else{
+        context.pushNamed(AppRoutes.otpScreen, extra: "manager");
+      }
+
       ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have an one time code your email");
       signUpLoading(false);
     } else if(response.statusCode == 1){
@@ -51,25 +73,28 @@ class AuthController extends GetxController {
   verfyEmail(String otpCode, {String screenType = '', required BuildContext context}) async {
     verfyLoading(true);
     var role = await PrefsHelper.getString(AppConstants.role);
-    var body = {"code": otpCode};
-
+    var body = {"otp": otpCode};
     var response = await ApiClient.postData(
         ApiConstants.verifyEmailEndPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      debugPrint("==========bearer token save done : ${response.body['token']}");
-      await PrefsHelper.setString(AppConstants.bearerToken, response.body['token']);
+      debugPrint("==========bearer token save done : ${response.body["data"]['token']}");
+      await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
+      await PrefsHelper.setString(AppConstants.name, response.body["data"]['name']);
+      await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
       if (screenType == 'Sign Up') {
         ///=============If role is user go to user home screen else go to manager home screen============>>>
         if(role == "user"){
-          context.go(AppRoutes.loginScreen);
+          _dialog(context, "user");
+          // context.go(AppRoutes.loginScreen);
         }else{
-          context.go(AppRoutes.loginScreen);
+          _dialog(context, "manager");
+          // context.go(AppRoutes.loginScreen);
         }
       }else if(screenType == "user"){
-        context.go(AppRoutes.loginScreen);
+        _dialog(context, "user");
       }else if(screenType == "manager"){
-        context.go(AppRoutes.loginScreen);
+        _dialog(context, "manager");
       } else {
         context.go(AppRoutes.setPasswordScreen);
       }
@@ -92,15 +117,17 @@ class AuthController extends GetxController {
   RxBool logInLoading = false.obs;
   handleLogIn(String email, String password, {required BuildContext context}) async {
     logInLoading.value = true;
+    var role = await PrefsHelper.getString(AppConstants.role);
     var headers = {'Content-Type': 'application/json'};
     var body = {
       "email": email,
       "password": password,
+      "role": role.toString()
     };
     var response = await ApiClient.postData(
         ApiConstants.signInEndPoint, jsonEncode(body),
         headers: headers);
-    print("========================${response.statusCode}");
+    print("========================${response.statusCode} \n ${response.body}");
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data']["user"];
       await PrefsHelper.setString(AppConstants.role, data['role']);
@@ -121,14 +148,12 @@ class AuthController extends GetxController {
       }
       ToastMessageHelper.showToastMessage('Your are logged in');
       logInLoading(false);
-    } else if(response.statusCode == 1){
-      logInLoading(false);
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
     }else{
       ///******** When user do not able to verify their account thay have to verify there account then they can go to the app********
       if (response.body["message"] == "We've sent an OTP to your email to verify your profile.") {
         var role = response.body["data"]["role"];
-        context.go(AppRoutes.otpScreen, extra: "$role");
+        context.go(AppRoutes.otpScreen, extra: role.toString());
+        await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
         ToastMessageHelper.showToastMessage("We've sent an OTP to your email to verify your profile.");
       }else if(response.body["message"] == "⛔ Wrong password! ⛔"){
         ToastMessageHelper.showToastMessage(response.body["message"]);
@@ -154,7 +179,8 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
 
       if(screenType == "forgot"){
-        context.pushNamed(AppRoutes.forgotPasswordScreen, extra: email.toString());
+        context.pushNamed(AppRoutes.otpScreen, extra: "Forgot Password");
+        // context.pushNamed(AppRoutes.forgotPasswordScreen, extra: email.toString());
       }
 
       forgotLoading(false);
@@ -169,11 +195,9 @@ class AuthController extends GetxController {
 
   RxBool setPasswordLoading = false.obs;
 
-  setPassword(String password) async {
-    String bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+  setPassword(String password,{required BuildContext context}) async {
     setPasswordLoading(true);
     var body = {
-      "token": bearerToken.toString(),
       "password": password.toString().trim()
     };
 
@@ -181,8 +205,8 @@ class AuthController extends GetxController {
         ApiConstants.setPasswordEndPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Get.offAllNamed(AppRoutes.loginScreen);
-      ToastMessageHelper.showToastMessage('Password Changed');
+      context.pushNamed(AppRoutes.loginScreen);
+      ToastMessageHelper.showToastMessage('${response.body["message"]}');
       print("======>>> successful");
       setPasswordLoading(false);
     } else if(response.statusCode == 1){
@@ -190,18 +214,18 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage("Server error! \n Please try later");
     } else {
       setPasswordLoading(false);
+      ToastMessageHelper.showToastMessage('${response.body["message"]}');
     }
   }
 
 
   ///===============Resend================<>
 
-
   RxBool resendLoading = false.obs;
 
-  reSendOtp(String email) async {
+  reSendOtp() async {
     resendLoading(true);
-    var body = {"email": email};
+    var body = {};
 
     var response = await ApiClient.postData(
         ApiConstants.resendOtpEndPoint, jsonEncode(body));
@@ -246,13 +270,13 @@ class AuthController extends GetxController {
 
 
 
-  final RxInt countdown = 60.obs;
+  final RxInt countdown = 180.obs;
   final RxBool isCountingDown = false.obs;
 
 
   void startCountdown() {
     isCountingDown.value = true;
-    countdown.value = 60;
+    countdown.value = 180;
     update();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (countdown.value > 0) {
@@ -266,6 +290,66 @@ class AuthController extends GetxController {
     });
   }
 
+
+
+
+
+  void _dialog(BuildContext context, String role){
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              backgroundColor: Colors.white,
+              contentPadding: EdgeInsets.symmetric(
+                  horizontal: 24.w, vertical: 26.h),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  Align(
+                      alignment: Alignment.center,
+                      child: Assets.lottie.success.lottie(height: 80.h, width: 80.w, fit: BoxFit.cover)),
+
+                  CustomText(
+                    text: "SUCCESS",
+                    fontsize: 23.h,
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w700,
+                    top: 16.h,
+                    bottom: 8.h,
+                  ),
+
+
+                  CustomText(
+                    text: "Thank you for your request.",
+                    color: Colors.black,
+                    fontsize: 20.h,
+                  ),
+
+                  CustomText(
+                    text: "Shortly you will find a confirmation in your email.",
+                    color: Colors.black,
+                    maxline: 2,
+                    bottom: 24.h,
+                  ),
+
+                  CustomButton(title: "Go to App", onpress: (){
+                    if(role == "user"){
+                      context.go(AppRoutes.userHomeScreen);
+                    }else{
+                      context.go(AppRoutes.managerHomeScreen);
+                    }
+
+                  })
+                ],
+              ),
+              elevation: 12.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  side: BorderSide(
+                      width: 1.w, color: AppColors.primaryColor)));
+        });
+  }
 
 
 }

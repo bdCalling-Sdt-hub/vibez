@@ -64,8 +64,8 @@ class ApiClient extends GetxService {
       print("==========> Response Post Method : ${response.statusCode} \n*********${response.body}");
       return handleResponse(response, uri);
     } catch (e, s) {
-      print("===> Error in postData: $e");
-      print("===> Error in postData: $s");
+      print("===> Error in postData: e$e");
+      print("===> Error in postData: s$s");
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
@@ -96,8 +96,9 @@ class ApiClient extends GetxService {
       debugPrint(
           "==========> Response Post Method :------ : ${response.statusCode}");
       return handleResponse(response, uri);
-    } catch (e) {
+    } catch (e, s) {
       print("===> $e");
+      print("===> $s");
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }

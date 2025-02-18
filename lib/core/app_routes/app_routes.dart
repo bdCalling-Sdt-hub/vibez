@@ -181,7 +181,10 @@ class AppRoutes {
         GoRoute(
           path: profileScreen,
           name: profileScreen,
-          builder: (context, state) =>  ProfileScreen(),
+          builder: (context, state) {
+            final Map<String, dynamic> profileData = state.extra as Map<String, dynamic>? ?? {};
+            return ProfileScreen(profileData: profileData);
+          },
         ),
 
 
