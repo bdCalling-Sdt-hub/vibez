@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
@@ -10,22 +11,53 @@ import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
+import '../../../../controllers/user/user_event_controller.dart';
+import '../../../../core/utils/app_constants.dart';
 import '../../../../core/widgets/custom_event_card.dart';
+import '../../../../core/widgets/custom_loader.dart';
+import '../../../../helpers/prefs_helper.dart';
+import '../../../../services/api_constants.dart';
 
-class UserHomeScreen extends StatelessWidget {
+class UserHomeScreen extends StatefulWidget {
   UserHomeScreen({super.key});
 
-  final TextEditingController searchCtrl = TextEditingController();
+  @override
+  State<UserHomeScreen> createState() => _UserHomeScreenState();
+}
 
-  final List category = [
-    "Ticketed Parties",
-    "Concerts",
-    'Nightclubs',
-    "Bars",
-    'Party Restaurants',
-    'Restaurants',
-    "Comedy Clubs"
-  ];
+class _UserHomeScreenState extends State<UserHomeScreen> {
+  final TextEditingController searchCtrl = TextEditingController();
+  UserEventController userEventController = Get.put(UserEventController());
+
+  String? image;
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getLocalData();
+    });
+    userEventController.fetchEvent();
+  }
+
+
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getLocalData();
+  }
+
+
+  getLocalData() async {
+    String? newImage = await PrefsHelper.getString(AppConstants.image);
+    setState(() {
+      image = newImage;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +83,9 @@ class UserHomeScreen extends StatelessWidget {
             },
             child: CustomNetworkImage(
               boxShape: BoxShape.circle,
-                imageUrl:
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2_gZLg3wkjFxo7S_sF_rpbkbGv00qG9Y7A&s",
+                imageUrl: (image != null && image!.isNotEmpty)
+                    ? "${ApiConstants.imageBaseUrl}/$image"
+                    : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
                 height: 26.h,
                 width: 26.w),
           ),
@@ -126,20 +159,34 @@ class UserHomeScreen extends StatelessWidget {
                   fontsize: 20.h,
                   fontWeight: FontWeight.w600),
 
+
+              Obx(() =>
+              userEventController.eventLoading.value ?  const CustomLoader() : userEventController.events.isEmpty ?
+              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
               ListView.builder(
-                  itemCount: 3,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: GestureDetector(
-                          onTap: () {
-                            context.pushNamed(AppRoutes.eventDetails);
-                          },
-                          child: const CustomEventCard()),
-                    );
-                  }),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: userEventController.events.length,
+                itemBuilder: (context, index) {
+                  var events = userEventController.events[index];
+                  return  Padding(
+                    padding:  EdgeInsets.only(top: 20.h),
+                    child: GestureDetector(
+                      onTap: (){
+                        context.pushNamed(AppRoutes.eventDetails);
+                      },
+                      child: CustomEventCard(
+                        name: events.name,
+                        location: events.location?.type,
+                        image: events.photos?.first.publicFileUrl,
+                        isFavouriteVisible: false,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ),
+
 
 
 
@@ -194,20 +241,32 @@ class UserHomeScreen extends StatelessWidget {
 
               ///=========================Events List View================>>>>
 
+              Obx(() =>
+              userEventController.eventLoading.value ?  const CustomLoader() : userEventController.events.isEmpty ?
+              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
               ListView.builder(
-                  itemCount: 3,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: GestureDetector(
-                          onTap: () {
-                            context.pushNamed(AppRoutes.eventDetails);
-                          },
-                          child: const CustomEventCard()),
-                    );
-                  }),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: userEventController.events.length,
+                itemBuilder: (context, index) {
+                  var events = userEventController.events[index];
+                  return  Padding(
+                    padding:  EdgeInsets.only(top: 20.h),
+                    child: GestureDetector(
+                      onTap: (){
+                        context.pushNamed(AppRoutes.eventDetails);
+                      },
+                      child: CustomEventCard(
+                        name: events.name,
+                        location: events.location?.type,
+                        image: events.photos?.first.publicFileUrl,
+                        isFavouriteVisible: false,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ),
 
 
               SizedBox(height: 80.h)
@@ -217,4 +276,14 @@ class UserHomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  final List category = [
+    "Ticketed Parties",
+    "Concerts",
+    'Nightclubs',
+    "Bars",
+    'Party Restaurants',
+    'Restaurants',
+    "Comedy Clubs"
+  ];
 }

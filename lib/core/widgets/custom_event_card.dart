@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:seth/services/api_constants.dart';
 
 import 'custom_text.dart';
 
 class CustomEventCard extends StatelessWidget {
   final bool isFavouriteVisible;
-  const CustomEventCard({super.key, this.isFavouriteVisible = false});
+  final String? name;
+  final String? location;
+  final String? image;
+  const CustomEventCard({super.key, this.isFavouriteVisible = false, this.name, this.location, this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +20,15 @@ class CustomEventCard extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.cyan,
           borderRadius: BorderRadius.circular(16.r),
-          image: const DecorationImage(
+          image:  DecorationImage(
               image: NetworkImage(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2_gZLg3wkjFxo7S_sF_rpbkbGv00qG9Y7A&s"),
+                  "${ApiConstants.imageBaseUrl}/$image"),
               fit: BoxFit.cover)),
       child: Column(
         children: [
 
           SizedBox(height: 16.h),
-          isFavouriteVisible == false ? SizedBox() :  Align(
+          isFavouriteVisible == false ? const SizedBox() :  Align(
             alignment: Alignment.centerRight,
             child: Container(
               decoration: const BoxDecoration(
@@ -65,11 +69,11 @@ class CustomEventCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                              text: "Holiday Concert",
+                              text: name ?? "N/A",
                               fontWeight: FontWeight.w600,
                               color: Colors.black),
                           CustomText(
-                              text: "123 Lincoln Ave - 10:00 PM",
+                              text: location ?? "N/A",
                               color: Colors.black),
                         ],
                       ),

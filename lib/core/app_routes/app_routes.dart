@@ -264,7 +264,8 @@ class AppRoutes {
           path: eventDetails,
           name: eventDetails,
           builder: (context, state) {
-            return EventDetails();
+            String id = state.extra as String;
+            return EventDetails(id: id);
           },
         ),
 

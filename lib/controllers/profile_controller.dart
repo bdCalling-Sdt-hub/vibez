@@ -53,15 +53,19 @@ class ProfileController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.name, name);
       await PrefsHelper.setString(AppConstants.image, response.body["data"]['image']);
-      context.pop();
-      context.pop();
-      ToastMessageHelper.showToastMessage('Profile Updated Successful');
+
       update();
       updateProfileLoading(false);
+
+      context.pop(true);
+      context.pop(true);
+      ToastMessageHelper.showToastMessage('Profile Updated Successful');
+
     }else{
       updateProfileLoading(false);
     }
   }
+
 
   // ///===============account delete================<>
   // RxBool deleteLoading = false.obs;

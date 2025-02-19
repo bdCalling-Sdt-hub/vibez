@@ -26,6 +26,23 @@ class TimeFormatHelper {
     return formattedTime;
   }
 
+
+ static String getDayName(String dateString) {
+      DateTime dateTime = DateTime.parse(dateString).toLocal(); // Local timezone
+      return DateFormat('EEEE').format(dateTime); // Full day name
+  }
+
+
+   static String getDate(String dateString) {
+      DateTime dateTime = DateTime.parse(dateString).toLocal(); // Local timezone
+      return DateFormat('dd').format(dateTime); // Only day (date)
+  }
+
+  static String getMonth(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString).toLocal(); // Local timezone
+    return DateFormat('MMMM').format(dateTime); // Only day (date)
+  }
+
   // static Future<void> isFutureDate(String input) async {
   //   try {
   //     DateTime date = DateTime.parse(input);
