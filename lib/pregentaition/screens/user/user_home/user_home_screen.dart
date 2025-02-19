@@ -39,6 +39,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       getLocalData();
     });
     userEventController.fetchEvent();
+    userEventController.getCategory();
   }
 
 
@@ -130,26 +131,31 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   fontsize: 20.h,
                   fontWeight: FontWeight.w600),
 
-              GridView.builder(
-                itemCount: category.length,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.82,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
+              Obx(() =>
+                userEventController.categoryLoading.value ? const CustomLoader() :
+                 GridView.builder(
+                  itemCount: userEventController.category.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.82,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemBuilder: (context, index) {
+                    var category = userEventController.category[index];
+                    return GestureDetector(
+                        onTap: () {
+                          context.pushNamed(AppRoutes.bookMarkScreen,
+                              extra: "${categoryList[index]}");
+                        },
+                        child: CustomCategoryCategoryCard(
+                          image: category.image.toString(),
+                          category: categoryList[index],
+                        ));
+                  },
                 ),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                      onTap: () {
-                        context.pushNamed(AppRoutes.bookMarkScreen,
-                            extra: "${category[index]}");
-                      },
-                      child: CustomCategoryCategoryCard(
-                        category: category[index],
-                      ));
-                },
               ),
 
               CustomText(
@@ -277,7 +283,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     );
   }
 
-  final List category = [
+  final List categoryList = [
     "Ticketed Parties",
     "Concerts",
     'Nightclubs',

@@ -1,12 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:seth/services/api_constants.dart';
 
 import 'custom_text.dart';
 
 class CustomCategoryCategoryCard extends StatelessWidget {
   final String? category;
-  const CustomCategoryCategoryCard({super.key, this.category});
+  final String? image;
+  const CustomCategoryCategoryCard({super.key, this.category, this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +17,8 @@ class CustomCategoryCategoryCard extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.cyan,
           borderRadius: BorderRadius.circular(16.r),
-          image: const DecorationImage(
-              image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2_gZLg3wkjFxo7S_sF_rpbkbGv00qG9Y7A&s"),
+          image:  DecorationImage(
+              image: NetworkImage("${ApiConstants.imageBaseUrl}/$image"),
               fit: BoxFit.cover)
       ),
 

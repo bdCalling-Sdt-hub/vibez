@@ -277,7 +277,8 @@ class AppRoutes {
           path: ratingScreen,
           name: ratingScreen,
           builder: (context, state) {
-            return RatingScreen();
+            String category = state.extra as String;
+            return RatingScreen(category: category);
           },
         ),
 

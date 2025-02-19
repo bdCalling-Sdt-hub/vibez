@@ -15,7 +15,8 @@ import '../../../helpers/toast_message_helper.dart';
 import '../Manager/create_event/inner_widget/upload_progress_widget.dart';
 
 class RatingScreen extends StatefulWidget {
-  const RatingScreen({super.key});
+  final String category;
+  const RatingScreen({super.key, required this.category});
 
   @override
   State<RatingScreen> createState() => _RatingScreenState();
@@ -23,14 +24,59 @@ class RatingScreen extends StatefulWidget {
 
 class _RatingScreenState extends State<RatingScreen>  {
  final TextEditingController ratingCtrl = TextEditingController();
- double foodValue = 3.2;
- double serviceValue = 3.2;
- double ambienceValue = 3.2;
- double priceValue = 3.2;
- double musicValue = 3.2;
+
+
 
   @override
   Widget build(BuildContext context) {
+
+
+
+    final List<Map<String, dynamic>> ratingItems = widget.category == "bars"  || widget.category == "night-clubs" ? [
+      {"title": "Food", "value": 3.2},
+      {"title": "Service", "value": 3.2},
+      {"title": "Ambience", "value": 3.2},
+      {"title": "Price", "value": 3.2},
+      {"title": "Music", "value": 3.2},
+    ] :  widget.category == "ticketed-parties" ?
+
+    [
+    {"title": "Music", "value": 3.2},
+    {"title": "Ambience", "value": 3.2},
+    {"title": "Atmosphere", "value": 3.2},
+    {"title": "Price", "value": 3.2},
+    ] :  widget.category == "restaurant" ?
+    [
+    {"title": "Food", "value": 3.2},
+    {"title": "Service", "value": 3.2},
+    {"title": "Ambience", "value": 3.2},
+    {"title": "Price", "value": 3.2},
+    ] :  widget.category == "party-restaurant" ?
+
+    [
+    {"title": "Food", "value": 3.2},
+    {"title": "Service", "value": 3.2},
+    {"title": "Ambience", "value": 3.2},
+    {"title": "Price", "value": 3.2},
+    {"title": "Music", "value": 3.2},
+    ] :
+
+
+    [
+    {"title": "Food & Drink", "value": 3.2},
+    {"title": "Atmosphere", "value": 3.2},
+    {"title": "Service", "value": 3.2}
+    ];
+
+
+
+     _updateRating(int index, double newValue) {
+      setState(() {
+        ratingItems[index]["value"] = newValue;
+      });
+    }
+
+
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -55,13 +101,16 @@ class _RatingScreenState extends State<RatingScreen>  {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-
-            _customRating("Rate Food", foodValue, (val) => setState(() => foodValue = val)),
-            _customRating("Rate Service", serviceValue, (val) => setState(() => serviceValue = val)),
-            _customRating("Rate Ambience", ambienceValue, (val) => setState(() => ambienceValue = val)),
-            _customRating("Rate Price", priceValue, (val) => setState(() => priceValue = val)),
-            _customRating("Rate Music", musicValue, (val) => setState(() => musicValue = val)),
-
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(vertical: 10.h),
+              itemCount: ratingItems.length,
+              itemBuilder: (context, index) {
+                final item = ratingItems[index];
+                return _customRating(item["title"], item["value"], (val) => _updateRating(index, val));
+              },
+            ),
 
 
 
