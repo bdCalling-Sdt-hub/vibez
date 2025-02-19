@@ -134,7 +134,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
       await PrefsHelper.setString(AppConstants.email, email);
       await PrefsHelper.setString(AppConstants.name, data['name']);
-      await PrefsHelper.setString(AppConstants.image, data['image']["publicFileURL"]);
+      await PrefsHelper.setString(AppConstants.image, data['image']);
 
       await PrefsHelper.setString(AppConstants.userId, data['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
@@ -247,7 +247,11 @@ class AuthController extends GetxController {
   RxBool changePasswordLoading = false.obs;
   changePassword(String oldPassword, newPassword) async {
     changePasswordLoading(true);
-    var body = {"oldPassword": "$oldPassword", "newPassword": "$newPassword"};
+    var body = {
+      "oldPassword": "$oldPassword",
+      "newPassword": "$newPassword",
+      "confirmPassword" : "$newPassword"
+    };
 
     var response =
     await ApiClient.postData(ApiConstants.changePassword, jsonEncode(body));

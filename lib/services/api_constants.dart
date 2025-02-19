@@ -9,5 +9,11 @@ class ApiConstants{
   static const String forgotPasswordPoint = "/auth/forget-password";
   static const String setPasswordEndPoint = "/auth/register";
   static const String resendOtpEndPoint = "/auth/resend-otp";
-  static const String changePassword = "/auth/register";
+  static const String changePassword = "/auth/change-password";
+  static const String updateProfile = "/auth/profile-update";
+
+
+  ///user
+  static const String eventEndPoint = "/event";
+  static  String eventDetailsEndPoint(String id) => "/event/details?id=$id";
 }

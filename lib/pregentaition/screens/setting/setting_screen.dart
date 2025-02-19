@@ -25,22 +25,46 @@ class _SettingScreenState extends State<SettingScreen> {
   String? email;
   String? image;
   String? phone;
+
   @override
   void initState() {
-    getLocalData();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getLocalData();
+    });
   }
 
-  getLocalData()async{
-  name = await PrefsHelper.getString(AppConstants.name);
-  email = await PrefsHelper.getString(AppConstants.email);
-  image = await PrefsHelper.getString(AppConstants.image);
-  image = await PrefsHelper.getString(AppConstants.phone);
-  setState(() {});
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // if (ModalRoute.of(context)?.settings.arguments == true) {
+      getLocalData();
+    // }
   }
+
+
+  getLocalData() async {
+    String? newName = await PrefsHelper.getString(AppConstants.name);
+    String? newEmail = await PrefsHelper.getString(AppConstants.email);
+    String? newImage = await PrefsHelper.getString(AppConstants.image);
+    String? newPhone = await PrefsHelper.getString(AppConstants.phone);
+
+    setState(() {
+      name = newName;
+      email = newEmail;
+      image = newImage;
+      phone = newPhone;
+      print("==========================set State called");
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    print("================name : $name");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -76,12 +100,14 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
 
                   SizedBox(width: 24.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(text: name?.toString() ?? "XYZ",fontsize: 20.h,fontWeight: FontWeight.w600),
-                      CustomText(text: email?.toString() ?? "xyz@gmail.com"),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(text: name?.toString() ?? "XYZ",fontsize: 20.h,fontWeight: FontWeight.w600),
+                        CustomText(text: email?.toString() ?? "xyz@gmail.com"),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -98,9 +124,12 @@ class _SettingScreenState extends State<SettingScreen> {
             GestureDetector(
               onTap: (){
                 context.pushNamed(AppRoutes.profileScreen, extra: {
-                  "name" : name,
-                  "email" : email,
-                  "phone" : phone
+                  "name" : name ?? "xyz",
+                  "email" : email ?? "xyz@gmail.com",
+                  "phone" : phone ?? "01XXXXXXXXXXX",
+                  "image" : (image != null && image!.isNotEmpty)
+                      ? "${ApiConstants.imageBaseUrl}/$image"
+                      : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png"
                 });
               },
               child:  _customTile(

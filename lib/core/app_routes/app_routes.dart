@@ -252,7 +252,8 @@ class AppRoutes {
           path: editProfileScreen,
           name: editProfileScreen,
           builder: (context, state) {
-            return EditProfileScreen();
+            final Map<String, dynamic> profileData = state.extra as Map<String, dynamic>? ?? {};
+            return EditProfileScreen(profileData: profileData);
           },
         ),
 
@@ -263,7 +264,8 @@ class AppRoutes {
           path: eventDetails,
           name: eventDetails,
           builder: (context, state) {
-            return EventDetails();
+            String id = state.extra as String;
+            return EventDetails(id: id);
           },
         ),
 

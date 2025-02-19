@@ -1,12 +1,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:seth/helpers/time_format.dart';
+import 'package:seth/services/api_constants.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/widgets/custom_network_image.dart';
 import '../../../../core/widgets/custom_text.dart';
 
 class CustomCommentCard extends StatelessWidget {
+  final List? image;
+  final String? reviewerName;
+  final String? reviewerImage;
+  final String? rating;
+  final DateTime? date;
+
+  CustomCommentCard({this.image, this.reviewerName, this.rating, this.date, this.reviewerImage});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +33,9 @@ class CustomCommentCard extends StatelessWidget {
             children: [
 
               CustomNetworkImage(
-                imageUrl: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?cs=srgb&dl=pexels-sebastian-ervi-866902-1763075.jpg&fm=jpg",
+                imageUrl: (reviewerImage != null && reviewerImage!.isNotEmpty)
+                    ? "${ApiConstants.imageBaseUrl}/${reviewerImage}"
+                    : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
                 height: 32.h,
                 width: 32.w,
                 boxShape: BoxShape.circle,
@@ -32,7 +44,7 @@ class CustomCommentCard extends StatelessWidget {
               SizedBox(width: 10.w),
 
 
-              CustomText(text: "Kristin Watson", fontsize: 12),
+              CustomText(text: "$reviewerName", fontsize: 12),
 
               const Spacer(),
 
@@ -50,7 +62,7 @@ class CustomCommentCard extends StatelessWidget {
 
 
                   child: CustomText(
-                    text: "5.2",
+                    text: "$rating",
                   )
 
               ),
@@ -81,7 +93,7 @@ class CustomCommentCard extends StatelessWidget {
 
           Align(
               alignment: Alignment.centerRight,
-              child: CustomText(text: "Feb 09, 2025",fontsize: 12.h, color: AppColors.textColor808080))
+              child: CustomText(text: "${TimeFormatHelper.formatDate(date ?? DateTime.now())}",fontsize: 12.h, color: AppColors.textColor808080))
 
         ],
       ),

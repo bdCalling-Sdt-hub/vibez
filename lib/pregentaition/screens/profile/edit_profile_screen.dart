@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
@@ -11,10 +12,12 @@ import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
+import '../../../controllers/profile_controller.dart';
 import '../../../core/widgets/custom_network_image.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  EditProfileScreen({super.key});
+  final Map<String, dynamic> profileData;
+  EditProfileScreen({super.key, required this.profileData});
 
   @override
   State<EditProfileScreen> createState() => _ProfileScreenState();
@@ -25,12 +28,14 @@ class _ProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController phoneNoCtrl = TextEditingController();
 
+  ProfileController profileController = Get.put(ProfileController());
+
 
   @override
   void initState() {
-    nameCtrl.text = "Sagor ahamed";
-    emailCtrl.text = "Sagor@gamail.com";
-    phoneNoCtrl.text = "015456454642";
+    emailCtrl.text = widget.profileData["email"]?.toString() ?? "";
+    nameCtrl.text = widget.profileData["name"]?.toString() ?? "";
+    phoneNoCtrl.text = widget.profileData["phone"]?.toString() ?? "";
     super.initState();
   }
 
@@ -43,90 +48,98 @@ class _ProfileScreenState extends State<EditProfileScreen> {
       ),
 
 
-      body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 16.w),
-        child: Column(
-          children: [
-
-
-            GestureDetector(
-              onTap: (){
-                showImagePickerOption(context);
-              },
-              child: Stack(
-                children: [
-                  _image != null ? Container(
-                      height: 120.h, width: 120.w,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.memory(_image!, fit: BoxFit.cover)) : CustomNetworkImage(
-                      boxShape: BoxShape.circle,
-                      imageUrl: "https://cdn.shopaccino.com/igmguru/products/flutter-igmguru_1527424732_l.jpg?v=476",
-                      height: 120.h, width: 120.w
-                  ),
-
-                 const Positioned(
-                    bottom: 0,
-                      right: 0,
-                      child: Icon(Icons.image_outlined, color: AppColors.primaryColor)
-                  )
-                ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 16.w),
+          child: Column(
+            children: [
+        
+        
+              GestureDetector(
+                onTap: (){
+                  showImagePickerOption(context);
+                },
+                child: Stack(
+                  children: [
+                    _image != null ? Container(
+                        height: 120.h, width: 120.w,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.memory(_image!, fit: BoxFit.cover)) : CustomNetworkImage(
+                        boxShape: BoxShape.circle,
+                        imageUrl: widget.profileData["image"].toString(),
+                        height: 120.h, width: 120.w
+                    ),
+        
+                   const Positioned(
+                      bottom: 0,
+                        right: 0,
+                        child: Icon(Icons.image_outlined, color: AppColors.primaryColor)
+                    )
+                  ],
+                ),
               ),
-            ),
-
-
-            CustomText(text: "Upload New Photo", fontsize: 20.h, top: 16.h, color: AppColors.primaryColor),
-
-
-
-            ///==================Name -==============>>>
-
-            SizedBox(height: 16.h),
-            CustomTextField(
-                prefixIcon: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Assets.icons.person.svg(),
-                ),
-                controller: nameCtrl),
-
-
-
-
-            ///==================Email -==============>>>
-
-            SizedBox(height: 16.h),
-            CustomTextField(
-                prefixIcon: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Assets.icons.email.svg(),
-                ),
-                readOnly: true,
-                controller: emailCtrl),
-
-
-
-            ///==================Phone -==============>>>
-
-            SizedBox(height: 16.h),
-            CustomTextField(
-                prefixIcon: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Assets.icons.call.svg(),
-                ),
-                readOnly: true,
-                controller: phoneNoCtrl),
-
-
-
-            SizedBox(height: 150.h),
-
-            CustomButton(
-                title: "Done", onpress: (){})
-
-
-          ],
+        
+        
+              CustomText(text: "Upload New Photo", fontsize: 20.h, top: 16.h, color: AppColors.primaryColor),
+        
+        
+        
+              ///==================Name -==============>>>
+        
+              SizedBox(height: 16.h),
+              CustomTextField(
+                  prefixIcon: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Assets.icons.person.svg(),
+                  ),
+                  controller: nameCtrl),
+        
+        
+        
+        
+              ///==================Email -==============>>>
+        
+              SizedBox(height: 16.h),
+              CustomTextField(
+                  prefixIcon: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Assets.icons.email.svg(),
+                  ),
+                  readOnly: true,
+                  controller: emailCtrl),
+        
+        
+        
+              ///==================Phone -==============>>>
+        
+              SizedBox(height: 16.h),
+              CustomTextField(
+                  prefixIcon: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Assets.icons.call.svg(),
+                  ),
+                  readOnly: true,
+                  controller: phoneNoCtrl),
+        
+        
+        
+              SizedBox(height: 150.h),
+        
+              CustomButton(
+                  title: "Done", onpress: (){
+                    profileController.profileUpdate(
+                      name: nameCtrl.text,
+                      image: selectedIMage,
+                      context: context
+                    );
+              })
+        
+        
+            ],
+          ),
         ),
       ),
     );
