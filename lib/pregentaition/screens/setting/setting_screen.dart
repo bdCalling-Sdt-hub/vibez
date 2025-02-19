@@ -64,6 +64,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    getLocalData();
     print("================name : $name");
     return Scaffold(
       appBar: AppBar(

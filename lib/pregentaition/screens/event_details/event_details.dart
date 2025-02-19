@@ -39,7 +39,7 @@ class _EventDetailsState extends State<EventDetails> {
       body: SingleChildScrollView(
         child: Obx(() {
           var event = userEventController.eventDetails.value.eventDetails;
-         return userEventController.eventDetailsLoading.value ? const CustomLoader() :
+         return userEventController.eventDetailsLoading.value ?  CustomLoader(top: 320.h) :
           Column(
             children: [
               SizedBox(
@@ -154,17 +154,28 @@ class _EventDetailsState extends State<EventDetails> {
                               CustomText(text: "${event?.time} - End"),
                             ],
                           ),
-                          Container(
-                            decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle
-                            ),
-                            child: Padding(
-                              padding:  EdgeInsets.all(4.r),
-                              child:  Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 15.r,
+                          GestureDetector(
+                            onTap: (){
+                              userEventController.love(id: widget.id.toString());
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle
+                              ),
+                              child: Padding(
+                                padding:  EdgeInsets.all(4.r),
+                                child:  Obx(() {
+                                  userEventController.loveLoading.value;
+                                  return  Icon(
+                                    event?.isBooked == true ?  Icons.favorite : Icons.favorite_border,
+                                    color: event?.isBooked == true ? Colors.red : Colors.black,
+                                    size: 15.r,
+                                  );
+                                }
+
+
+                                ),
                               ),
                             ),
                           ),
@@ -199,7 +210,7 @@ class _EventDetailsState extends State<EventDetails> {
                           titlecolor: AppColors.primaryColor,
                           title: "Rate the Vibe",
                           onpress: () {
-                            context.pushNamed(AppRoutes.ratingScreen);
+                            context.pushNamed(AppRoutes.ratingScreen, extra: event?.category.toString());
                           }),
                       CustomText(
                           text: "Vibez",
