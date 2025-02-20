@@ -1,7 +1,10 @@
 
 import 'package:go_router/go_router.dart';
+import 'package:seth/core/utils/app_constants.dart';
+import 'package:seth/helpers/prefs_helper.dart';
 import 'package:seth/pregentaition/screens/profile/profile_screen.dart';
 import 'package:seth/pregentaition/screens/rating_screen/rating_screen.dart';
+import '../../models/cetegory_model.dart';
 import '../../pregentaition/screens/Manager/create_event/create_event_screen.dart';
 import '../../pregentaition/screens/Manager/events/manager_events_screen.dart';
 import '../../pregentaition/screens/Manager/manager_all_events/manager_all_event_screen.dart';
@@ -73,8 +76,21 @@ class AppRoutes {
           name: splashScreen,
           builder: (context, state) =>const SplashScreen(),
           redirect: (context, state) {
-            Future.delayed(const Duration(seconds: 3), (){
-               AppRoutes.goRouter.replaceNamed(AppRoutes.onboardingScreen);
+            Future.delayed(const Duration(seconds: 3), ()async{
+              String role = await PrefsHelper.getString(AppConstants.role);
+              String token = await PrefsHelper.getString(AppConstants.bearerToken);
+
+              if(token.isNotEmpty){
+                if(role == "user"){
+                  AppRoutes.goRouter.replaceNamed(AppRoutes.userHomeScreen);
+                }else{
+                  AppRoutes.goRouter.replaceNamed(AppRoutes.managerHomeScreen);
+                }
+              }else{
+                AppRoutes.goRouter.replaceNamed(AppRoutes.onboardingScreen);
+              }
+
+
             });
             return null;
           },
@@ -227,8 +243,10 @@ class AppRoutes {
           path: bookMarkScreen,
           name: bookMarkScreen,
           builder: (context, state) {
-            String category = state.extra as String;
-            return BookMarkScreen(category : category);
+            final extra = state.extra as Map<String, dynamic>?;
+            String category = extra?["category"] as String;
+            List<Filter> filter = extra?["filter"] as List<Filter>;
+            return BookMarkScreen(category : category, filter: filter);
           },
         ),
 
@@ -239,8 +257,8 @@ class AppRoutes {
           path: filterScreen,
           name: filterScreen,
           builder: (context, state) {
-             String categoryType = state.extra as String;
-             return FilterScreen(categoryType: categoryType);
+             List<Filter> filter = state.extra as List<Filter>;
+             return FilterScreen(filter: filter);
           },
         ),
 
@@ -277,7 +295,10 @@ class AppRoutes {
           path: ratingScreen,
           name: ratingScreen,
           builder: (context, state) {
-            return RatingScreen();
+            final extra = state.extra as Map<String, dynamic>?; // Extra data as Map
+            final String category = extra?['category'] ?? '';
+            final String eventId = extra?['eventId'] ?? '';
+            return RatingScreen(category: category, eventId: eventId);
           },
         ),
 

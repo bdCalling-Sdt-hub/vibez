@@ -61,6 +61,9 @@ class _AllEventScreenState extends State<AllEventScreen> {
 
             widget.category == "Search Results" ?
             CustomTextField(
+              onChanged: (value) {
+                userEventController.fetchEvent(search: value.toString());
+              },
               borderRadio: 25,
               hintText: "Search",
               validator: (value) {},
@@ -86,7 +89,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                       padding:  EdgeInsets.only(top: 20.h),
                       child: GestureDetector(
                         onTap: (){
-                          context.pushNamed(AppRoutes.eventDetails);
+                          context.pushNamed(AppRoutes.eventDetails, extra: events.id);
                         },
                         child: CustomEventCard(
                           name: events.name,

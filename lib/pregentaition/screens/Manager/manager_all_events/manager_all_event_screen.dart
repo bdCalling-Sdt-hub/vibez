@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
@@ -10,14 +11,35 @@ import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
+import '../../../../controllers/user/user_event_controller.dart';
 import '../../../../core/widgets/custom_event_card.dart';
+import '../../../../core/widgets/custom_loader.dart';
+import '../../../../models/cetegory_model.dart';
 
-class ManagerAllEventScreen extends StatelessWidget {
+class ManagerAllEventScreen extends StatefulWidget {
   ManagerAllEventScreen({super.key});
 
+  @override
+  State<ManagerAllEventScreen> createState() => _ManagerAllEventScreenState();
+}
+
+class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
   final TextEditingController searchCtrl = TextEditingController();
 
-  final List category = [
+  UserEventController userEventController = Get.put(UserEventController());
+
+  String? image;
+
+
+  @override
+  void initState() {
+    super.initState();
+    userEventController.fetchEvent();
+    userEventController.getCategory();
+    userEventController.fetchFeaturedEvent();
+  }
+
+  final List categoryList = [
     "Ticketed Parties",
     "Concerts",
     'Nightclubs',
@@ -58,6 +80,7 @@ class ManagerAllEventScreen extends StatelessWidget {
 
               ),
 
+
               CustomText(
                   top: 24.h,
                   bottom: 20.h,
@@ -65,8 +88,10 @@ class ManagerAllEventScreen extends StatelessWidget {
                   fontsize: 20.h,
                   fontWeight: FontWeight.w600),
 
+              Obx(() =>
+              userEventController.categoryLoading.value ? const CustomLoader() :
               GridView.builder(
-                itemCount: category.length,
+                itemCount: userEventController.category.length,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -76,15 +101,23 @@ class ManagerAllEventScreen extends StatelessWidget {
                   mainAxisSpacing: 16,
                 ),
                 itemBuilder: (context, index) {
+                  var category = userEventController.category[index];
                   return GestureDetector(
                       onTap: () {
+                        final List<Filter> filters = List<Filter>.from(category.filters as Iterable);
+                        print("****************************************** ${filters.first.name}");
                         context.pushNamed(AppRoutes.bookMarkScreen,
-                            extra: "${category[index]}");
+                            extra: {
+                              "category" : "${categoryList[index]}",
+                              "filter" : filters
+                            });
                       },
                       child: CustomCategoryCategoryCard(
-                        category: category[index],
+                        image: category.image.toString(),
+                        category: categoryList[index],
                       ));
                 },
+              ),
               ),
 
               CustomText(
@@ -94,16 +127,33 @@ class ManagerAllEventScreen extends StatelessWidget {
                   fontsize: 20.h,
                   fontWeight: FontWeight.w600),
 
+
+              Obx(() =>
+              userEventController.featuredEventLoading.value ?  const CustomLoader() : userEventController.featuredEvents.isEmpty ?
+              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
               ListView.builder(
-                  itemCount: 3,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: const CustomEventCard(),
-                    );
-                  }),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: userEventController.featuredEvents.length,
+                itemBuilder: (context, index) {
+                  var events = userEventController.featuredEvents[index];
+                  return  Padding(
+                    padding:  EdgeInsets.only(top: 20.h),
+                    child: GestureDetector(
+                      onTap: (){
+                        context.pushNamed(AppRoutes.eventDetails, extra: events.id);
+                      },
+                      child: CustomEventCard(
+                        name: events.name,
+                        location: events.location?.type,
+                        image: events.coverPhoto?.publicFileUrl,
+                        isFavouriteVisible: false,
+                      ),
+                    ),
+                  );
+                },
+              )),
+
 
 
 
@@ -148,7 +198,7 @@ class ManagerAllEventScreen extends StatelessWidget {
                       titlecolor: AppColors.primaryColor,
                       color: Colors.transparent,
                       title: "View All", onpress: (){
-                    // context.pushNamed(AppRoutes.eventsInYourAreScreen);
+                    context.pushNamed(AppRoutes.allEventScreen, extra: "Events in Your Area");
                   })
                 ],
               ),
@@ -158,16 +208,32 @@ class ManagerAllEventScreen extends StatelessWidget {
 
               ///=========================Events List View================>>>>
 
+              Obx(() =>
+              userEventController.eventLoading.value ?  const CustomLoader() : userEventController.events.isEmpty ?
+              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
               ListView.builder(
-                  itemCount: 3,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: const CustomEventCard(),
-                    );
-                  }),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: userEventController.events.length,
+                itemBuilder: (context, index) {
+                  var events = userEventController.events[index];
+                  return  Padding(
+                    padding:  EdgeInsets.only(top: 20.h),
+                    child: GestureDetector(
+                      onTap: (){
+                        context.pushNamed(AppRoutes.eventDetails);
+                      },
+                      child: CustomEventCard(
+                        name: events.name,
+                        location: events.location?.type,
+                        image: events.photos?.first.publicFileUrl,
+                        isFavouriteVisible: false,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ),
 
 
               SizedBox(height: 80.h)

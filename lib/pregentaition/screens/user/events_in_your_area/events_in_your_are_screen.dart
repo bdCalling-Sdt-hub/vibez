@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:seth/controllers/auth_controller.dart';
+import 'package:seth/core/widgets/custom_button.dart';
 
+import '../../../../controllers/user/user_event_controller.dart';
 import '../../../../core/widgets/custom_event_card.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../../../../core/widgets/custom_text_field.dart';
@@ -23,6 +27,8 @@ class EventsInYourAreScreen extends StatefulWidget {
 
 class _GetLocationState extends State<EventsInYourAreScreen> {
   final Completer<GoogleMapController> _controller = Completer();
+  UserEventController userEventController = Get.put(UserEventController());
+
   Position? _currentPosition;
   final Set<Marker> _markers = {};
   LatLng? _selectedLocation;
@@ -56,6 +62,7 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
       print('Failed to get plugins: ${e.message}');
     }
   }
+
 
   Future<void> _getCurrentLocation() async {
     // Check if location services are enabled
@@ -152,6 +159,7 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
 
   @override
   void dispose() {
+    userEventController.events.clear();
     _locationController.dispose(); // Dispose the controller when the widget is disposed
     super.dispose();
   }
@@ -212,6 +220,17 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
           ),
 
 
+          SizedBox(height: 80.h),
+
+
+          CustomButton(title: "Get Events", onpress: (){
+            userEventController.fetchEvent(
+              category: "",
+              lat: _selectedLocation?.latitude.toString() ?? "",
+              log: _selectedLocation?.longitude.toString() ?? ""
+            );
+            context.pop();
+          })
         ],
       ),
     );

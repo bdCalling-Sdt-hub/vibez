@@ -76,12 +76,12 @@ class CustomCommentCard extends StatelessWidget {
               width: 277.w,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(3, (index) => ClipRRect(
+                children: List.generate(image!.length, (index) => ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
                     child: CustomNetworkImage(
-                        imageUrl: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?cs=srgb&dl=pexels-sebastian-ervi-866902-1763075.jpg&fm=jpg",
-                        height: 72.h,
-                        width: 72.w)
+                        imageUrl: "${ApiConstants.imageBaseUrl}/${image?[index].publicFileUrl}",
+                        height: 100.h,
+                        width: 120.w)
                 ),
                 ),
               ),

@@ -16,6 +16,7 @@ import '../../../../core/utils/app_constants.dart';
 import '../../../../core/widgets/custom_event_card.dart';
 import '../../../../core/widgets/custom_loader.dart';
 import '../../../../helpers/prefs_helper.dart';
+import '../../../../models/cetegory_model.dart';
 import '../../../../services/api_constants.dart';
 
 class UserHomeScreen extends StatefulWidget {
@@ -39,6 +40,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       getLocalData();
     });
     userEventController.fetchEvent();
+    userEventController.getCategory();
+    userEventController.fetchFeaturedEvent();
   }
 
 
@@ -130,26 +133,36 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   fontsize: 20.h,
                   fontWeight: FontWeight.w600),
 
-              GridView.builder(
-                itemCount: category.length,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.82,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
+              Obx(() =>
+                userEventController.categoryLoading.value ? const CustomLoader() :
+                 GridView.builder(
+                  itemCount: userEventController.category.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.82,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemBuilder: (context, index) {
+                    var category = userEventController.category[index];
+                    return GestureDetector(
+                        onTap: () {
+                          final List<Filter> filters = List<Filter>.from(category.filters as Iterable);
+                          print("****************************************** ${filters.first.name}");
+                          context.pushNamed(AppRoutes.bookMarkScreen,
+                              extra: {
+                               "category" : "${categoryList[index]}",
+                                "filter" : filters
+                              });
+                        },
+                        child: CustomCategoryCategoryCard(
+                          image: category.image.toString(),
+                          category: categoryList[index],
+                        ));
+                  },
                 ),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                      onTap: () {
-                        context.pushNamed(AppRoutes.bookMarkScreen,
-                            extra: "${category[index]}");
-                      },
-                      child: CustomCategoryCategoryCard(
-                        category: category[index],
-                      ));
-                },
               ),
 
               CustomText(
@@ -161,31 +174,30 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
 
               Obx(() =>
-              userEventController.eventLoading.value ?  const CustomLoader() : userEventController.events.isEmpty ?
+              userEventController.featuredEventLoading.value ?  const CustomLoader() : userEventController.featuredEvents.isEmpty ?
               Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: userEventController.events.length,
+                itemCount: userEventController.featuredEvents.length,
                 itemBuilder: (context, index) {
-                  var events = userEventController.events[index];
+                  var events = userEventController.featuredEvents[index];
                   return  Padding(
                     padding:  EdgeInsets.only(top: 20.h),
                     child: GestureDetector(
                       onTap: (){
-                        context.pushNamed(AppRoutes.eventDetails);
+                        context.pushNamed(AppRoutes.eventDetails, extra: events.id);
                       },
                       child: CustomEventCard(
                         name: events.name,
                         location: events.location?.type,
-                        image: events.photos?.first.publicFileUrl,
+                        image: events.coverPhoto?.publicFileUrl,
                         isFavouriteVisible: false,
                       ),
                     ),
                   );
                 },
-              ),
-              ),
+              )),
 
 
 
@@ -277,7 +289,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     );
   }
 
-  final List category = [
+  final List categoryList = [
     "Ticketed Parties",
     "Concerts",
     'Nightclubs',

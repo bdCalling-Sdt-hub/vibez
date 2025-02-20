@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:seth/services/api_constants.dart';
 
+import '../../controllers/user/user_event_controller.dart';
 import 'custom_text.dart';
 
 class CustomEventCard extends StatelessWidget {
   final bool isFavouriteVisible;
+  final bool? isBooked;
+  final VoidCallback? onTap;
   final String? name;
   final String? location;
   final String? image;
-  const CustomEventCard({super.key, this.isFavouriteVisible = false, this.name, this.location, this.image});
+   CustomEventCard({super.key, this.isFavouriteVisible = false, this.name, this.location, this.image, this.isBooked = false, this.onTap});
+
+  UserEventController userEventController = Get.put(UserEventController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +36,20 @@ class CustomEventCard extends StatelessWidget {
           SizedBox(height: 16.h),
           isFavouriteVisible == false ? const SizedBox() :  Align(
             alignment: Alignment.centerRight,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: Padding(
-                padding:  EdgeInsets.all(8.r),
-                child: const Icon(Icons.favorite, color: Colors.red),
+            child: GestureDetector(
+              onTap: onTap,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Padding(
+                  padding:  EdgeInsets.all(8.r),
+                  child:  Icon(
+                    isBooked == true ?  Icons.favorite : Icons.favorite_border,
+                    color: isBooked == true ? Colors.red : Colors.black,
+                  ),
+                ),
               ),
             ),
           ),

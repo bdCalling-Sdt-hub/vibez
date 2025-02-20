@@ -8,15 +8,15 @@ import 'package:seth/models/event_model.dart';
 import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
 
-class UserEventController extends GetxController{
+class ManagerEventController extends GetxController{
 
 
 
   RxBool eventLoading = false.obs;
   RxList<EventModel> events = <EventModel>[].obs;
-  fetchEvent({String? category, String? lat, String? log, String? radius, subfilterIds, search})async{
+  fetchEvent({String? type})async{
     eventLoading(true);
-    var response = await ApiClient.getData("${ApiConstants.eventEndPoint}?category=${category ?? ""}&lat=${lat ?? ""}&lon=${log?? ""}&radius=${radius?? ""}&subfilterIds=${subfilterIds?? ""}&name=${search ?? ""}");
+    var response = await ApiClient.getData("/event/mine?type=past");
 
     if(response.statusCode == 200){
 

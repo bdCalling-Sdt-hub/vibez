@@ -15,5 +15,6 @@ class ApiConstants{
 
   ///user
   static const String eventEndPoint = "/event";
+  static const String reviewRating = "/review/submit";
   static  String eventDetailsEndPoint(String id) => "/event/details?id=$id";
 }
