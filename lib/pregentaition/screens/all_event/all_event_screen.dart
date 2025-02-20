@@ -61,6 +61,9 @@ class _AllEventScreenState extends State<AllEventScreen> {
 
             widget.category == "Search Results" ?
             CustomTextField(
+              onChanged: (value) {
+                userEventController.fetchEvent(search: value.toString());
+              },
               borderRadio: 25,
               hintText: "Search",
               validator: (value) {},

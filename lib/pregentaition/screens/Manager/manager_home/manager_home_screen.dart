@@ -1,19 +1,60 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 
+import '../../../../controllers/manager/manager_event_controller.dart';
+import '../../../../controllers/user/user_event_controller.dart';
 import '../../../../core/app_routes/app_routes.dart';
+import '../../../../core/utils/app_constants.dart';
 import '../../../../core/widgets/custom_event_card.dart';
+import '../../../../core/widgets/custom_loader.dart';
 import '../../../../core/widgets/custom_network_image.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
+import '../../../../helpers/prefs_helper.dart';
+import '../../../../services/api_constants.dart';
 
-class ManagerHomeScreen extends StatelessWidget {
+class ManagerHomeScreen extends StatefulWidget {
   const ManagerHomeScreen({super.key});
+
+  @override
+  State<ManagerHomeScreen> createState() => _ManagerHomeScreenState();
+}
+
+class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
+  ManagerEventController managerEventController = Get.put(ManagerEventController());
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getLocalData();
+    });
+    managerEventController.fetchEvent();
+  }
+
+  String? image;
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getLocalData();
+  }
+
+
+  getLocalData() async {
+    String? newImage = await PrefsHelper.getString(AppConstants.image);
+    setState(() {
+      image = newImage;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +77,9 @@ class ManagerHomeScreen extends StatelessWidget {
             },
             child: CustomNetworkImage(
                 boxShape: BoxShape.circle,
-                imageUrl:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2_gZLg3wkjFxo7S_sF_rpbkbGv00qG9Y7A&s",
+                imageUrl: (image != null && image!.isNotEmpty)
+                    ? "${ApiConstants.imageBaseUrl}/$image"
+                    : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
                 height: 26.h,
                 width: 26.w),
           ),
@@ -155,21 +197,35 @@ class ManagerHomeScreen extends StatelessWidget {
 
 
 
-
-
-
             ///=========================Events List View================>>>>
 
+
+            Obx(() =>
             Expanded(
-              child: ListView.builder(
-                  itemCount: 20,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child:  CustomEventCard(),
-                    );
-                  }),
-            ),
+              child: managerEventController.eventLoading.value ?  const CustomLoader() : managerEventController.events.isEmpty ?
+              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) : ListView.builder(
+                shrinkWrap: true,
+                itemCount: managerEventController.events.length,
+                itemBuilder: (context, index) {
+                  var events = managerEventController.events[index];
+                  return  Padding(
+                    padding:  EdgeInsets.only(top: 20.h),
+                    child: GestureDetector(
+                      onTap: (){
+                        context.pushNamed(AppRoutes.eventDetails, extra: events.id);
+                      },
+                      child: CustomEventCard(
+                        name: events.name,
+                        location: events.location?.type,
+                        image: events.coverPhoto?.publicFileUrl,
+                        isFavouriteVisible: false,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )),
+
 
 
           ],
