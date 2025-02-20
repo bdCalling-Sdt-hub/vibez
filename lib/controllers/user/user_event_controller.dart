@@ -14,9 +14,9 @@ class UserEventController extends GetxController{
 
   RxBool eventLoading = false.obs;
   RxList<EventModel> events = <EventModel>[].obs;
-  fetchEvent({String? category})async{
+  fetchEvent({String? category, String? lat, String? log, String? radius, subfilterIds})async{
     eventLoading(true);
-    var response = await ApiClient.getData("${ApiConstants.eventEndPoint}?category=$category");
+    var response = await ApiClient.getData("${ApiConstants.eventEndPoint}?category=$category&lat=${lat ?? ""}&lon=${log?? ""}&radius=${radius?? ""}&subfilterIds=${subfilterIds?? ""}");
 
     if(response.statusCode == 200){
 
@@ -82,6 +82,42 @@ class UserEventController extends GetxController{
       loveLoading(false);
     }
   }
+
+
+
+
+  RxBool featuredEventLoading = false.obs;
+  RxList<EventModel> featuredEvents = <EventModel>[].obs;
+  fetchFeaturedEvent()async{
+    featuredEventLoading(true);
+    var response = await ApiClient.getData("${ApiConstants.eventEndPoint}?type=featured");
+
+    if(response.statusCode == 200){
+
+      featuredEvents.value = List<EventModel>.from(response.body["data"].map((x)=> EventModel.fromJson(x)));
+      featuredEventLoading(false);
+    }else{
+      featuredEventLoading(false);
+    }
+  }
+
+
+
+  RxBool bookMarkLoading = false.obs;
+  RxList<EventModel> bookMarkEvents = <EventModel>[].obs;
+  fetchBookEvent()async{
+    bookMarkLoading(true);
+    var response = await ApiClient.getData("/bookmark");
+
+    if(response.statusCode == 200){
+
+      bookMarkEvents.value = List<EventModel>.from(response.body["data"].map((x)=> EventModel.fromJson(x)));
+      bookMarkLoading(false);
+    }else{
+      bookMarkLoading(false);
+    }
+  }
+
 
 
 }

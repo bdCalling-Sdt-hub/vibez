@@ -101,7 +101,7 @@ class ManagerAllEventScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: const CustomEventCard(),
+                      child:  CustomEventCard(),
                     );
                   }),
 
@@ -165,7 +165,7 @@ class ManagerAllEventScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: const CustomEventCard(),
+                      child:  CustomEventCard(),
                     );
                   }),
 

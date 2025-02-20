@@ -45,18 +45,11 @@ class _SettingScreenState extends State<SettingScreen> {
 
 
   getLocalData() async {
-    String? newName = await PrefsHelper.getString(AppConstants.name);
-    String? newEmail = await PrefsHelper.getString(AppConstants.email);
-    String? newImage = await PrefsHelper.getString(AppConstants.image);
-    String? newPhone = await PrefsHelper.getString(AppConstants.phone);
-
-    setState(() {
-      name = newName;
-      email = newEmail;
-      image = newImage;
-      phone = newPhone;
-      print("==========================set State called");
-    });
+    name = await PrefsHelper.getString(AppConstants.name);
+    email = await PrefsHelper.getString(AppConstants.email);
+    image = await PrefsHelper.getString(AppConstants.image);
+    phone = await PrefsHelper.getString(AppConstants.phone);
+    setState(() {});
   }
 
 

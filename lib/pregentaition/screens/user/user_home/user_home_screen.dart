@@ -16,6 +16,7 @@ import '../../../../core/utils/app_constants.dart';
 import '../../../../core/widgets/custom_event_card.dart';
 import '../../../../core/widgets/custom_loader.dart';
 import '../../../../helpers/prefs_helper.dart';
+import '../../../../models/cetegory_model.dart';
 import '../../../../services/api_constants.dart';
 
 class UserHomeScreen extends StatefulWidget {
@@ -40,6 +41,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     });
     userEventController.fetchEvent();
     userEventController.getCategory();
+    userEventController.fetchFeaturedEvent();
   }
 
 
@@ -147,8 +149,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     var category = userEventController.category[index];
                     return GestureDetector(
                         onTap: () {
+                          final List<Filter> filters = List<Filter>.from(category.filters as Iterable);
+                          print("****************************************** ${filters.first.name}");
                           context.pushNamed(AppRoutes.bookMarkScreen,
-                              extra: "${categoryList[index]}");
+                              extra: {
+                               "category" : "${categoryList[index]}",
+                                "filter" : filters
+                              });
                         },
                         child: CustomCategoryCategoryCard(
                           image: category.image.toString(),
@@ -167,31 +174,30 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
 
               Obx(() =>
-              userEventController.eventLoading.value ?  const CustomLoader() : userEventController.events.isEmpty ?
+              userEventController.featuredEventLoading.value ?  const CustomLoader() : userEventController.featuredEvents.isEmpty ?
               Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: userEventController.events.length,
+                itemCount: userEventController.featuredEvents.length,
                 itemBuilder: (context, index) {
-                  var events = userEventController.events[index];
+                  var events = userEventController.featuredEvents[index];
                   return  Padding(
                     padding:  EdgeInsets.only(top: 20.h),
                     child: GestureDetector(
                       onTap: (){
-                        context.pushNamed(AppRoutes.eventDetails);
+                        context.pushNamed(AppRoutes.eventDetails, extra: events.id);
                       },
                       child: CustomEventCard(
                         name: events.name,
                         location: events.location?.type,
-                        image: events.photos?.first.publicFileUrl,
+                        image: events.coverPhoto?.publicFileUrl,
                         isFavouriteVisible: false,
                       ),
                     ),
                   );
                 },
-              ),
-              ),
+              )),
 
 
 

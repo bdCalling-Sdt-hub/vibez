@@ -9,10 +9,12 @@ import 'package:seth/global/custom_assets/assets.gen.dart';
 import '../../../controllers/user/user_event_controller.dart';
 import '../../../core/widgets/custom_loader.dart';
 import '../../../core/widgets/custom_text.dart';
+import '../../../models/cetegory_model.dart';
 
 class BookMarkScreen extends StatefulWidget {
   final String category;
-   BookMarkScreen({super.key, required this.category});
+  final List<Filter>? filter;
+   BookMarkScreen({super.key, required this.category, this.filter});
 
   @override
   State<BookMarkScreen> createState() => _BookMarkScreenState();
@@ -41,6 +43,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("======================================================favarite book mark screen");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -49,7 +52,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
         actions: [
           GestureDetector(
             onTap: (){
-              context.pushNamed(AppRoutes.filterScreen, extra: widget.category.toString());
+              context.pushNamed(AppRoutes.filterScreen, extra: widget.filter);
             },
             child: Container(
               decoration: const BoxDecoration(

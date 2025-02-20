@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756429803037",
+    "project_id": "vibez-84546",
+    "storage_bucket": "vibez-84546.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756429803037:android:fc5e695cbc0233a9b800f4",
+        "android_client_info": {
+          "package_name": "com.example.seth"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzbL60biQfwBnbCKUXQykqWUqaLJHNDVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

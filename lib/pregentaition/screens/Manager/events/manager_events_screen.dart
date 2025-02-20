@@ -101,7 +101,7 @@ class _ManagerEventsScreenState extends State<ManagerEventsScreen> {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: const CustomEventCard(),
+                      child:  CustomEventCard(),
                     );
                   }),
             ),

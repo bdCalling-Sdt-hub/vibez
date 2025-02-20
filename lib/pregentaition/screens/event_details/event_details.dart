@@ -185,76 +185,87 @@ class _EventDetailsState extends State<EventDetails> {
 
 
 
-
-                      CustomText(
-                          text: "Filters",
-                          fontsize: 16.h,
-                          top: 24.h,
-                          fontWeight: FontWeight.w600),
-
-
-                      ListView.builder(
-                        itemCount: event?.filters?.length ?? 0,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          var filter = event?.filters?[index];
-                        return  customFilter(level: "${filter?.name}", values: filter?.subfilters ?? []);
-                        },
-                      ),
-
-
-                      SizedBox(height: 32.h),
-                      CustomButton(
-                          color: Colors.transparent,
-                          titlecolor: AppColors.primaryColor,
-                          title: "Rate the Vibe",
-                          onpress: () {
-                            context.pushNamed(AppRoutes.ratingScreen, extra: event?.category.toString());
-                          }),
-                      CustomText(
-                          text: "Vibez",
-                          fontsize: 16.h,
-                          fontWeight: FontWeight.w600,
-                          top: 32.h,
-                          bottom: 16.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      event?.category == "concert" ? SizedBox.shrink() :
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 220.w,
-                            child: Column(
-                              children: [
+                          CustomText(
+                              text: "Filters",
+                              fontsize: 16.h,
+                              top: 24.h,
+                              fontWeight: FontWeight.w600),
 
-                                ListView.builder(
-                                  itemCount: userEventController.eventDetails.value.ratings?.length,
-                                    shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                    var rating = userEventController.eventDetails.value.ratings?[index];
-                                 return customVibez(rate: "${rating?.value}", vibezName: "${rating?.title?.toLowerCase()}");
-                                }),
-                              ],
-                            ),
+
+                          ListView.builder(
+                            itemCount: event?.filters?.length ?? 0,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              var filter = event?.filters?[index];
+                              return  customFilter(level: "${filter?.name}", values: filter?.subfilters ?? []);
+                            },
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                color: const Color(0xff272727)),
-                            child: Padding(
-                              padding: EdgeInsets.all(10.r),
-                              child: Column(
-                                children: [
-                                  CustomText(text: "${userEventController.eventDetails.value.overAllRatings}", fontsize: 36.h),
-                                  CustomText(
-                                      text: "Overall Ratings",
-                                      color: AppColors.textColor808080),
-                                ],
+
+
+                          SizedBox(height: 32.h),
+                          CustomButton(
+                              color: Colors.transparent,
+                              titlecolor: AppColors.primaryColor,
+                              title: "Rate the Vibe",
+                              onpress: () {
+                                context.pushNamed(AppRoutes.ratingScreen, extra: {
+                                  'category': event?.category.toString(),
+                                  'eventId': widget.id.toString()
+                                });
+                              }),
+                          CustomText(
+                              text: "Vibez",
+                              fontsize: 16.h,
+                              fontWeight: FontWeight.w600,
+                              top: 32.h,
+                              bottom: 16.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 220.w,
+                                child: Column(
+                                  children: [
+
+                                    ListView.builder(
+                                        itemCount: userEventController.eventDetails.value.ratings?.length,
+                                        shrinkWrap: true,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          var rating = userEventController.eventDetails.value.ratings?[index];
+                                          return customVibez(rate: "${rating?.value}", vibezName: "${rating?.title?.toLowerCase()}");
+                                        }),
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: const Color(0xff272727)),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.r),
+                                  child: Column(
+                                    children: [
+                                      CustomText(text: "${userEventController.eventDetails.value.overAllRatings}", fontsize: 36.h),
+                                      CustomText(
+                                          text: "Overall Ratings",
+                                          color: AppColors.textColor808080),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ],
                       ),
+
+
+
                       CustomText(
                           text: "Photos",
                           fontsize: 16.h,
