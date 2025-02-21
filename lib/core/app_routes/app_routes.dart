@@ -310,7 +310,8 @@ class AppRoutes {
           path: eventsInYourAreScreen,
           name: eventsInYourAreScreen,
           builder: (context, state) {
-            return EventsInYourAreScreen();
+            String title = state.extra as String;
+            return EventsInYourAreScreen(title: title);
           },
         ),
 

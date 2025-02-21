@@ -6,16 +6,22 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multiselect/multiselect.dart';
+import 'package:seth/controllers/auth_controller.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 import 'package:seth/pregentaition/screens/auth/log_in/log_in_screen.dart';
 
+import '../../../../controllers/manager/create_event_controller.dart';
+import '../../../../controllers/user/user_event_controller.dart';
+import '../../../../core/app_routes/app_routes.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../helpers/toast_message_helper.dart';
+import '../../../../models/cetegory_model.dart';
 import 'inner_widget/upload_progress_widget.dart';
 
 class CreateEventScreen extends StatefulWidget {
@@ -28,6 +34,9 @@ class CreateEventScreen extends StatefulWidget {
 
 class _CreateEventScreenState extends State<CreateEventScreen> {
 
+  UserEventController userEventController = Get.put(UserEventController());
+  CreateEventController createEventController = Get.put(CreateEventController());
+
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController describeYourEventCtrl = TextEditingController();
   final TextEditingController locationCtrl = TextEditingController();
@@ -37,12 +46,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final TextEditingController musicTypeCtrl = TextEditingController();
   final TextEditingController energyCtrl = TextEditingController();
   final TextEditingController expectedCrowdCtrl = TextEditingController();
-
-
+  String? lat;
+  String? log;
 
 
   @override
+  void initState() {
+    if(widget.title == "concert"){}else{
+      userEventController.getCategory(search: widget.title);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       ///=====================App Bar ==================>>>>
       appBar: AppBar(
@@ -171,9 +189,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
 
 
-
-
               CustomTextFieldWithLavel(
+                readOnly: true,
+                onTap: () async{
+                  var mapData =await  context.pushNamed(AppRoutes.eventsInYourAreScreen, extra: "Select you location");
+                  if(mapData is Map){
+                    setState(() {
+                      locationCtrl.text = mapData["address"];
+                      lat = mapData["lat"];
+                      log = mapData["log"];
+                    });
+                  }
+
+
+                },
                 controller: locationCtrl,
                 hinText: "Enter the location",
                 laval: "Enter Location",
@@ -183,6 +212,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
 
               CustomTextFieldWithLavel(
+                readOnly: true,
+                onTap: () {
+                _selectDate(context);
+                },
                 controller: dateCtrl,
                 hinText: "Select Event Date",
                 laval: "Event Date",
@@ -192,6 +225,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
 
               CustomTextFieldWithLavel(
+                readOnly: true,
+                onTap: () {
+                  _selectTime(context);
+                },
                 controller: timeCtrl,
                 hinText: "Select Event Time",
                 laval: "Event Time",
@@ -212,25 +249,53 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
               CustomText(text: "Filters", fontsize: 16.h, fontWeight: FontWeight.w600, top: 20.h),
 
-              _dropDown(
-                list: musicGenres,
-                selected: selectedMusic,
-                title: "Select Music Type"
+
+              ListView.builder(
+                itemCount: userEventController.category.first.filters?.length, // widget.filter?.length ?? 0,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  var filter = userEventController.category.first.filters?[index];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                          text: filter?.name.toString() ?? "",
+                          fontsize: 17.h,
+                          top: 20.h,
+                          bottom: 12.h),
+                      // ✅ Filter Name
+                      _buttons(
+                          "${filter?.id}",
+                          filter?.subfilters ?? []),
+                      // ✅ Sending subfilters to _buttons
+                    ],
+                  );
+                },
               ),
 
 
-              _dropDown(
-                  list: ["Chill", "High"],
-                  selected: selectedEnergy,
-                title: "Select Energy Level"
-              ),
+
+              //
+              // _dropDown(
+              //   list: musicGenres,
+              //   selected: selectedMusic,
+              //   title: "Select Music Type"
+              // ),
 
 
-              _dropDown(
-                  list: ["Full-House", "Moderate", "Free-Flow"],
-                  selected: selectedSize,
-                title: "Select Size of Crowd"
-              ),
+              // _dropDown(
+              //     list: ["Chill", "High"],
+              //     selected: selectedEnergy,
+              //   title: "Select Energy Level"
+              // ),
+              //
+              //
+              // _dropDown(
+              //     list: ["Full-House", "Moderate", "Free-Flow"],
+              //     selected: selectedSize,
+              //   title: "Select Size of Crowd"
+              // ),
 
 
               CustomText(text: "Photos", fontsize: 16.h, fontWeight: FontWeight.w600, top: 20.h, bottom: 20.h),
@@ -380,7 +445,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
 
               CustomButton(title: "Create Event", onpress: (){
-                ToastMessageHelper.showToastMessage("Event Created Successful");
+                createEventController.createEvent(
+                    coverImage: selectedImage as File,
+                    photos: photos,
+                    name: nameCtrl.text,
+                    details: describeYourEventCtrl.text,
+                    lat: lat.toString(),
+                    log: log.toString(),
+                    date: dateCtrl.text,
+                    time: timeCtrl.text,
+                    category: widget.title,
+                    address: locationCtrl.text,
+                    ticketLink: linkOfTicketCtrl.text,
+                    filterIdArray: selectedFilters,
+                    context: context
+                );
               }),
 
 
@@ -396,32 +475,28 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
 
-  List<String> selectedMusic = [];
-  List<String> selectedEnergy = [];
-  List<String> selectedSize = [];
-  final List<String> musicGenres = [
-    "EDM",
-    "Hip-Hop",
-    "Jazz",
-    "House",
-    "Middle Eastern",
-    "Latin",
-    "Country",
-    "Classical",
-    "R&B",
-    "Rock",
-    "Reggae",
-  ];
+  // List<String> selectedMusic = [];
+  // List<String> selectedEnergy = [];
+  // List<String> selectedSize = [];
+  // final List<String> musicGenres = [
+  //   "EDM",
+  //   "Hip-Hop",
+  //   "Jazz",
+  //   "House",
+  //   "Middle Eastern",
+  //   "Latin",
+  //   "Country",
+  //   "Classical",
+  //   "R&B",
+  //   "Rock",
+  //   "Reggae",
+  // ];
 
 
   bool progressShow = false;
   double progressValue = 0.0;
   Uint8List? _image;
   File? selectedImage;
-
-  List <Uint8List>? coverImages = [];
-  List <File>? coverSelectedImage = [];
-
 
   Future<void> _uploadImageSimulation() async {
     progressShow = true;
@@ -463,6 +538,65 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     _uploadImageSimulation();
   }
 
+
+  List<Map<String, dynamic>> selectedFilters = [];
+
+
+  void toggleId(String filterId, String subfilterId) {
+    int filterIndex = selectedFilters.indexWhere((element) => element["filterId"] == filterId);
+
+    if (filterIndex != -1) {
+      List<String> subFilterList = List<String>.from(selectedFilters[filterIndex]["subfilterId"]);
+
+      if (subFilterList.contains(subfilterId)) {
+        subFilterList.remove(subfilterId);
+      } else {
+        subFilterList.add(subfilterId);
+      }
+
+      selectedFilters[filterIndex]["subfilterId"] = subFilterList;
+    } else {
+      selectedFilters.add({
+        "filterId": filterId,
+        "subfilterId": [subfilterId]
+      });
+    }
+  }
+
+
+
+  Widget _buttons(String filterId, List<Subfilter> list) {
+    List<dynamic> selectedSubFilters = selectedFilters
+        .firstWhere((element) => element["filterId"] == filterId, orElse: () => {"subfilterId": []})["subfilterId"];
+
+    return Wrap(
+      spacing: 12.r,
+      runSpacing: 12.r,
+      children: list.map((x) {
+        bool isSelected = selectedSubFilters.contains(x.id);
+
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              toggleId(filterId, x.id.toString());
+              print("========================================================$selectedFilters");
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.blue : Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: CustomText(
+              text: "${x.value}",
+              color: isSelected ? Colors.white : Colors.black,
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
 
 
   _dropDown({required List<String> list, selected, required String title}){
@@ -507,6 +641,37 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       ],
     );
   }
+
+
+
+  /// 🗓️ Date Picker Function
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(3001),
+    );
+    if (picked != null) {
+      setState(() {
+        dateCtrl.text = "${picked.year}-${picked.month}-${picked.day}";
+      });
+    }
+  }
+
+  /// ⏰ Time Picker Function
+  Future<void> _selectTime(BuildContext context) async {
+    TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        timeCtrl.text = picked.format(context);
+      });
+    }
+  }
+
 
 }
 

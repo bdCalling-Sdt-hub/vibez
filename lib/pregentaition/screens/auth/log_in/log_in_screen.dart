@@ -152,11 +152,13 @@ class CustomTextFieldWithLavel extends StatelessWidget {
   final String? laval;
   final Color? lavalColor;
   final bool? isEmail;
+  final bool? readOnly;
   final int? maxLine;
   final bool isPassword;
   final FormFieldValidator? validator;
   final TextInputType? keyboardType;
   final Widget? leadingIcon;
+  final VoidCallback? onTap;
 
   const CustomTextFieldWithLavel({
     super.key,
@@ -169,7 +171,7 @@ class CustomTextFieldWithLavel extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.leadingIcon,
     this.lavalColor,
-    this.maxLine,
+    this.maxLine, this.onTap, this.readOnly,
   });
 
   @override
@@ -184,6 +186,8 @@ class CustomTextFieldWithLavel extends StatelessWidget {
           color: lavalColor ?? AppColors.textColor808080,
         ),
         CustomTextField(
+          readOnly: readOnly ?? false,
+          onTap: onTap ?? (){},
           maxLine: maxLine ?? 1,
           prefixIcon: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),

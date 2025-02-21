@@ -217,7 +217,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
                   GestureDetector(
                     onTap: (){
-                      context.pushNamed(AppRoutes.eventsInYourAreScreen);
+                      context.pushNamed(AppRoutes.eventsInYourAreScreen, extra: "Events in your area");
                     },
                     child: Container(
                       decoration: const BoxDecoration(

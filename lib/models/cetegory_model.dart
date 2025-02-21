@@ -1,4 +1,12 @@
+// To parse this JSON data, do
+//
+//     final categoryModel = categoryModelFromJson(jsonString);
 
+import 'dart:convert';
+
+CategoryModel categoryModelFromJson(String str) => CategoryModel.fromJson(json.decode(str));
+
+String categoryModelToJson(CategoryModel data) => json.encode(data.toJson());
 
 class CategoryModel {
   final String? id;
@@ -29,20 +37,24 @@ class CategoryModel {
 }
 
 class Filter {
+  final String? id;
   final String? name;
   final List<Subfilter>? subfilters;
 
   Filter({
+    this.id,
     this.name,
     this.subfilters,
   });
 
   factory Filter.fromJson(Map<String, dynamic> json) => Filter(
+    id: json["_id"],
     name: json["name"],
     subfilters: json["subfilters"] == null ? [] : List<Subfilter>.from(json["subfilters"]!.map((x) => Subfilter.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
+    "_id": id,
     "name": name,
     "subfilters": subfilters == null ? [] : List<dynamic>.from(subfilters!.map((x) => x.toJson())),
   };
