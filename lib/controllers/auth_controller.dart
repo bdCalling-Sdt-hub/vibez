@@ -345,7 +345,6 @@ class AuthController extends GetxController {
                     }else{
                       context.go(AppRoutes.managerHomeScreen);
                     }
-
                   })
                 ],
               ),

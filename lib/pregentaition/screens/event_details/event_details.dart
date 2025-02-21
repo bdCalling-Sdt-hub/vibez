@@ -31,6 +31,7 @@ class _EventDetailsState extends State<EventDetails> {
   UserEventController userEventController = Get.put(UserEventController());
 
   String? userRole;
+
   @override
   void initState() {
     getLocalData();
@@ -82,7 +83,7 @@ class _EventDetailsState extends State<EventDetails> {
                                   color: Colors.black,
                                 ),
                               ),
-                              userRole == "user" ? const SizedBox.shrink() : Icon(Icons.edit, color: Colors.black)
+                             // userRole == "user" ? const SizedBox.shrink() : Icon(Icons.edit, color: Colors.black)
                             ],
                           ),
                         )),
@@ -103,7 +104,7 @@ class _EventDetailsState extends State<EventDetails> {
                                       fontsize: 28.h,
                                       fontWeight: FontWeight.w600),
                                   CustomText(
-                                      text: "${event?.location?.type}",
+                                      text: "${event?.address ?? "N/A"}",
                                       maxline: 3),
                                 ],
                               ),
@@ -168,7 +169,7 @@ class _EventDetailsState extends State<EventDetails> {
                               CustomText(text: "${event?.time} - End"),
                             ],
                           ),
-                          GestureDetector(
+                          userRole == "manager" ? const SizedBox.shrink() :   GestureDetector(
                             onTap: (){
                               userEventController.love(id: widget.id.toString());
                             },
@@ -181,7 +182,7 @@ class _EventDetailsState extends State<EventDetails> {
                                 padding:  EdgeInsets.all(4.r),
                                 child:  Obx(() {
                                   userEventController.loveLoading.value;
-                                  return  Icon(
+                                  return   Icon(
                                     event?.isBooked == true ?  Icons.favorite : Icons.favorite_border,
                                     color: event?.isBooked == true ? Colors.red : Colors.black,
                                     size: 15.r,
@@ -222,7 +223,7 @@ class _EventDetailsState extends State<EventDetails> {
 
 
                           SizedBox(height: 32.h),
-                          CustomButton(
+                          userRole == "manager" ? const SizedBox.shrink() :   CustomButton(
                               color: Colors.transparent,
                               titlecolor: AppColors.primaryColor,
                               title: "Rate the Vibe",

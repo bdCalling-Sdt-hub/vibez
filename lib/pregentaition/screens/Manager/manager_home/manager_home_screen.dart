@@ -42,14 +42,6 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
 
   String? image;
 
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getLocalData();
-  }
-
-
   getLocalData() async {
     String? newImage = await PrefsHelper.getString(AppConstants.image);
     setState(() {
@@ -74,7 +66,10 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
           SizedBox(width: 12.w),
           GestureDetector(
             onTap: (){
-              context.pushNamed(AppRoutes.settingScreen);
+              context.pushNamed(AppRoutes.settingScreen).then((_){
+                getLocalData();
+                managerEventController.fetchEvent();
+              });
             },
             child: CustomNetworkImage(
                 boxShape: BoxShape.circle,
@@ -104,7 +99,9 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
 
                 GestureDetector(
                   onTap: (){
-                    context.pushNamed(AppRoutes.managerEventsScreen, extra: "My Events");
+                    context.pushNamed(AppRoutes.managerEventsScreen, extra: "My Events").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -128,7 +125,7 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
 
                 GestureDetector(
                   onTap: (){
-                    context.pushNamed(AppRoutes.managerAllEventScreen);
+                    context.pushNamed(AppRoutes.managerAllEventScreen).then((_){managerEventController.fetchEvent();});
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -258,7 +255,7 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.coverPhoto?.publicFileUrl,
                         isFavouriteVisible: false,
                       ),

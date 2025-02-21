@@ -10,6 +10,7 @@ import 'package:seth/core/widgets/custom_network_image.dart';
 import 'package:seth/core/widgets/custom_text.dart';
 import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
+import 'package:seth/pregentaition/screens/user/user_home/inner_widgets/customDialog.dart';
 
 import '../../../../controllers/user/user_event_controller.dart';
 import '../../../../core/utils/app_constants.dart';
@@ -31,6 +32,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   UserEventController userEventController = Get.put(UserEventController());
 
   String? image;
+  String? role;
 
 
   @override
@@ -56,8 +58,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   getLocalData() async {
     String? newImage = await PrefsHelper.getString(AppConstants.image);
+    String? newRole = await PrefsHelper.getString(AppConstants.role);
     setState(() {
       image = newImage;
+      role = newRole;
     });
   }
 
@@ -82,7 +86,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           SizedBox(width: 12.w),
           GestureDetector(
             onTap: (){
-              context.pushNamed(AppRoutes.settingScreen);
+              if(role == "guest"){
+                customDialog(context);
+              }else{
+                context.pushNamed(AppRoutes.settingScreen).then((_){ getLocalData();});
+              }
+
             },
             child: CustomNetworkImage(
               boxShape: BoxShape.circle,
@@ -186,11 +195,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     padding:  EdgeInsets.only(top: 20.h),
                     child: GestureDetector(
                       onTap: (){
-                        context.pushNamed(AppRoutes.eventDetails, extra: events.id);
+                        if(role == "guest"){
+                          customDialog(context);
+                        }else{ context.pushNamed(AppRoutes.eventDetails, extra: events.id);}
+
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.coverPhoto?.publicFileUrl,
                         isFavouriteVisible: false,
                       ),
@@ -266,11 +278,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     padding:  EdgeInsets.only(top: 20.h),
                     child: GestureDetector(
                       onTap: (){
-                        context.pushNamed(AppRoutes.eventDetails);
+                        if(role == "guest"){
+                          customDialog(context);
+                        }else{
+                          context.pushNamed(AppRoutes.eventDetails);
+                        }
+
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.photos?.first.publicFileUrl,
                         isFavouriteVisible: false,
                       ),

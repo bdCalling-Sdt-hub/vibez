@@ -10,11 +10,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:seth/controllers/auth_controller.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 
 import '../../../../controllers/user/user_event_controller.dart';
-import '../../../../core/widgets/custom_event_card.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 
@@ -53,6 +51,7 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
     _getCurrentLocation();
     _checkGeocodingPlugin(); // Check if the geocoding plugin is registered
   }
+
 
   Future<void> _checkGeocodingPlugin() async {
     const MethodChannel channel = MethodChannel('flutter.baseflow.com/geocoding');

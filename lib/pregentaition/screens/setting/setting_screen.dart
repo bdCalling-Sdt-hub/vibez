@@ -25,6 +25,7 @@ class _SettingScreenState extends State<SettingScreen> {
   String? email;
   String? image;
   String? phone;
+  String? role;
 
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _SettingScreenState extends State<SettingScreen> {
     email = await PrefsHelper.getString(AppConstants.email);
     image = await PrefsHelper.getString(AppConstants.image);
     phone = await PrefsHelper.getString(AppConstants.phone);
+    role = await PrefsHelper.getString(AppConstants.role);
     setState(() {});
   }
 
@@ -136,6 +138,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
             ///==================Book marked events==============>>>
 
+            role == "manager" ? const SizedBox.shrink() :
             GestureDetector(
               onTap: (){
                 context.pushNamed(AppRoutes.bookMarkFavariteScreen);

@@ -144,7 +144,7 @@ class _ManagerEventsScreenState extends State<ManagerEventsScreen> {
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.coverPhoto?.publicFileUrl,
                         isFavouriteVisible: false,
                       ),
