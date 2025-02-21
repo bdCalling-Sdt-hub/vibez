@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
+import 'package:seth/core/utils/app_constants.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 import 'package:seth/core/widgets/custom_loader.dart';
 import 'package:seth/core/widgets/custom_network_image.dart';
+import 'package:seth/helpers/prefs_helper.dart';
 import 'package:seth/helpers/time_format.dart';
 import 'package:seth/services/api_constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../controllers/user/user_event_controller.dart';
 import '../../../core/widgets/custom_text.dart';
@@ -27,10 +30,16 @@ class _EventDetailsState extends State<EventDetails> {
 
   UserEventController userEventController = Get.put(UserEventController());
 
+  String? userRole;
   @override
   void initState() {
+    getLocalData();
     userEventController.getEventDetails(id: widget.id.toString());
     super.initState();
+  }
+
+  getLocalData ()async{
+    userRole = await PrefsHelper.getString(AppConstants.role);
   }
 
   @override
@@ -73,7 +82,7 @@ class _EventDetailsState extends State<EventDetails> {
                                   color: Colors.black,
                                 ),
                               ),
-                              const Icon(Icons.edit, color: Colors.black)
+                              userRole == "user" ? const SizedBox.shrink() : Icon(Icons.edit, color: Colors.black)
                             ],
                           ),
                         )),
@@ -99,17 +108,22 @@ class _EventDetailsState extends State<EventDetails> {
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              width: 100.w,
-                              child: Card(
-                                  color: Colors.green,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 6.5.h, horizontal: 10.w),
-                                    child: CustomText(
-                                        text: "Buy Here",
-                                        fontWeight: FontWeight.w600),
-                                  )),
+                            GestureDetector(
+                              onTap: (){
+                                launchUrl(Uri.https("${event?.ticketLink}"));
+                              },
+                              child: SizedBox(
+                                width: 100.w,
+                                child: Card(
+                                    color: Colors.green,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 6.5.h, horizontal: 10.w),
+                                      child: CustomText(
+                                          text: "Buy Here",
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                              ),
                             ),
                           ],
                         ),
@@ -328,6 +342,7 @@ class _EventDetailsState extends State<EventDetails> {
                           return Padding(
                             padding:  EdgeInsets.symmetric(vertical: 16.h),
                             child: CustomCommentCard(
+                              comment: comment?.message?.comment.toString(),
                               reviewerName: comment?.user?.name ?? "N/A",
                               rating: comment?.avgRating.toString() ?? "0.0",
                               date: comment?.createdAt ?? DateTime.now(),

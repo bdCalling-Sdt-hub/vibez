@@ -28,6 +28,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      userEventController.fetchEvent(search: "");
       userEventController.fetchEvent(category: "${widget.category}");
     });
 

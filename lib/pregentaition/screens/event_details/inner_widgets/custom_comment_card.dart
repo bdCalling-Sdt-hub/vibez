@@ -13,9 +13,10 @@ class CustomCommentCard extends StatelessWidget {
   final String? reviewerName;
   final String? reviewerImage;
   final String? rating;
+  final String? comment;
   final DateTime? date;
 
-  CustomCommentCard({this.image, this.reviewerName, this.rating, this.date, this.reviewerImage});
+  CustomCommentCard({this.image, this.reviewerName, this.rating, this.date, this.reviewerImage, this.comment});
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +70,15 @@ class CustomCommentCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12.h),
+
+          CustomText(
+            left: 45.w,
+            maxline: 20,
+            text: "$comment",
+            bottom: 20.h,
+            textAlign: TextAlign.start,
+          ),
+
 
           Align(
             alignment: Alignment.centerRight,

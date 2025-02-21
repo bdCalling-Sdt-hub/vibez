@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -82,6 +81,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
       await PrefsHelper.setString(AppConstants.name, response.body["data"]['name']);
       await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
+      await PrefsHelper.setString(AppConstants.phone, response.body["data"]['phone']);
       if (screenType == 'Sign Up') {
         ///=============If role is user go to user home screen else go to manager home screen============>>>
         if(role == "user"){
@@ -134,6 +134,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
       await PrefsHelper.setString(AppConstants.email, email);
       await PrefsHelper.setString(AppConstants.name, data['name']);
+      await PrefsHelper.setString(AppConstants.phone, data['phone']);
       await PrefsHelper.setString(AppConstants.image, data['image']);
 
       await PrefsHelper.setString(AppConstants.userId, data['_id']);
@@ -145,6 +146,7 @@ class AuthController extends GetxController {
         context.go(AppRoutes.userHomeScreen);
       }else{
         context.go(AppRoutes.managerHomeScreen);
+        await PrefsHelper.setString(AppConstants.managerType, data['type']);
       }
       ToastMessageHelper.showToastMessage('Your are logged in');
       logInLoading(false);

@@ -7,6 +7,7 @@ class AppConstants{
   static const String role = "role";
   static const String userId = "userId";
   static const String isLogged = "isLogged";
+  static const String managerType = "managerType";
 
 
   static RegExp emailValidate = RegExp(
