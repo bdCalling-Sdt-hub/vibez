@@ -313,9 +313,9 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
 
 
   final List<String> businessTypes = [
-    "Are you a manager for a club?",
     "Are you a manager for a restaurant?",
-    "Are you a manager for a bar or nightclub?",
+    "Are you a manager for a bars?",
+    "Are you a manager for a nightclubs?",
     "Are you a manager for a party restaurant?",
     "Are you a manager for  ticketed parties?",
     "Are you a manager for a comedy club?",

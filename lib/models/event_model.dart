@@ -4,6 +4,7 @@ class EventModel {
   final String? id;
   final String? userId;
   final String? name;
+  final String? address;
   final bool? isBooked;
   final DateTime? date;
   final String? time;
@@ -15,11 +16,12 @@ class EventModel {
   final String? category;
   final List<Filter>? filters;
 
-  EventModel( {
+  EventModel({
     this.id,
     this.isBooked,
     this.userId,
     this.name,
+    this.address,
     this.date,
     this.time,
     this.ticketLink,
@@ -35,6 +37,7 @@ class EventModel {
     id: json["_id"],
     userId: json["userId"],
     name: json["name"],
+    address: json["address"],
     isBooked: json["isBooked"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
     time: json["time"],

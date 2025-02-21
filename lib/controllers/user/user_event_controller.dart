@@ -51,9 +51,9 @@ class UserEventController extends GetxController{
 
   RxBool categoryLoading = false.obs;
   RxList<CategoryModel> category = <CategoryModel>[].obs;
-  getCategory()async{
+  getCategory({String? search})async{
     categoryLoading(true);
-    var response = await ApiClient.getData("/category");
+    var response = await ApiClient.getData("/category?search=${search?? ""}");
     if(response.statusCode == 200){
       category.value = List<CategoryModel>.from(response.body["data"].map((x)=> CategoryModel.fromJson(x)));
       categoryLoading(false);

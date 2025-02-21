@@ -90,7 +90,7 @@ class _BookMarkFavariteScreenState extends State<BookMarkFavariteScreen> {
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.photos?.first.publicFileUrl,
                         isFavouriteVisible: events.isBooked ?? true,
                         isBooked: events.isBooked,

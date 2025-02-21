@@ -10,16 +10,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:seth/controllers/auth_controller.dart';
 import 'package:seth/core/widgets/custom_button.dart';
 
 import '../../../../controllers/user/user_event_controller.dart';
-import '../../../../core/widgets/custom_event_card.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 
 class EventsInYourAreScreen extends StatefulWidget {
-  const EventsInYourAreScreen({super.key});
+  final String title;
+  const EventsInYourAreScreen({super.key, required this.title});
 
   @override
   State<EventsInYourAreScreen> createState() => _GetLocationState();
@@ -52,6 +51,7 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
     _getCurrentLocation();
     _checkGeocodingPlugin(); // Check if the geocoding plugin is registered
   }
+
 
   Future<void> _checkGeocodingPlugin() async {
     const MethodChannel channel = MethodChannel('flutter.baseflow.com/geocoding');
@@ -172,7 +172,7 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
 
       appBar: AppBar(
         centerTitle: true,
-        title: CustomText(text: "Events in your area", fontsize: 20.h),
+        title: CustomText(text: "${widget.title}", fontsize: 20.h),
       ),
 
 
@@ -223,13 +223,25 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
           SizedBox(height: 80.h),
 
 
-          CustomButton(title: "Get Events", onpress: (){
-            userEventController.fetchEvent(
-              category: "",
-              lat: _selectedLocation?.latitude.toString() ?? "",
-              log: _selectedLocation?.longitude.toString() ?? ""
-            );
-            context.pop();
+          CustomButton(
+
+              title: widget.title == "Select you location" ? "Go Back" : "Get Events",
+              onpress: (){
+                if(widget.title == "Select you location"){
+                  Navigator.pop(context, {
+                    "lat" : _selectedLocation?.latitude.toString(),
+                    "log" : _selectedLocation?.longitude.toString(),
+                    "address" : _locationController.text,
+                  });
+                }else{
+                  userEventController.fetchEvent(
+                      category: "",
+                      lat: _selectedLocation?.latitude.toString() ?? "",
+                      log: _selectedLocation?.longitude.toString() ?? ""
+                  );
+                  context.pop();
+                }
+
           })
         ],
       ),

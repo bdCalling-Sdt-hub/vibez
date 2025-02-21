@@ -145,7 +145,7 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.coverPhoto?.publicFileUrl,
                         isFavouriteVisible: false,
                       ),
@@ -221,11 +221,11 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
                     padding:  EdgeInsets.only(top: 20.h),
                     child: GestureDetector(
                       onTap: (){
-                        context.pushNamed(AppRoutes.eventDetails);
+                        context.pushNamed(AppRoutes.eventDetails, extra: events.id);
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.photos?.first.publicFileUrl,
                         isFavouriteVisible: false,
                       ),

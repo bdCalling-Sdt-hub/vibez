@@ -11,6 +11,8 @@ import 'package:seth/global/custom_assets/assets.gen.dart';
 import 'package:seth/helpers/toast_message_helper.dart';
 
 import '../../../../controllers/auth_controller.dart';
+import '../../../../core/utils/app_constants.dart';
+import '../../../../helpers/prefs_helper.dart';
 
 class LogInScreen extends StatelessWidget {
   LogInScreen({super.key});
@@ -118,8 +120,14 @@ class LogInScreen extends StatelessWidget {
                       fontsize: 16.h,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        context.pushNamed(AppRoutes.signUpScreen);
+                      onTap: () async{
+                       var userRole = await PrefsHelper.getString(AppConstants.role);
+                       if(userRole == "user"){
+                         context.pushNamed(AppRoutes.signUpScreen);
+                       }else{
+                         context.pushNamed(AppRoutes.managerSignUpScreen);
+                       }
+
                       },
                       child: CustomText(
                         text: " Sign Up",
@@ -144,11 +152,13 @@ class CustomTextFieldWithLavel extends StatelessWidget {
   final String? laval;
   final Color? lavalColor;
   final bool? isEmail;
+  final bool? readOnly;
   final int? maxLine;
   final bool isPassword;
   final FormFieldValidator? validator;
   final TextInputType? keyboardType;
   final Widget? leadingIcon;
+  final VoidCallback? onTap;
 
   const CustomTextFieldWithLavel({
     super.key,
@@ -161,7 +171,7 @@ class CustomTextFieldWithLavel extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.leadingIcon,
     this.lavalColor,
-    this.maxLine,
+    this.maxLine, this.onTap, this.readOnly,
   });
 
   @override
@@ -176,6 +186,8 @@ class CustomTextFieldWithLavel extends StatelessWidget {
           color: lavalColor ?? AppColors.textColor808080,
         ),
         CustomTextField(
+          readOnly: readOnly ?? false,
+          onTap: onTap ?? (){},
           maxLine: maxLine ?? 1,
           prefixIcon: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),

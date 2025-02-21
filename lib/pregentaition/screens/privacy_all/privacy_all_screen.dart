@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:seth/core/widgets/custom_loader.dart';
+import 'package:seth/global/custom_assets/assets.gen.dart';
 
 import '../../../controllers/privacy_policy_all_controller.dart';
 import '../../../core/widgets/custom_text.dart';
@@ -22,7 +23,7 @@ class _PrivacyAllScreenState extends State<PrivacyAllScreen> {
   @override
   void initState() {
     policyAllController.getPrivacy(
-        url: widget.title == "About App"
+        url: widget.title == "About Us"
             ? "/about"
             : widget.title == "Privacy Policy"
             ? "/privacy"
@@ -51,6 +52,15 @@ class _PrivacyAllScreenState extends State<PrivacyAllScreen> {
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             children: [
+
+
+              widget.title == "About Us"
+                  ? Padding(
+                    padding:  EdgeInsets.symmetric(vertical: 20.h),
+                    child: Assets.images.aboutUs.image(),
+                  )  : const SizedBox.shrink(),
+
+              
               Obx(() => policyAllController.isLoading.value
                   ?  CustomLoader(top: 300.h)
                   : policyAllController.content.isEmpty

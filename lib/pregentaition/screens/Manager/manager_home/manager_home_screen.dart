@@ -30,6 +30,7 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
 
 
 
+
   @override
   void initState() {
     super.initState();
@@ -40,14 +41,6 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
   }
 
   String? image;
-
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getLocalData();
-  }
-
 
   getLocalData() async {
     String? newImage = await PrefsHelper.getString(AppConstants.image);
@@ -73,7 +66,10 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
           SizedBox(width: 12.w),
           GestureDetector(
             onTap: (){
-              context.pushNamed(AppRoutes.settingScreen);
+              context.pushNamed(AppRoutes.settingScreen).then((_){
+                getLocalData();
+                managerEventController.fetchEvent();
+              });
             },
             child: CustomNetworkImage(
                 boxShape: BoxShape.circle,
@@ -103,7 +99,9 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
 
                 GestureDetector(
                   onTap: (){
-                    context.pushNamed(AppRoutes.managerEventsScreen, extra: "My Events");
+                    context.pushNamed(AppRoutes.managerEventsScreen, extra: "My Events").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -127,7 +125,7 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
 
                 GestureDetector(
                   onTap: (){
-                    context.pushNamed(AppRoutes.managerAllEventScreen);
+                    context.pushNamed(AppRoutes.managerAllEventScreen).then((_){managerEventController.fetchEvent();});
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -157,9 +155,50 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
             CustomButton(
                 color: Colors.transparent,
                 titlecolor: AppColors.primaryColor,
-                title: "Create Event", onpress: (){
-                  context.pushNamed(AppRoutes.createEventScreen, extra: "Create Event");
+                title: "Create Event", onpress: ()async{
 
+              // final List<String> businessTypes = [
+              //   "Are you a manager for a restaurant?",
+              //   "Are you a manager for a bars?",
+              //   "Are you a manager for a nightclubs?",
+              //   "Are you a manager for a party restaurant?",
+              //   "Are you a manager for  ticketed parties?",
+              //   "Are you a manager for a comedy club?",
+              //   "Are you a manager for concerts?",
+              // ];
+
+                  var managerType = await PrefsHelper.getString(AppConstants.managerType);
+
+                  if(managerType == "Are you a manager for a restaurant?"){
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "restaurant");
+                  }
+
+                  else if(managerType == "Are you a manager for a nightclubs?"){
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "night-clubs");
+                  }
+
+
+                  else if(managerType == "Are you a manager for a bars?"){
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "bars");
+                  }
+
+                  else if(managerType == "Are you a manager for a party restaurant?"){
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "party-restaurant");
+                  }
+
+
+                  else if(managerType == "Are you a manager for  ticketed parties?"){
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "ticketed-parties");
+                  }
+
+                  else if(managerType == "Are you a manager for a comedy club?"){
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "comedy-clubs");
+                  }
+
+                  else{
+                    // context.pushNamed(AppRoutes.createEventScreen, extra: "concert");
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "comedy-clubs");
+                  }
             }),
 
 
@@ -181,17 +220,17 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
                     right: 12.w,
                     fontWeight: FontWeight.w600),
 
-                const Spacer(),
-
-                ///==============View All button===================>>>
-                CustomButton(
-                    height: 32.h,
-                    width: 100.w,
-                    titlecolor: AppColors.primaryColor,
-                    color: Colors.transparent,
-                    title: "View All", onpress: (){
-                  // context.pushNamed(AppRoutes.eventsInYourAreScreen);
-                })
+                // const Spacer(),
+                //
+                // ///==============View All button===================>>>
+                // CustomButton(
+                //     height: 32.h,
+                //     width: 100.w,
+                //     titlecolor: AppColors.primaryColor,
+                //     color: Colors.transparent,
+                //     title: "View All", onpress: (){
+                //   // context.pushNamed(AppRoutes.eventsInYourAreScreen);
+                // })
               ],
             ),
 
@@ -216,7 +255,7 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.coverPhoto?.publicFileUrl,
                         isFavouriteVisible: false,
                       ),

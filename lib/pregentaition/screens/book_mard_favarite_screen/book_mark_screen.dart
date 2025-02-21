@@ -7,9 +7,12 @@ import 'package:seth/core/widgets/custom_event_card.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
 import '../../../controllers/user/user_event_controller.dart';
+import '../../../core/utils/app_constants.dart';
 import '../../../core/widgets/custom_loader.dart';
 import '../../../core/widgets/custom_text.dart';
+import '../../../helpers/prefs_helper.dart';
 import '../../../models/cetegory_model.dart';
+import '../user/user_home/inner_widgets/customDialog.dart';
 
 class BookMarkScreen extends StatefulWidget {
   final String category;
@@ -35,11 +38,23 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
 
   @override
   void initState() {
+    getLocalData();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       userEventController.fetchEvent(category: "${widget.category}");
     });
     super.initState();
   }
+
+
+  String? role;
+
+  getLocalData() async {
+    String? newRole = await PrefsHelper.getString(AppConstants.role);
+    setState(() {
+      role = newRole;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +108,16 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                     padding:  EdgeInsets.only(top: 20.h),
                     child: GestureDetector(
                       onTap: (){
-                        context.pushNamed(AppRoutes.eventDetails, extra: events.id);
+                        if(role == "guest"){
+                          customDialog(context);
+                        }else{
+                          context.pushNamed(AppRoutes.eventDetails, extra: events.id);
+                        }
+
                       },
                       child: CustomEventCard(
                         name: events.name,
-                        location: events.location?.type,
+                        location: events.address ?? "N/A",
                         image: events.photos?.first.publicFileUrl,
                         isFavouriteVisible: false,
                       ),
