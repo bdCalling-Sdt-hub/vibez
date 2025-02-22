@@ -91,13 +91,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                 ///=====================Sign UP Button================>>>
 
-                CustomButton(
-                    width: double.infinity,
-                    title: "Send Code", onpress: (){
-                  if(_logKey.currentState!.validate()){
-                    authController.handleForgot(emailCtrl.text, "forgot", context: context);
-                  }
-                }),
+                Obx(() =>
+                   CustomButton(
+                     loading: authController.forgotLoading.value,
+                      width: double.infinity,
+                      title: "Send Code", onpress: (){
+                    if(_logKey.currentState!.validate()){
+                      authController.handleForgot(emailCtrl.text, "forgot", context: context);
+                    }
+                  }),
+                ),
 
 
               ],

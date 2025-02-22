@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:seth/models/cetegory_model.dart';
@@ -115,6 +116,30 @@ class UserEventController extends GetxController{
       bookMarkLoading(false);
     }else{
       bookMarkLoading(false);
+    }
+  }
+
+
+
+  removeAddPhoto({String? eventId, imageId, File? image})async{
+    List<MultipartBody> multipartBody = image == null ? [] : [MultipartBody("photos", image)];
+
+    var response = imageId != null ?
+    await ApiClient.postData("/event/update-photo?eventId=${eventId?? ""}&imageId=${imageId}", jsonEncode({})) :
+    await ApiClient.postMultipartData("/event/update-photo?eventId=$eventId", {}, multipartBody: multipartBody);
+
+    if(response.statusCode == 200 || response.statusCode == 201){
+      //
+      // var photoUrl = imageId != null ?  '': response.body["data"][0]["publicFileURL"];
+      //
+      // imageId != null ?
+      //  eventDetails.value.eventDetails?.photos?.removeWhere((x) => x.id == imageId)
+      //     : eventDetails.value.eventDetails?.photos?.add(photoUrl);
+
+      getEventDetails(id: eventId.toString());
+
+      refresh();
+      update();
     }
   }
 

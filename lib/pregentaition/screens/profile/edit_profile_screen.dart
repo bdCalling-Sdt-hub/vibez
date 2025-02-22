@@ -128,14 +128,17 @@ class _ProfileScreenState extends State<EditProfileScreen> {
         
               SizedBox(height: 150.h),
         
-              CustomButton(
-                  title: "Done", onpress: (){
-                    profileController.profileUpdate(
-                      name: nameCtrl.text,
-                      image: selectedIMage,
-                      context: context
-                    );
-              })
+              Obx(() =>
+                 CustomButton(
+                   loading: profileController.updateProfileLoading.value,
+                    title: "Done", onpress: (){
+                      profileController.profileUpdate(
+                        name: nameCtrl.text,
+                        image: selectedIMage,
+                        context: context
+                      );
+                }),
+              )
         
         
             ],

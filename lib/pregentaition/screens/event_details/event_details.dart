@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/utils/app_constants.dart';
@@ -31,6 +34,7 @@ class _EventDetailsState extends State<EventDetails> {
   UserEventController userEventController = Get.put(UserEventController());
 
   String? userRole;
+  String? myId;
 
   @override
   void initState() {
@@ -41,6 +45,7 @@ class _EventDetailsState extends State<EventDetails> {
 
   getLocalData ()async{
     userRole = await PrefsHelper.getString(AppConstants.role);
+    myId = await PrefsHelper.getString(AppConstants.userId);
   }
 
   @override
@@ -57,7 +62,7 @@ class _EventDetailsState extends State<EventDetails> {
                 child: Stack(
                   children: [
                     CustomNetworkImage(
-                        imageUrl: "${ApiConstants.imageBaseUrl}/${event?.photos?.first.publicFileUrl}",
+                        imageUrl: "${ApiConstants.imageBaseUrl}/${event?.coverPhoto?.publicFileUrl ?? ""}",
                         height: 504.h,
                         width: double.infinity),
                     Positioned(
@@ -281,32 +286,77 @@ class _EventDetailsState extends State<EventDetails> {
 
 
 
-                      CustomText(
-                          text: "Photos",
-                          fontsize: 16.h,
-                          fontWeight: FontWeight.w600,
-                          top: 32.h,
-                          bottom: 20.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                              text: "Photos",
+                              fontsize: 16.h,
+                              fontWeight: FontWeight.w600,
+                              top: 32.h,
+                              bottom: 20.h),
+
+
+                          myId != event?.userId ? const SizedBox.shrink() : GestureDetector(
+                            onTap: () async{
+                              final ImagePicker picker = ImagePicker();
+                              final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+                              if (image != null) {
+                                userEventController.removeAddPhoto(image: File(image.path), eventId: event?.id);
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(2.r),
+                              decoration: const BoxDecoration(
+                                color: AppColors.primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.add, color: Colors.white),
+                            ),)
+                        ],
+                      ),
+
+
+
+
                       SizedBox(
                         height: 115.h,
-                        child: ListView.builder(
-                          itemCount: event?.photos?.length,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.all(4.r),
-                              child: CustomNetworkImage(
-                                  border: Border.all(
-                                      color: AppColors.primaryColor, width: 0.08),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  imageUrl:
-                                  "${ApiConstants.imageBaseUrl}/${event?.photos?[index].publicFileUrl}",
-                                  height: 110.h,
-                                  width: 169.w),
-                            );
-                          },
-                        ),
+                        child: Obx(() {
+                          return userEventController.eventDetailsLoading.value ? const CustomLoader() : ListView.builder(
+                            itemCount: event?.photos?.length ?? 0,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Stack(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(4.r),
+                                    child: CustomNetworkImage(
+                                        border: Border.all(
+                                            color: AppColors.primaryColor, width: 0.08),
+                                        borderRadius: BorderRadius.circular(8.r),
+                                        imageUrl:
+                                        "${ApiConstants.imageBaseUrl}/${event?.photos?[index].publicFileUrl}",
+                                        height: 110.h,
+                                        width: 169.w),
+                                  ),
+
+
+                               myId != event?.userId ? SizedBox.shrink() : Positioned(
+                                      top: 10.h,
+                                      right: 10.w,
+                                      child: GestureDetector(
+                                          onTap:() {
+                                            userEventController.removeAddPhoto(imageId: event?.photos?[index].id.toString(), eventId: event?.id);
+                                          },
+                                          child: const Icon(Icons.remove_circle, color: Colors.red))),
+
+                                ],
+                              );
+                            },
+                          );
+                        },),
                       ),
 
 
@@ -322,12 +372,12 @@ class _EventDetailsState extends State<EventDetails> {
                               fontWeight: FontWeight.w600),
 
 
-                          CustomButton(
-                              height: 32.h,
-                              width: 90.w,
-                              color: Colors.transparent,
-                              titlecolor: AppColors.primaryColor,
-                              title: "View All", onpress: (){})
+                          // CustomButton(
+                          //     height: 32.h,
+                          //     width: 90.w,
+                          //     color: Colors.transparent,
+                          //     titlecolor: AppColors.primaryColor,
+                          //     title: "View All", onpress: (){})
                         ],
                       ),
 

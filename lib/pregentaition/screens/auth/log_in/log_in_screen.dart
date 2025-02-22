@@ -97,16 +97,19 @@ class LogInScreen extends StatelessWidget {
 
                 ///=====================Sign UP Button================>>>
 
-                CustomButton(
-                  // loading: authController.logInLoading.value,
-                    width: double.infinity,
-                    title: "Login",
-                    onpress: () {
-                      if (_logKey.currentState!.validate()) {
-                        authController.handleLogIn(
-                            emailCtrl.text, passWordCtrl.text.trim(), context: context);
-                      }
-                    }),
+                Obx(() =>
+                   CustomButton(
+                      loading: authController.logInLoading.value,
+                      width: double.infinity,
+                      title: "Login",
+                      onpress: () {
+
+                        if (_logKey.currentState!.validate()) {
+                          authController.handleLogIn(
+                              emailCtrl.text, passWordCtrl.text.trim(), context: context);
+                        }
+                      }),
+                ),
 
                 ///=================Do not have Account================>>>
 
