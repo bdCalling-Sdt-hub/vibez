@@ -94,9 +94,13 @@ class ChangePasswordScreen extends StatelessWidget {
               ///===================Button====================>>>
           
               SizedBox(height: 70.h),
-              CustomButton(title: "Done", onpress: (){
-                authController.changePassword(oldPassCtrl.text, newPassCtrl.text);
-              })
+              Obx(() =>
+                 CustomButton(
+                     loading: authController.changePasswordLoading.value,
+                     title: "Done", onpress: (){
+                  authController.changePassword(oldPassCtrl.text, newPassCtrl.text);
+                }),
+              )
           
             ],
           ),

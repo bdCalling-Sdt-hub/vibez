@@ -12,6 +12,7 @@ import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 import 'package:seth/pregentaition/screens/user/user_home/inner_widgets/customDialog.dart';
 
+import '../../../../controllers/notifications_controller.dart';
 import '../../../../controllers/user/user_event_controller.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../core/widgets/custom_event_card.dart';
@@ -19,6 +20,8 @@ import '../../../../core/widgets/custom_loader.dart';
 import '../../../../helpers/prefs_helper.dart';
 import '../../../../models/cetegory_model.dart';
 import '../../../../services/api_constants.dart';
+import '../../../../services/socket_services.dart';
+import 'package:badges/badges.dart' as badges;
 
 class UserHomeScreen extends StatefulWidget {
   UserHomeScreen({super.key});
@@ -30,6 +33,7 @@ class UserHomeScreen extends StatefulWidget {
 class _UserHomeScreenState extends State<UserHomeScreen> {
   final TextEditingController searchCtrl = TextEditingController();
   UserEventController userEventController = Get.put(UserEventController());
+  NotificationsController notificationsController = Get.put(NotificationsController());
 
   String? image;
   String? role;
@@ -37,6 +41,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   void initState() {
+
+    socket();
+
+
+    notificationsController.listenNotification();
+    notificationsController.unReadCount();
+
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getLocalData();
@@ -53,6 +64,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     getLocalData();
+  }
+
+
+  socket()async{
+    SocketServices.init();
+    SocketServices();
   }
 
 
@@ -78,11 +95,23 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             fontWeight: FontWeight.w900,
             fontsize: 17.h),
         actions: [
-          GestureDetector(
-              onTap: () {
-                context.pushNamed(AppRoutes.notificationScreen);
-              },
-              child: Assets.icons.notification.svg()),
+          Obx(() =>
+              GestureDetector(
+                onTap: () {
+                  context.pushNamed(AppRoutes.notificationScreen);
+                },
+                child: badges.Badge(
+                  badgeContent: notificationsController.unreadCount.value == "0" ? const SizedBox.shrink() :  CustomText(text: notificationsController.unreadCount.toString(), color: Colors.white, fontsize: 7.h),
+                  badgeStyle: notificationsController.unreadCount.value == "0" ? const badges.BadgeStyle(badgeColor: Colors.transparent) :  badges.BadgeStyle(
+                    badgeColor: Colors.red,
+                    padding: EdgeInsets.all(8.r),
+                  ),
+                  position: badges.BadgePosition.topEnd(top: -5, end: -5),
+                  child: Assets.icons.notification.svg(),
+                ),
+              ),
+          ),
+
           SizedBox(width: 12.w),
           GestureDetector(
             onTap: (){

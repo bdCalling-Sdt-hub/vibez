@@ -87,19 +87,22 @@ class OtpScreen extends StatelessWidget {
 
               ///=====================Sign UP Button================>>>
 
-              CustomButton(
-                  width: double.infinity,
-                  title: screenType == "Sign Up" || screenType == "user" || screenType == "manager" ? "Verify" : "Change Password", onpress: (){
-                    if(screenType == "Sign Up"){
-                      authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
-                    }else if(screenType == "user"){
-                      authController.verfyEmail(otpCtrl.text, screenType: "user", context: context);
-                    }else if(screenType == "manager"){
-                      authController.verfyEmail(otpCtrl.text, screenType: "manager", context: context);
-                    } else{
-                      authController.verfyEmail(otpCtrl.text, screenType: "forgot", context: context);
-                    }
-              }),
+              Obx(() =>
+                 CustomButton(
+                   loading: authController.verfyLoading.value,
+                    width: double.infinity,
+                    title: screenType == "Sign Up" || screenType == "user" || screenType == "manager" ? "Verify" : "Change Password", onpress: (){
+                      if(screenType == "Sign Up"){
+                        authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
+                      }else if(screenType == "user"){
+                        authController.verfyEmail(otpCtrl.text, screenType: "user", context: context);
+                      }else if(screenType == "manager"){
+                        authController.verfyEmail(otpCtrl.text, screenType: "manager", context: context);
+                      } else{
+                        authController.verfyEmail(otpCtrl.text, screenType: "forgot", context: context);
+                      }
+                }),
+              ),
 
 
             ],

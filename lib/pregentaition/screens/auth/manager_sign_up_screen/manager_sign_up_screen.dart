@@ -247,29 +247,32 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
         
                   ///=====================Log in Button================>>>
         
-                  CustomButton(
-                      width: double.infinity,
-                      title: "Sign Up", onpress: (){
-        
-                     if(fromKey.currentState!.validate()){
-                       if(isCheck){
-                         authController.handleSignUp(context: context,
-                             name: nameCtrl.text,
-                             email: emailCtrl.text,
-                             phone: phoneNumberCtrl.text,
-                             password: passWordCtrl.text,
-                             url: websiteLinkCtrl.text,
-                             businessAddress: addressCtrl.text,
-                             governmentId: govIdCtrl.text,
-                             managerType: businessTypeCtrl.text
-                         );
-                       }else{
-                         ToastMessageHelper.showToastMessage("Please Check term and conditions!");
-                       }
+                  Obx(() =>
+                     CustomButton(
+                       loading: authController.signUpLoading.value,
+                        width: double.infinity,
+                        title: "Sign Up", onpress: (){
 
-                    // _dialog();
-                     }
-                  }),
+                       if(fromKey.currentState!.validate()){
+                         if(isCheck){
+                           authController.handleSignUp(context: context,
+                               name: nameCtrl.text,
+                               email: emailCtrl.text,
+                               phone: phoneNumberCtrl.text,
+                               password: passWordCtrl.text,
+                               url: websiteLinkCtrl.text,
+                               businessAddress: addressCtrl.text,
+                               governmentId: govIdCtrl.text,
+                               managerType: businessTypeCtrl.text
+                           );
+                         }else{
+                           ToastMessageHelper.showToastMessage("Please Check term and conditions!");
+                         }
+
+                      // _dialog();
+                       }
+                    }),
+                  ),
         
         
         

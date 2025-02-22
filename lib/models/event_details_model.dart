@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final eventDetailsModel = eventDetailsModelFromJson(jsonString);
 
-import 'dart:convert';
-
-EventDetailsModel eventDetailsModelFromJson(String str) => EventDetailsModel.fromJson(json.decode(str));
-
-String eventDetailsModelToJson(EventDetailsModel data) => json.encode(data.toJson());
 
 class EventDetailsModel {
   final EventDetails? eventDetails;

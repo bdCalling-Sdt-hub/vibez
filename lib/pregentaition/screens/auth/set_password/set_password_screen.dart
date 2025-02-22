@@ -94,14 +94,17 @@ class SetPasswordScreen extends StatelessWidget {
 
                 ///=====================Log in Button================>>>
 
-                CustomButton(
-                    width: double.infinity,
-                    title: "Set Password", onpress: (){
-                  if(fromKey.currentState!.validate()){
-                    authController.setPassword(passWordCtrl.text, context: context);
+                Obx(() =>
+                   CustomButton(
+                     loading: authController.setPasswordLoading.value,
+                      width: double.infinity,
+                      title: "Set Password", onpress: (){
+                    if(fromKey.currentState!.validate()){
+                      authController.setPassword(passWordCtrl.text, context: context);
 
-                  }
-                }),
+                    }
+                  }),
+                ),
 
 
               ],

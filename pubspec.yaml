@@ -40,6 +40,12 @@ dependencies:
   permission_handler: ^11.3.1
   geocoding:
   dotted_border:
+  firebase_messaging:
+  flutter_local_notifications: ^18.0.1
+  socket_io_client: ^3.0.2
+  firebase_core:
+  firebase_analytics:
+  badges:
 
   multiselect: ^0.1.1
 

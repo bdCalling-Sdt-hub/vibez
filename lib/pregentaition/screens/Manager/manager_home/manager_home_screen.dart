@@ -5,9 +5,8 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
-
 import '../../../../controllers/manager/manager_event_controller.dart';
-import '../../../../controllers/user/user_event_controller.dart';
+import '../../../../controllers/notifications_controller.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../core/widgets/custom_event_card.dart';
@@ -17,6 +16,12 @@ import '../../../../core/widgets/custom_text.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../../helpers/prefs_helper.dart';
 import '../../../../services/api_constants.dart';
+import 'package:badges/badges.dart' as badges;
+
+import '../../../../services/firebase_notification_services.dart';
+import '../../../../services/socket_services.dart';
+
+
 
 class ManagerHomeScreen extends StatefulWidget {
   const ManagerHomeScreen({super.key});
@@ -27,12 +32,19 @@ class ManagerHomeScreen extends StatefulWidget {
 
 class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
   ManagerEventController managerEventController = Get.put(ManagerEventController());
+  NotificationsController notificationsController = Get.put(NotificationsController());
 
 
 
 
   @override
   void initState() {
+
+    socket();
+
+
+    notificationsController.listenNotification();
+    notificationsController.unReadCount();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getLocalData();
@@ -41,6 +53,11 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
   }
 
   String? image;
+
+  socket()async{
+    SocketServices.init();
+    SocketServices();
+  }
 
   getLocalData() async {
     String? newImage = await PrefsHelper.getString(AppConstants.image);
@@ -62,7 +79,29 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
             fontWeight: FontWeight.w900,
             fontsize: 17.h),
         actions: [
-          Assets.icons.notification.svg(),
+
+          Obx(() =>
+            GestureDetector(
+              onTap: () {
+                context.pushNamed(AppRoutes.notificationScreen);
+              },
+              child: badges.Badge(
+                badgeContent: notificationsController.unreadCount.value == "0" ? const SizedBox.shrink() :  CustomText(text: notificationsController.unreadCount.toString(), color: Colors.white, fontsize: 7.h),
+                badgeStyle: notificationsController.unreadCount.value == "0" ? const badges.BadgeStyle(badgeColor: Colors.transparent) :  badges.BadgeStyle(
+                  badgeColor: Colors.red,
+                  padding: EdgeInsets.all(8.r),
+                ),
+                position: badges.BadgePosition.topEnd(top: -5, end: -5),
+                child: Assets.icons.notification.svg(),
+              ),
+            ),
+          ),
+
+          // GestureDetector(
+          //     onTap: () {
+          //       context.pushNamed(AppRoutes.notificationScreen);
+          //     },
+          //     child: Assets.icons.notification.svg()),
           SizedBox(width: 12.w),
           GestureDetector(
             onTap: (){
@@ -170,34 +209,48 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
                   var managerType = await PrefsHelper.getString(AppConstants.managerType);
 
                   if(managerType == "Are you a manager for a restaurant?"){
-                    context.pushNamed(AppRoutes.createEventScreen, extra: "restaurant");
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "restaurant").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   }
 
                   else if(managerType == "Are you a manager for a nightclubs?"){
-                    context.pushNamed(AppRoutes.createEventScreen, extra: "night-clubs");
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "night-clubs").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   }
 
 
                   else if(managerType == "Are you a manager for a bars?"){
-                    context.pushNamed(AppRoutes.createEventScreen, extra: "bars");
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "bars").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   }
 
                   else if(managerType == "Are you a manager for a party restaurant?"){
-                    context.pushNamed(AppRoutes.createEventScreen, extra: "party-restaurant");
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "party-restaurant").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   }
 
 
                   else if(managerType == "Are you a manager for  ticketed parties?"){
-                    context.pushNamed(AppRoutes.createEventScreen, extra: "ticketed-parties");
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "ticketed-parties").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   }
 
                   else if(managerType == "Are you a manager for a comedy club?"){
-                    context.pushNamed(AppRoutes.createEventScreen, extra: "comedy-clubs");
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "comedy-clubs").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   }
 
                   else{
                     // context.pushNamed(AppRoutes.createEventScreen, extra: "concert");
-                    context.pushNamed(AppRoutes.createEventScreen, extra: "comedy-clubs");
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "comedy-clubs").then((_){
+                      managerEventController.fetchEvent();
+                    });
                   }
             }),
 

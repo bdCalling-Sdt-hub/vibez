@@ -14,6 +14,7 @@ import '../helpers/prefs_helper.dart';
 import '../helpers/toast_message_helper.dart';
 import '../services/api_client.dart';
 import '../services/api_constants.dart';
+import '../services/firebase_notification_services.dart';
 
 
 class AuthController extends GetxController {
@@ -24,6 +25,7 @@ class AuthController extends GetxController {
   ///===============Sing up ================<>
   handleSignUp({String? name, email, phone, password, required BuildContext context, String? managerType, businessAddress, governmentId, url}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
+    String fcmToken = await PrefsHelper.getString(AppConstants.fcmToken);
     signUpLoading(true);
     var body = role == "user" ? {
       "name": name,
@@ -31,6 +33,7 @@ class AuthController extends GetxController {
       "phone": phone,
       "password": password,
       "role": "user",
+      "fcmToken" : "$fcmToken"
     } : {
       "name": name,
       "email": email,
@@ -41,6 +44,7 @@ class AuthController extends GetxController {
       "businessAddress": businessAddress,
       "type": managerType,
       "gov": governmentId,
+      "fcmToken" : "$fcmToken"
     } ;
 
     var response = await ApiClient.postData(ApiConstants.signUpEndPoint, jsonEncode(body));
@@ -117,12 +121,14 @@ class AuthController extends GetxController {
   RxBool logInLoading = false.obs;
   handleLogIn(String email, String password, {required BuildContext context}) async {
     logInLoading.value = true;
+    var fcmToken = await FirebaseNotificationService.getFCMToken();
     var role = await PrefsHelper.getString(AppConstants.role);
     var headers = {'Content-Type': 'application/json'};
     var body = {
       "email": email,
       "password": password,
-      "role": role.toString()
+      "role": role.toString(),
+      "fcmToken" : "$fcmToken"
     };
     var response = await ApiClient.postData(
         ApiConstants.signInEndPoint, jsonEncode(body),
@@ -139,6 +145,11 @@ class AuthController extends GetxController {
 
       await PrefsHelper.setString(AppConstants.userId, data['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
+
+
+      final fcmToken = await PrefsHelper.getString(AppConstants.fcmToken);
+      // FirebaseNotificationService.sendSocketEvent('fcmToken',
+      //     {'userId': data['_id'], 'fcmToken': fcmToken});
 
       var role = data['role'];
 

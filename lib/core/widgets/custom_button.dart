@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap:loading?(){} :onpress,
+      onTap: loading?(){} :onpress,
       child: Container(
         width:width?? 345.w,
         height: height ?? 52.h,
@@ -44,11 +44,8 @@ class CustomButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            loading?  SizedBox(
-              height: 20.h,
-              width: 20.h,
-              child: Assets.lottie.buttonLoading.lottie()
-            ):
+
+            SizedBox(width: 30.w),
             Center(
               child: CustomText(
                 text: title,
@@ -57,6 +54,17 @@ class CustomButton extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
+
+
+            SizedBox(width: 20.w),
+
+
+            loading  ?
+                SizedBox(
+                    height: 25.h,
+                    width: 25.w,
+                    child: Assets.lottie.buttonLoading.lottie(fit: BoxFit.cover)
+                ) :  SizedBox(width: 25.w)
           ],
         ),
       ),

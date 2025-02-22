@@ -1,16 +1,34 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:seth/services/firebase_notification_services.dart';
+import 'package:seth/services/socket_services.dart';
 
 import 'app_themes/app_themes.dart';
 import 'core/app_routes/app_routes.dart';
 import 'helpers/dependancy_injaction.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseMessaging.instance;
+
+  // Socket initialization properly
+  SocketServices.init();
+  SocketServices();
+
+  // Print FCM Token
+  await FirebaseNotificationService.printFCMToken();
+  await FirebaseNotificationService.initialize();
+
+  // Dependency Injection
   DependencyInjection di = DependencyInjection();
   di.dependencies();
+
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
