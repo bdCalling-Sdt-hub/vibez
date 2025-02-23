@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -23,31 +24,35 @@ class AuthController extends GetxController {
   RxBool signUpLoading = false.obs;
 
   ///===============Sing up ================<>
-  handleSignUp({String? name, email, phone, password, required BuildContext context, String? managerType, businessAddress, governmentId, url}) async {
+  handleSignUp({File? image, String? name, email, phone, password, required BuildContext context, String? managerType, businessAddress, governmentId, url}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
     String fcmToken = await PrefsHelper.getString(AppConstants.fcmToken);
+
+    List<MultipartBody> multipartBody =
+    image == null ? [] : [MultipartBody("image", image)];
+
     signUpLoading(true);
-    var body = role == "user" ? {
-      "name": name,
-      "email": email,
-      "phone": phone,
-      "password": password,
+    Map<String, String> body = role == "user" ? {
+      "name": '$name',
+      "email": "$email",
+      "phone": "$phone",
+      "password": "$password",
       "role": "user",
       "fcmToken" : "$fcmToken"
     } : {
-      "name": name,
-      "email": email,
-      "phone": phone,
-      "password": password,
+      "name": "$name",
+      "email": "$email",
+      "phone": "$phone",
+      "password": "$password",
       "role": "manager",
-      "websiteLInk": url,
-      "businessAddress": businessAddress,
-      "type": managerType,
-      "gov": governmentId,
+      "websiteLInk": "$url",
+      "businessAddress": "$businessAddress",
+      "type": '$managerType',
       "fcmToken" : "$fcmToken"
     } ;
 
-    var response = await ApiClient.postData(ApiConstants.signUpEndPoint, jsonEncode(body));
+    var response = role == "user" ?  await ApiClient.postData(ApiConstants.signUpEndPoint, jsonEncode(body))
+        : await ApiClient.postMultipartData(ApiConstants.signUpEndPoint, body, multipartBody: multipartBody);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["token"]);
@@ -338,13 +343,13 @@ class AuthController extends GetxController {
 
 
                   CustomText(
-                    text: "Thank you for your request.",
+                    text: role == "user" ? "Account created successful!" : "Thank you for your request.",
                     color: Colors.black,
                     fontsize: 20.h,
                   ),
 
                   CustomText(
-                    text: "Shortly you will find a confirmation in your email.",
+                    text: role == "user" ? "Welcome to the vibez! You can access all feature." : "Shortly you will find a confirmation in your email.",
                     color: Colors.black,
                     maxline: 2,
                     bottom: 24.h,
@@ -354,7 +359,7 @@ class AuthController extends GetxController {
                     if(role == "user"){
                       context.go(AppRoutes.userHomeScreen);
                     }else{
-                      context.go(AppRoutes.managerHomeScreen);
+                      context.go(AppRoutes.loginScreen);
                     }
                   })
                 ],

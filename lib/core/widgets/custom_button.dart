@@ -13,6 +13,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final double? fontSize;
   final bool loading;
+  final bool loaderIgnore;
 
   CustomButton({
     super.key,
@@ -24,12 +25,13 @@ class CustomButton extends StatelessWidget {
     this.fontSize,
     this.titlecolor,
     this.loading=false,
+    this.loaderIgnore = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: loading?(){} :onpress,
+      onTap: loading?(){} : onpress,
       child: Container(
         width:width?? 345.w,
         height: height ?? 52.h,
@@ -45,7 +47,9 @@ class CustomButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
 
-            SizedBox(width: 30.w),
+           loaderIgnore ? SizedBox() : SizedBox(width: 30.w),
+
+
             Center(
               child: CustomText(
                 text: title,
@@ -56,10 +60,10 @@ class CustomButton extends StatelessWidget {
             ),
 
 
-            SizedBox(width: 20.w),
+            loaderIgnore ? SizedBox() :  SizedBox(width: 20.w),
 
 
-            loading  ?
+            loaderIgnore ? SizedBox() :  loading  ?
                 SizedBox(
                     height: 25.h,
                     width: 25.w,

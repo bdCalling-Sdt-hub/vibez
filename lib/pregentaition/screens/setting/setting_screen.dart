@@ -262,6 +262,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           width: 80.w,
                                           height: 40.h,
                                           child: CustomButton(
+                                            loaderIgnore: true,
                                             title: 'No',
                                             fontSize: 16.h,
                                             onpress: () {
@@ -274,6 +275,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           width: 80.w,
                                           height: 40.h,
                                           child: CustomButton(
+                                            loaderIgnore: true,
                                               color: AppColors.primaryColor,
                                               title: 'Yes',
                                               fontSize: 16.h,

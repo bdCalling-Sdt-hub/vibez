@@ -1,8 +1,14 @@
 
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/countries.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:seth/core/app_routes/app_routes.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
@@ -11,8 +17,10 @@ import 'package:seth/core/widgets/custom_text_field.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 
 import '../../../../controllers/auth_controller.dart';
+import '../../../../core/widgets/custom_network_image.dart';
 import '../../../../helpers/toast_message_helper.dart';
 import '../log_in/log_in_screen.dart';
+import 'custom_country_code.dart';
 
 
 
@@ -36,6 +44,7 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
   final TextEditingController confirmPassCtrl = TextEditingController();
 
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> fromKeyPhone = GlobalKey<FormState>();
   late bool isCheck = false;
   AuthController authController = Get.find<AuthController>();
 
@@ -131,17 +140,22 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
         
         
                   ///==============Enter your phone number===========<>>>>
-        
+
+                  // SizedBox(height: 20.h),
+                  //
+                  // CustomCountryCode(
+                  //   signUpController: phoneNumberCtrl
+                  // ),
+
                   CustomTextFieldWithLavel(
                     leadingIcon: Assets.icons.call.svg(),
                     controller: phoneNumberCtrl,
-                    hinText: "Enter your phone number",
-                    laval: "Phone Number",
                     keyboardType: TextInputType.number,
+                    hinText: "Enter your phone number",
+                    laval: "Phone number",
                   ),
-        
-                  
-        
+
+
                   ///==============Business Address Field============<>>>>
         
                   CustomTextFieldWithLavel(
@@ -168,15 +182,40 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
         
                   ///==============Government ID===========<>>>>
         
-                  CustomTextFieldWithLavel(
-                    leadingIcon:  Assets.icons.atracFile.svg(),
-                    controller: govIdCtrl,
-                    hinText: "Upload Your Government ID",
-                    laval: "Government ID",
+                  // CustomTextFieldWithLavel(
+                  //   leadingIcon:  Assets.icons.atracFile.svg(),
+                  //   controller: govIdCtrl,
+                  //   hinText: "Upload Your Government ID",
+                  //   laval: "Government ID",
+                  // ),
+
+
+                  GestureDetector(
+                    onTap: (){
+                      showImagePickerOption(context);
+                    },
+                    child:
+                    _image != null ?
+                    Container(
+                        margin: EdgeInsets.only(top: 20.h),
+                        height: 140.h,
+                        width: double.infinity,
+                        clipBehavior: Clip.antiAlias,
+                        decoration:  BoxDecoration(
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(16.r)
+                        ),
+                        child: Image.memory(_image!, fit: BoxFit.fitWidth))
+                        : CustomTextFieldWithLavel(
+                      onTap: (){ showImagePickerOption(context);},
+                      readOnly: true,
+                      leadingIcon:  Assets.icons.atracFile.svg(),
+                      controller: govIdCtrl,
+                      hinText: "Upload Your Government ID",
+                      laval: "Government ID",
+                    ),
                   ),
-        
-        
-        
+
         
                   ///==============Password Field============<>>>>
         
@@ -249,7 +288,7 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
         
                   Obx(() =>
                      CustomButton(
-                       loading: authController.signUpLoading.value,
+                        loading: authController.signUpLoading.value,
                         width: double.infinity,
                         title: "Sign Up", onpress: (){
 
@@ -263,7 +302,8 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
                                url: websiteLinkCtrl.text,
                                businessAddress: addressCtrl.text,
                                governmentId: govIdCtrl.text,
-                               managerType: businessTypeCtrl.text
+                               managerType: businessTypeCtrl.text,
+                               image: selectedIMage
                            );
                          }else{
                            ToastMessageHelper.showToastMessage("Please Check term and conditions!");
@@ -351,4 +391,178 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
       });
     }
   }
+
+
+
+
+  Uint8List? _image;
+  File? selectedIMage;
+
+
+
+  //==================================> ShowImagePickerOption Function <===============================
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.black.withOpacity(.5),
+        elevation: 3,
+        context: context,
+        builder: (builder) {
+          return Container(
+            decoration: BoxDecoration(
+              border: const Border(top: BorderSide(color: AppColors.primaryColor, width: 0.25)),
+              borderRadius: BorderRadius.circular(20.r),
+
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 9.2,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          _pickImageFromGallery();
+                        },
+                        child: SizedBox(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.image,
+                                size: 50.w,
+                              ),
+                              CustomText(text: 'Gallery')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          _pickImageFromCamera();
+                        },
+                        child: SizedBox(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                size: 50.w,
+                              ),
+                              CustomText(text: 'Camera')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+
+  Widget phoneNumberTextField(){
+    return IntlPhoneField(
+      decoration: InputDecoration(
+        hintText: 'Phone Number',
+        fillColor: AppColors.bgColor,
+        filled: true,
+        hintStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w400,
+            fontFamily: "Outfit"),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: Colors.white),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: Colors.white),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: Colors.white, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+      ),
+      initialCountryCode: 'US', // Default country
+      countries: countries.map((country) {
+        // Clone and modify the country list
+        if (country.code == 'PS') {
+          return Country(
+            code: country.code, // Country code (PS for Palestine)
+            dialCode: country.dialCode, // Dial code
+            name: 'Palestine 👑', // Custom name
+            flag: country.flag, // Use the existing flag
+            maxLength: 1, // Use the existing maxLength
+            minLength: 1, nameTranslations: {}, // Use the existing minLength
+
+          );
+        }else if(country.code == 'IN') {
+          return Country(
+            code: country.code, // Country code (PS for Palestine)
+            dialCode: country.dialCode, // Dial code
+            name: 'India (Nearby Bangladesh)', // Custom name
+            flag: country.flag, // Use the existing flag
+            maxLength: 1, // Use the existing maxLength
+            minLength: 1, nameTranslations: {}, // Use the existing minLength
+
+          );
+        }
+        return country; // Keep other countries unchanged
+      }).where((country) => country.code != 'IL').toList(), // Exclude Israel
+      onChanged: (phone) {
+        phoneNumberCtrl.text = phone.completeNumber; // Store the full phone number
+      },
+      onCountryChanged: (country) {},
+      validator: (value) {
+        if (value == null || value.number.isEmpty) {
+          return "Phone number cannot be empty";
+        }
+        return null;
+      },
+      showCursor: true, // This ensures the cursor is shown but no unnecessary counters
+      showCountryFlag: true, // Ensure the country flag is displayed
+      disableLengthCheck: true, // Prevents length enforcement on numbers
+    );
+  }
+
+
+
+  //==================================> Gallery <===============================
+  Future _pickImageFromGallery() async {
+    final returnImage =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    Navigator.pop(context);
+  }
+
+//==================================> Camera <===============================
+  Future _pickImageFromCamera() async {
+    final returnImage =
+    await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+      govIdCtrl.text = selectedIMage.toString();
+    });
+    Navigator.pop(context);
+  }
 }
+
+
+

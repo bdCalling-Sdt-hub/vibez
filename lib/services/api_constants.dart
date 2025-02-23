@@ -1,6 +1,9 @@
 class ApiConstants{
-  static const String baseUrl = "http://10.0.80.210:8080/api/v1";
-  static const String imageBaseUrl = "http://10.0.80.210:8080";
+  // static const String baseUrl = "http://10.0.80.210:8080/api/v1";
+  // static const String imageBaseUrl = "http://10.0.80.210:8080";
+  //
+  static const String baseUrl = "https://vibez-asifur-rahman.sarv.live/api/v1";
+  static const String imageBaseUrl = "https://vibez-asifur-rahman.sarv.live";
 
 
   static const String signUpEndPoint = "/auth/register";
