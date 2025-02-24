@@ -9,7 +9,7 @@
 
 
     <application
-        android:label="seth"
+        android:label="Vibez"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 

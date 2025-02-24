@@ -68,7 +68,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     child: CustomTextField(
                       readOnly: true,
                       controller: within,
-                      hintText: "Select Your Business Type",
+                      hintText: "Select Miles",
                       suffixIcon: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
                         child: const Icon(Icons.keyboard_arrow_down_outlined),
@@ -77,10 +77,14 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                 ),
 
+
+
+
+
                 ListView.builder(
                   itemCount: widget.filter?.length ?? 0,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +134,7 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 
   Widget _buttons(List<Subfilter> list) {
-    print("====================sub fileter : ${list.first}");
+
     return Wrap(
       spacing: 12.r,
       runSpacing: 12.r,
@@ -139,8 +143,7 @@ class _FilterScreenState extends State<FilterScreen> {
           onTap: () {
             setState(() {
               toggleId(x.id.toString());
-              print(
-                  "========================================================$selectedIdList");
+              print("========================================================$selectedIdList");
               // x["isSelected"] = !x["isSelected"];
             });
           },
@@ -173,7 +176,7 @@ class _FilterScreenState extends State<FilterScreen> {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
     final selectedType = await showMenu<String>(
-      initialValue: "Select Your Business Type",
+      initialValue: "Select Miles",
       context: context,
       position: RelativeRect.fromLTRB(
         offset.dx,

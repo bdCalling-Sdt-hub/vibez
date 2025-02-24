@@ -35,6 +35,8 @@ class _AllEventScreenState extends State<AllEventScreen> {
       userEventController.fetchEvent(search: "");
       userEventController.fetchEvent(category: "${widget.category}");
     });
+
+    searchCtrl.text = widget.category ?? "";
     super.initState();
   }
 
@@ -61,7 +63,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
       appBar: AppBar(
         centerTitle: true,
         scrolledUnderElevation: 0,
-        title: CustomText(text: widget.category.toString(), fontsize: 20.h)
+        title: CustomText(text: "Events".toString(), fontsize: 20.h)
       ),
 
 

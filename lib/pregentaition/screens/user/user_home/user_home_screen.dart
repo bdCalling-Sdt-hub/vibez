@@ -144,21 +144,17 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               SizedBox(
                 height: 45.h,
                 child: CustomTextField(
+                  onTap: (){
+                    if(searchCtrl.text.isNotEmpty){
+                      context.pushNamed(AppRoutes.allEventScreen, extra: "${searchCtrl.text}");
+                    }
+                  },
                     borderRadio: 25,
                     hintText: "Search",
                     validator: (value) {},
-                    prefixIcon: Padding(
+                    suffixIcon: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Assets.icons.searchLight.svg(height: 20.h),
-                    ),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        context.pushNamed(AppRoutes.allEventScreen, extra: "Search Results");
-                      },
-                      child: Padding(
-                        padding:  EdgeInsets.all(10.r),
-                        child: Assets.icons.filter.svg(),
-                      ),
                     ),
                     controller: searchCtrl,
                  ),
@@ -258,7 +254,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
                   GestureDetector(
                     onTap: (){
-                      context.pushNamed(AppRoutes.eventsInYourAreScreen, extra: "Events in your area");
+                      context.pushNamed(AppRoutes.eventsInYourAreScreen, extra: "Select you location");
                     },
                     child: Container(
                       decoration: const BoxDecoration(
@@ -279,6 +275,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ///==============View All button===================>>>
 
                   CustomButton(
+                    loaderIgnore: true,
                     height: 32.h,
                       width: 100.w,
                       titlecolor: AppColors.primaryColor,

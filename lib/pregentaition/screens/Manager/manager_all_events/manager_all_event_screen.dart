@@ -39,6 +39,12 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
     userEventController.fetchFeaturedEvent();
   }
 
+  @override
+  void dispose() {
+    userEventController.featuredEvents.clear();
+    super.dispose();
+  }
+
   final List categoryList = [
     "Ticketed Parties",
     "Concerts",
@@ -68,16 +74,20 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
             children: [
               ///========================Search Box====================>>>
               CustomTextField(
+                onTap: (){
+                  if(searchCtrl.text.isNotEmpty){
+                    context.pushNamed(AppRoutes.allEventScreen, extra: "${searchCtrl.text}");
+                  }
+
+                },
                 borderRadio: 25,
                 hintText: "Search",
                 validator: (value) {},
-                prefixIcon: Padding(
+                suffixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Assets.icons.searchLight.svg(height: 20.h),
                 ),
-                suffixIcon: const Icon(Icons.filter_alt_outlined),
                 controller: searchCtrl,
-
               ),
 
 
@@ -172,7 +182,7 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
 
                   GestureDetector(
                     onTap: (){
-                      context.pushNamed(AppRoutes.eventsInYourAreScreen);
+                      context.pushNamed(AppRoutes.eventsInYourAreScreen, extra: "Select you location");
                     },
                     child: Container(
                       decoration: const BoxDecoration(
@@ -193,10 +203,12 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
                   ///==============View All button===================>>>
 
                   CustomButton(
-                      height: 32.h,
+                    loaderIgnore: true,
+                      height: 45.h,
                       width: 100.w,
                       titlecolor: AppColors.primaryColor,
                       color: Colors.transparent,
+                      fontSize: 12.h,
                       title: "View All", onpress: (){
                     context.pushNamed(AppRoutes.allEventScreen, extra: "Events in Your Area");
                   })

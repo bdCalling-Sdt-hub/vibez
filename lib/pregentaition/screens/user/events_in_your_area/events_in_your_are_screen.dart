@@ -142,6 +142,12 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
   void _onMapTapped(LatLng location) async {
     String? address = await _getAddressFromLatLng(location);
 
+    List<Placemark> placemarks = await placemarkFromCoordinates(location.latitude, location.longitude);
+    Placemark place = placemarks.first;
+
+    // ✅ Badda, Dhaka নেওয়ার জন্য
+    String formattedAddress = "${place.subLocality}, ${place.locality}, ${place.country}";
+
     setState(() {
       _selectedLocation = location;
       _markers.add(
@@ -152,7 +158,7 @@ class _GetLocationState extends State<EventsInYourAreScreen> {
         ),
       );
       if (address != null) {
-        _locationController.text = address; // Update the text field with the address
+        _locationController.text = formattedAddress;
       }
     });
   }
