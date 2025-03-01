@@ -31,7 +31,7 @@ class UserHomeScreen extends StatefulWidget {
 }
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
-  final TextEditingController searchCtrl = TextEditingController();
+
   UserEventController userEventController = Get.put(UserEventController());
   NotificationsController notificationsController = Get.put(NotificationsController());
 
@@ -145,8 +145,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 height: 45.h,
                 child: CustomTextField(
                   onTap: (){
-                    if(searchCtrl.text.isNotEmpty){
-                      context.pushNamed(AppRoutes.allEventScreen, extra: "${searchCtrl.text}");
+                    if(userEventController.searchCtrl.text.isNotEmpty){
+                      context.pushNamed(AppRoutes.allEventScreen, extra: "Search Results").then((_){
+                        userEventController.fetchFeaturedEvent();
+                      });
                     }
                   },
                     borderRadio: 25,
@@ -156,7 +158,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Assets.icons.searchLight.svg(height: 20.h),
                     ),
-                    controller: searchCtrl,
+                    controller: userEventController. searchCtrl,
                  ),
               ),
 
@@ -184,12 +186,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     return GestureDetector(
                         onTap: () {
                           final List<Filter> filters = List<Filter>.from(category.filters as Iterable);
-                          print("****************************************** ${filters.first.name}");
+
                           context.pushNamed(AppRoutes.bookMarkScreen,
                               extra: {
                                "category" : "${categoryList[index]}",
                                 "filter" : filters
-                              });
+                              }).then((_){
+                            userEventController.fetchFeaturedEvent();
+                          });
                         },
                         child: CustomCategoryCategoryCard(
                           image: category.image.toString(),
@@ -209,7 +213,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
               Obx(() =>
               userEventController.featuredEventLoading.value ?  const CustomLoader() : userEventController.featuredEvents.isEmpty ?
-              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
+              Assets.lottie.noEvent.lottie() :
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -222,7 +226,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       onTap: (){
                         if(role == "guest"){
                           customDialog(context);
-                        }else{ context.pushNamed(AppRoutes.eventDetails, extra: events.id);}
+                        }else{
+                          context.pushNamed(AppRoutes.eventDetails, extra: events.id).then((_){
+                            userEventController.fetchFeaturedEvent();
+                          });
+                        }
 
                       },
                       child: CustomEventCard(
@@ -254,7 +262,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
                   GestureDetector(
                     onTap: (){
-                      context.pushNamed(AppRoutes.eventsInYourAreScreen, extra: "Select you location");
+                      context.pushNamed(AppRoutes.eventsInYourAreScreen, extra: "Select you location").then((_){
+                        userEventController.fetchFeaturedEvent();
+                      });
                     },
                     child: Container(
                       decoration: const BoxDecoration(
@@ -281,7 +291,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       titlecolor: AppColors.primaryColor,
                       color: Colors.transparent,
                       title: "View All", onpress: (){
-                    context.pushNamed(AppRoutes.allEventScreen, extra: "Events in Your Area");
+                    context.pushNamed(AppRoutes.allEventScreen, extra: "Events in Your Area").then((_){
+                      userEventController.fetchFeaturedEvent();
+                    });
                   })
                 ],
               ),
@@ -293,7 +305,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
               Obx(() =>
               userEventController.eventLoading.value ?  const CustomLoader() : userEventController.events.isEmpty ?
-              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
+              Assets.lottie.noEvent.lottie() :
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -307,7 +319,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         if(role == "guest"){
                           customDialog(context);
                         }else{
-                          context.pushNamed(AppRoutes.eventDetails);
+                          context.pushNamed(AppRoutes.eventDetails, extra: events.id).then((_){
+                            userEventController.fetchFeaturedEvent();
+                          });
                         }
 
                       },

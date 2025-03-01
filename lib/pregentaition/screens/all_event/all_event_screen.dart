@@ -23,7 +23,7 @@ class AllEventScreen extends StatefulWidget {
 }
 
 class _AllEventScreenState extends State<AllEventScreen> {
-  final TextEditingController searchCtrl = TextEditingController();
+  // final TextEditingController searchCtrl = TextEditingController();
 
   UserEventController userEventController = Get.put(UserEventController());
 
@@ -36,7 +36,6 @@ class _AllEventScreenState extends State<AllEventScreen> {
       userEventController.fetchEvent(category: "${widget.category}");
     });
 
-    searchCtrl.text = widget.category ?? "";
     super.initState();
   }
 
@@ -75,8 +74,11 @@ class _AllEventScreenState extends State<AllEventScreen> {
 
 
             widget.category == "Search Results" ?
+
+
             CustomTextField(
               onChanged: (value) {
+                userEventController.events.clear();
                 userEventController.fetchEvent(search: value.toString());
               },
               borderRadio: 25,
@@ -86,7 +88,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Assets.icons.searchLight.svg(height: 20.h)
               ),
-              controller: searchCtrl,
+              controller:userEventController.searchCtrl,
             ) : const SizedBox(),
 
 
@@ -94,7 +96,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
               child: Obx(() =>
 
               userEventController.eventLoading.value ? const CustomLoader() : userEventController.events.isEmpty ?
-                  Center(child: CustomText(text: "No Events Found!")) :
+              Assets.lottie.noEvent.lottie() :
 
                  ListView.builder(
                   itemCount: userEventController.events.length,

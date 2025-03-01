@@ -53,6 +53,7 @@ import '../../../../../core/widgets/custom_text.dart';
                     Expanded(
                       flex: 1,
                       child: CustomButton(
+                          loaderIgnore: false,
                           color: Colors.transparent,
                           titlecolor: AppColors.primaryColor,
                           title: "No", onpress: (){
@@ -66,6 +67,7 @@ import '../../../../../core/widgets/custom_text.dart';
                     Expanded(
                       flex: 1,
                       child: CustomButton(
+                          loaderIgnore: false,
                           color: AppColors.primaryColor,
                           titlecolor: Colors.white,
                           title: "Yes", onpress: ()async{

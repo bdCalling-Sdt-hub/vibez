@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/utils/app_constants.dart';
 import 'package:seth/helpers/prefs_helper.dart';
@@ -69,7 +70,6 @@ class AppRoutes {
   static final GoRouter goRouter = GoRouter(
       initialLocation: splashScreen,
       routes: [
-
         ///===================Splash Screen=================>>>
         GoRoute(
           path: splashScreen,
@@ -101,7 +101,7 @@ class AppRoutes {
         GoRoute(
           path: loginScreen,
           name: loginScreen,
-          builder: (context, state) =>  LogInScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage( LogInScreen(), state),
         ),
 
 
@@ -109,7 +109,7 @@ class AppRoutes {
        GoRoute(
           path: onboardingScreen,
           name: onboardingScreen,
-          builder: (context, state) =>  OnboardingScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage( OnboardingScreen(), state),
         ),
 
 
@@ -117,7 +117,7 @@ class AppRoutes {
        GoRoute(
           path: roleScreen,
           name: roleScreen,
-          builder: (context, state) =>  RoleScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage(RoleScreen(), state),
         ),
 
 
@@ -126,7 +126,7 @@ class AppRoutes {
         GoRoute(
           path: signUpScreen,
           name: signUpScreen,
-          builder: (context, state) =>  SignUpScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage( SignUpScreen(), state),
         ),
 
 
@@ -135,7 +135,7 @@ class AppRoutes {
         GoRoute(
           path: setPasswordScreen,
           name: setPasswordScreen,
-          builder: (context, state) =>  SetPasswordScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage(SetPasswordScreen(), state),
         ),
 
 
@@ -144,9 +144,9 @@ class AppRoutes {
         GoRoute(
           path: forgotPasswordScreen,
           name: forgotPasswordScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             String email = state.extra as String;
-            return ForgotPasswordScreen(email: email);
+            return _customTransitionPage( ForgotPasswordScreen(email: email), state);
           },
         ),
 
@@ -157,9 +157,9 @@ class AppRoutes {
         GoRoute(
           path: otpScreen,
           name: otpScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             String screenType = state.extra as String;
-            return OtpScreen(screenType: screenType);
+            return _customTransitionPage(OtpScreen(screenType: screenType), state);
           }  ,
         ),
 
@@ -169,7 +169,7 @@ class AppRoutes {
         GoRoute(
           path: managerSignUpScreen,
           name: managerSignUpScreen,
-          builder: (context, state) =>  ManagerSignUpScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage(ManagerSignUpScreen(), state),
         ),
 
 
@@ -179,7 +179,7 @@ class AppRoutes {
         GoRoute(
           path: userHomeScreen,
           name: userHomeScreen,
-          builder: (context, state) =>  UserHomeScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage(UserHomeScreen(), state),
         ),
 
 
@@ -188,7 +188,7 @@ class AppRoutes {
         GoRoute(
           path: settingScreen,
           name: settingScreen,
-          builder: (context, state) =>  SettingScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage(SettingScreen(), state),
         ),
 
 
@@ -197,9 +197,9 @@ class AppRoutes {
         GoRoute(
           path: profileScreen,
           name: profileScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             final Map<String, dynamic> profileData = state.extra as Map<String, dynamic>? ?? {};
-            return ProfileScreen(profileData: profileData);
+            return _customTransitionPage(ProfileScreen(profileData: profileData), state);
           },
         ),
 
@@ -210,7 +210,7 @@ class AppRoutes {
         GoRoute(
           path: changePasswordScreen,
           name: changePasswordScreen,
-          builder: (context, state) =>  ChangePasswordScreen(),
+          pageBuilder: (context, state) =>  _customTransitionPage(ChangePasswordScreen(), state),
         ),
 
 
@@ -219,9 +219,9 @@ class AppRoutes {
         GoRoute(
           path: privacyAllScreen,
           name: privacyAllScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
            String title = state.extra as String;
-            return PrivacyAllScreen(title : title);
+            return _customTransitionPage(PrivacyAllScreen(title : title), state);
           },
         ),
 
@@ -231,8 +231,8 @@ class AppRoutes {
         GoRoute(
           path: bookMarkFavariteScreen,
           name: bookMarkFavariteScreen,
-          builder: (context, state) {
-            return BookMarkFavariteScreen();
+          pageBuilder: (context, state) {
+            return _customTransitionPage(BookMarkFavariteScreen(), state);
           },
         ),
 
@@ -242,11 +242,11 @@ class AppRoutes {
         GoRoute(
           path: bookMarkScreen,
           name: bookMarkScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             final extra = state.extra as Map<String, dynamic>?;
             String category = extra?["category"] as String;
             List<Filter> filter = extra?["filter"] as List<Filter>;
-            return BookMarkScreen(category : category, filter: filter);
+            return _customTransitionPage( BookMarkScreen(category : category, filter: filter), state);
           },
         ),
 
@@ -256,9 +256,9 @@ class AppRoutes {
         GoRoute(
           path: filterScreen,
           name: filterScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
              List<Filter> filter = state.extra as List<Filter>;
-             return FilterScreen(filter: filter);
+             return _customTransitionPage( FilterScreen(filter: filter), state);
           },
         ),
 
@@ -269,9 +269,9 @@ class AppRoutes {
         GoRoute(
           path: editProfileScreen,
           name: editProfileScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             final Map<String, dynamic> profileData = state.extra as Map<String, dynamic>? ?? {};
-            return EditProfileScreen(profileData: profileData);
+            return _customTransitionPage( EditProfileScreen(profileData: profileData), state);
           },
         ),
 
@@ -281,9 +281,9 @@ class AppRoutes {
         GoRoute(
           path: eventDetails,
           name: eventDetails,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             String id = state.extra as String;
-            return EventDetails(id: id);
+            return _customTransitionPage( EventDetails(id: id), state);
           },
         ),
 
@@ -294,11 +294,11 @@ class AppRoutes {
         GoRoute(
           path: ratingScreen,
           name: ratingScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             final extra = state.extra as Map<String, dynamic>?; // Extra data as Map
             final String category = extra?['category'] ?? '';
             final String eventId = extra?['eventId'] ?? '';
-            return RatingScreen(category: category, eventId: eventId);
+            return _customTransitionPage( RatingScreen(category: category, eventId: eventId), state);
           },
         ),
 
@@ -309,9 +309,9 @@ class AppRoutes {
         GoRoute(
           path: eventsInYourAreScreen,
           name: eventsInYourAreScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             String title = state.extra as String;
-            return EventsInYourAreScreen(title: title);
+            return _customTransitionPage( EventsInYourAreScreen(title: title), state);
           },
         ),
 
@@ -323,8 +323,8 @@ class AppRoutes {
         GoRoute(
           path: managerHomeScreen,
           name: managerHomeScreen,
-          builder: (context, state) {
-            return ManagerHomeScreen();
+          pageBuilder: (context, state) {
+            return _customTransitionPage( ManagerHomeScreen(), state);
           },
         ),
 
@@ -335,9 +335,9 @@ class AppRoutes {
         GoRoute(
           path: managerEventsScreen,
           name: managerEventsScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             String title = state.extra as String;
-            return ManagerEventsScreen(title: title);
+            return _customTransitionPage(ManagerEventsScreen(title: title), state);
           },
         ),
 
@@ -346,9 +346,9 @@ class AppRoutes {
         GoRoute(
           path: createEventScreen,
           name: createEventScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             String title = state.extra as String;
-            return CreateEventScreen(title: title);
+            return _customTransitionPage(CreateEventScreen(title: title), state);
           },
         ),
 
@@ -359,8 +359,8 @@ class AppRoutes {
         GoRoute(
           path: managerAllEventScreen,
           name: managerAllEventScreen,
-          builder: (context, state) {
-            return ManagerAllEventScreen();
+          pageBuilder: (context, state) {
+            return _customTransitionPage(ManagerAllEventScreen(), state);
           },
         ),
 
@@ -368,11 +368,13 @@ class AppRoutes {
 
         ///=========Manager Events Screen========>>
 
+
+
         GoRoute(
           path: notificationScreen,
           name: notificationScreen,
-          builder: (context, state) {
-            return NotificationScreen();
+          pageBuilder: (context, state) {
+            return _customTransitionPage(const NotificationScreen(), state);
           },
         ),
 
@@ -384,17 +386,32 @@ class AppRoutes {
         GoRoute(
           path: allEventScreen,
           name: allEventScreen,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             String category = state.extra as String;
-            return AllEventScreen(category: category);
+            return _customTransitionPage(AllEventScreen(category: category), state);
           },
         ),
 
 
-
-
-
-
       ]
   );
+
+
+ static Page<dynamic> _customTransitionPage(Widget child, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
+    );
+  }
+
 }

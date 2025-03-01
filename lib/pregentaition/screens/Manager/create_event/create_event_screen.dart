@@ -12,6 +12,7 @@ import 'package:multiselect/multiselect.dart';
 import 'package:seth/controllers/auth_controller.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
+import 'package:seth/core/widgets/custom_loader.dart';
 import 'package:seth/global/custom_assets/assets.gen.dart';
 import 'package:seth/pregentaition/screens/auth/log_in/log_in_screen.dart';
 
@@ -66,7 +67,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       appBar: AppBar(
         centerTitle: true,
         scrolledUnderElevation: 0,
-        title: CustomText(text: widget.title, fontsize: 20.h),
+        title: CustomText(text: "Create Event", fontsize: 20.h),
       ),
 
 
@@ -247,31 +248,34 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
 
 
-              CustomText(text: "Filters", fontsize: 16.h, fontWeight: FontWeight.w600, top: 20.h),
+              widget.title == "concert" ? const SizedBox.shrink() :  CustomText(text: "Filters", fontsize: 16.h, fontWeight: FontWeight.w600, top: 20.h),
 
 
-              ListView.builder(
-                itemCount: userEventController.category.first.filters?.length, // widget.filter?.length ?? 0,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  var filter = userEventController.category.first.filters?[index];
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                          text: filter?.name.toString() ?? "",
-                          fontsize: 17.h,
-                          top: 20.h,
-                          bottom: 12.h),
-                      // ✅ Filter Name
-                      _buttons(
-                          "${filter?.id}",
-                          filter?.subfilters ?? []),
-                      // ✅ Sending subfilters to _buttons
-                    ],
-                  );
-                },
+              widget.title == "concert" ? const SizedBox.shrink() :  Obx(() =>
+              userEventController.category.isEmpty ? const CustomLoader() :
+                 ListView.builder(
+                  itemCount: userEventController.category.first.filters?.length ?? 0, // widget.filter?.length ?? 0,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    var filter = userEventController.category.first.filters?[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                            text: "${filter?.name.toString()[0].toUpperCase()??""}${filter?.name?.substring(1)??""}",
+                            fontsize: 17.h,
+                            top: 20.h,
+                            bottom: 12.h),
+                        // ✅ Filter Name
+                        _buttons(
+                            "${filter?.id}",
+                            filter?.subfilters ?? []),
+                        // ✅ Sending subfilters to _buttons
+                      ],
+                    );
+                  },
+                ),
               ),
 
 
@@ -420,6 +424,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               ).createShader(bounds);
                             }
                           ),
+
+
                         ],
                       ),
                     );
@@ -436,6 +442,19 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           ),
                         ),
                       ),
+
+
+
+
+                      Positioned(
+                          right: 10.w,
+                          top: 10.h,
+                          child: GestureDetector(
+                              onTap: () {
+                                photos.removeAt(index);
+                                setState(() {});
+                              },
+                              child: const Icon(Icons.remove_circle, color: Colors.red)))
                     ],
                   );
                 },
@@ -444,23 +463,27 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               SizedBox(height: 24.h),
 
 
-              CustomButton(title: "Create Event", onpress: (){
-                createEventController.createEvent(
-                    coverImage: selectedImage as File,
-                    photos: photos,
-                    name: nameCtrl.text,
-                    details: describeYourEventCtrl.text,
-                    lat: lat.toString(),
-                    log: log.toString(),
-                    date: dateCtrl.text,
-                    time: timeCtrl.text,
-                    category: widget.title,
-                    address: locationCtrl.text,
-                    ticketLink: linkOfTicketCtrl.text,
-                    filterIdArray: selectedFilters,
-                    context: context
-                );
-              }),
+              Obx(() =>
+                 CustomButton(
+                    loading: createEventController.createEventLoading.value,
+                    title: "Create Event", onpress: (){
+                  createEventController.createEvent(
+                      coverImage: selectedImage as File,
+                      photos: photos,
+                      name: nameCtrl.text,
+                      details: describeYourEventCtrl.text,
+                      lat: lat.toString(),
+                      log: log.toString(),
+                      date: dateCtrl.text,
+                      time: timeCtrl.text,
+                      category: widget.title,
+                      address: locationCtrl.text,
+                      ticketLink: linkOfTicketCtrl.text,
+                      filterIdArray: selectedFilters,
+                      context: context
+                  );
+                }),
+              ),
 
 
               SizedBox(height: 100.h)
@@ -474,23 +497,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     );
   }
 
-
-  // List<String> selectedMusic = [];
-  // List<String> selectedEnergy = [];
-  // List<String> selectedSize = [];
-  // final List<String> musicGenres = [
-  //   "EDM",
-  //   "Hip-Hop",
-  //   "Jazz",
-  //   "House",
-  //   "Middle Eastern",
-  //   "Latin",
-  //   "Country",
-  //   "Classical",
-  //   "R&B",
-  //   "Rock",
-  //   "Reggae",
-  // ];
 
 
   bool progressShow = false;

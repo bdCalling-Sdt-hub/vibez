@@ -260,6 +260,17 @@ class _RatingScreenState extends State<RatingScreen> {
                               ),
                             ),
                           ),
+
+
+                          Positioned(
+                              right: 10.w,
+                              top: 10.h,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    photos.removeAt(index);
+                                    setState(() {});
+                                  },
+                                  child: const Icon(Icons.remove_circle, color: Colors.red)))
                         ],
                       );
                     },

@@ -129,7 +129,7 @@ class _ManagerEventsScreenState extends State<ManagerEventsScreen> {
 
             Expanded(
               child: managerEventController.eventLoading.value ?  const CustomLoader() : managerEventController.events.isEmpty ?
-              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
+              Assets.lottie.noEvent.lottie() :
 
               ListView.builder(
                 shrinkWrap: true,

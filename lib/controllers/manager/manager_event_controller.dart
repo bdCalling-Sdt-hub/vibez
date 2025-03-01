@@ -15,6 +15,7 @@ class ManagerEventController extends GetxController{
   RxBool eventLoading = false.obs;
   RxList<EventModel> events = <EventModel>[].obs;
   fetchEvent({String? type})async{
+   events.clear();
     eventLoading(true);
     var response = await ApiClient.getData("/event/mine?type=$type");
 

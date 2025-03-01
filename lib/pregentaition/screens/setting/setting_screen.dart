@@ -36,15 +36,6 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // if (ModalRoute.of(context)?.settings.arguments == true) {
-      getLocalData();
-    // }
-  }
-
-
   getLocalData() async {
     name = await PrefsHelper.getString(AppConstants.name);
     email = await PrefsHelper.getString(AppConstants.email);

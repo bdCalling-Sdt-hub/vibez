@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:seth/core/utils/app_colors.dart';
 import 'package:seth/core/widgets/custom_button.dart';
+import 'package:seth/core/widgets/no_inter_net_screen.dart';
 import '../../../../controllers/manager/manager_event_controller.dart';
 import '../../../../controllers/notifications_controller.dart';
 import '../../../../core/app_routes/app_routes.dart';
@@ -15,10 +16,9 @@ import '../../../../core/widgets/custom_network_image.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../../helpers/prefs_helper.dart';
+import '../../../../main.dart';
 import '../../../../services/api_constants.dart';
 import 'package:badges/badges.dart' as badges;
-
-import '../../../../services/firebase_notification_services.dart';
 import '../../../../services/socket_services.dart';
 
 
@@ -34,22 +34,17 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
   ManagerEventController managerEventController = Get.put(ManagerEventController());
   NotificationsController notificationsController = Get.put(NotificationsController());
 
-
-
-
   @override
   void initState() {
 
     socket();
-
-
     notificationsController.listenNotification();
     notificationsController.unReadCount();
+    managerEventController.fetchEvent();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getLocalData();
     });
-    managerEventController.fetchEvent();
   }
 
   String? image;
@@ -65,6 +60,8 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
       image = newImage;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +245,7 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
 
                   else{
                     // context.pushNamed(AppRoutes.createEventScreen, extra: "concert");
-                    context.pushNamed(AppRoutes.createEventScreen, extra: "comedy-clubs").then((_){
+                    context.pushNamed(AppRoutes.createEventScreen, extra: "concert").then((_){
                       managerEventController.fetchEvent();
                     });
                   }
@@ -294,8 +291,11 @@ class _ManagerHomeScreenState extends State<ManagerHomeScreen> {
 
             Obx(() =>
             Expanded(
-              child: managerEventController.eventLoading.value ?  const CustomLoader() : managerEventController.events.isEmpty ?
-              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) : ListView.builder(
+              child: managerEventController.eventLoading.value ?  const CustomLoader()
+                  : managerEventController.events.isEmpty ?
+                  Assets.lottie.noEvent.lottie()
+              // Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h))
+                  : ListView.builder(
                 shrinkWrap: true,
                 itemCount: managerEventController.events.length,
                 itemBuilder: (context, index) {

@@ -190,12 +190,21 @@ class $AssetsLottieGen {
   LottieGenImage get buttonLoading =>
       const LottieGenImage('assets/lottie/buttonLoading.json');
 
+  /// File path: assets/lottie/no_event.json
+  LottieGenImage get noEvent =>
+      const LottieGenImage('assets/lottie/no_event.json');
+
+  /// File path: assets/lottie/no_internet.json
+  LottieGenImage get noInternet =>
+      const LottieGenImage('assets/lottie/no_internet.json');
+
   /// File path: assets/lottie/success.json
   LottieGenImage get success =>
       const LottieGenImage('assets/lottie/success.json');
 
   /// List of all assets
-  List<LottieGenImage> get values => [buttonLoading, success];
+  List<LottieGenImage> get values =>
+      [buttonLoading, noEvent, noInternet, success];
 }
 
 class Assets {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:seth/models/cetegory_model.dart';
 import 'package:seth/models/event_details_model.dart';
@@ -11,7 +12,7 @@ import '../../services/api_constants.dart';
 
 class UserEventController extends GetxController{
 
-
+  final TextEditingController searchCtrl = TextEditingController();
 
   RxBool eventLoading = false.obs;
   RxList<EventModel> events = <EventModel>[].obs;

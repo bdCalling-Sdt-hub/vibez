@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:seth/core/widgets/no_inter_net_screen.dart';
 import 'package:seth/services/firebase_notification_services.dart';
 import 'package:seth/services/socket_services.dart';
 
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
         routeInformationParser: AppRoutes.goRouter.routeInformationParser,
         routeInformationProvider: AppRoutes.goRouter.routeInformationProvider,
         routerDelegate: AppRoutes.goRouter.routerDelegate,
+        builder: (context, child) {
+          return Scaffold(body: NoInterNetScreen(child: child!));
+        },
       ),
     );
   }

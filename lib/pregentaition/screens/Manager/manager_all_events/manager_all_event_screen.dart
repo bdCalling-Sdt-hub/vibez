@@ -24,7 +24,7 @@ class ManagerAllEventScreen extends StatefulWidget {
 }
 
 class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
-  final TextEditingController searchCtrl = TextEditingController();
+  // final TextEditingController searchCtrl = TextEditingController();
 
   UserEventController userEventController = Get.put(UserEventController());
 
@@ -75,8 +75,8 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
               ///========================Search Box====================>>>
               CustomTextField(
                 onTap: (){
-                  if(searchCtrl.text.isNotEmpty){
-                    context.pushNamed(AppRoutes.allEventScreen, extra: "${searchCtrl.text}");
+                  if(userEventController.searchCtrl.text.isNotEmpty){
+                    context.pushNamed(AppRoutes.allEventScreen, extra: "Search Results");
                   }
 
                 },
@@ -87,7 +87,7 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Assets.icons.searchLight.svg(height: 20.h),
                 ),
-                controller: searchCtrl,
+                controller: userEventController.searchCtrl,
               ),
 
 
@@ -140,7 +140,7 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
 
               Obx(() =>
               userEventController.featuredEventLoading.value ?  const CustomLoader() : userEventController.featuredEvents.isEmpty ?
-              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
+              Assets.lottie.noEvent.lottie() :
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -222,7 +222,7 @@ class _ManagerAllEventScreenState extends State<ManagerAllEventScreen> {
 
               Obx(() =>
               userEventController.eventLoading.value ?  const CustomLoader() : userEventController.events.isEmpty ?
-              Center(child: CustomText(text: "No Events Found!", top: 100.h, bottom: 100.h)) :
+              Assets.lottie.noEvent.lottie() :
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

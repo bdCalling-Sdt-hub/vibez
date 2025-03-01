@@ -107,7 +107,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 CustomButton(
                     color: Colors.transparent,
                     titlecolor: AppColors.primaryColor,
-                    title: "Apple filters",
+                    title: "Apply filters",
                     onpress: () {
                       userEventController.fetchEvent(
                           category: "",
